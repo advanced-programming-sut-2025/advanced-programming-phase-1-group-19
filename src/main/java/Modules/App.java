@@ -64,6 +64,14 @@ public class App {
         return null;
     }
 
+    public void removeLastUser(){
+        users.remove(users.size()-1);
+    }
+
+    public User getLastUser(){
+        return users.get(users.size()-1);
+    }
+
     public void addGame(Game game) {}
 
     public void removeGame(Game game) {}

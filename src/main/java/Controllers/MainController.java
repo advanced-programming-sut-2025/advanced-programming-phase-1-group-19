@@ -1,5 +1,7 @@
 package Controllers;
 
+import Modules.App;
+import Modules.Enums.Menu;
 import Modules.Interactions.Messages.MainMessage;
 import Modules.Interactions.Messages.Message;
 
@@ -14,11 +16,25 @@ public class MainController extends Controller {
     }
 
     public MainMessage logout() {
-
+        App app = App.getInstance();
+        app.setCurrentUser(null);
+        app.setCurrentMenu(Menu.RegistrationMenu);
+        return new MainMessage(null,"You successfully logged out you are now in registration menu");
     }
 
     public MainMessage goToMenu(String menuName) {
-//        TODO: go to profile and game
+        App app = App.getInstance();
+        switch (menuName) {
+            case "profile": {
+                app.setCurrentMenu(Menu.ProfileMenu);
+                return new MainMessage(null, "You are now in profile menu");
+            }
+            case "game": {
+                app.setCurrentMenu(Menu.GameMenu);
+                return new MainMessage(null, "You are now in game menu");
+            }
+        }
+        return new MainMessage(null, "You can just go to profile or game menu");
     }
 
     @Override
