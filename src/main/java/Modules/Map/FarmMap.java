@@ -1,7 +1,4 @@
-package Modules.Enums;
-
-import Modules.Map.Position;
-import Modules.Map.Size;
+package Modules.Map;
 
 public enum FarmMap {
     first(0),

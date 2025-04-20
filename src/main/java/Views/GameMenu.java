@@ -3,6 +3,8 @@ package Views;
 import Modules.Interactions.Commands.GameCommand;
 import Modules.Interactions.Messages.GameMessage;
 
+import java.util.Scanner;
+
 public class GameMenu implements AppMenu {
     private static GameMenu instance;
 
@@ -20,8 +22,10 @@ public class GameMenu implements AppMenu {
 //        TODO: for force terminate get all votes from users and send to controller
     }
 
+    private final AppView appView = AppView.getInstance();
+
     @Override
     public void checkCommand() {
-
+        Scanner scanner = appView.getScanner();
     }
 }

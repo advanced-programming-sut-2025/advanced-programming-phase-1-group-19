@@ -17,7 +17,7 @@ public class App {
 
     private final ArrayList<User> users = new ArrayList<>();
     private final ArrayList<Game> games = new ArrayList<>();
-    private Menu currentMenu;
+    private Menu currentMenu = Menu.RegistrationMenu;
     private User currentUser;
     private Game currentGame;
     private User currentGameStarter;

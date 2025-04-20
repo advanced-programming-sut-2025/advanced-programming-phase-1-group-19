@@ -23,7 +23,9 @@ public class Time {
         return season;
     }
 
-    public String calculateWeekDay(){}
+    public String calculateWeekDay(){
+
+    }
 
     public void nextSeason(){
         season = season.getNext();
@@ -31,7 +33,7 @@ public class Time {
 
     public void nextDay() {
         if(day == 28) {
-            hour = 1;
+            day = 1;
             nextSeason();
         }
         else {

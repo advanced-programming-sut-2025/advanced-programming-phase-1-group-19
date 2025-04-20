@@ -3,6 +3,8 @@ package Views;
 import Modules.Interactions.Commands.ProfileCommand;
 import Modules.Interactions.Messages.ProfileMessage;
 
+import java.util.Scanner;
+
 public class ProfileMenu implements AppMenu {
     private static ProfileMenu instance;
 
@@ -20,8 +22,10 @@ public class ProfileMenu implements AppMenu {
 
     }
 
+    private final AppView appView = AppView.getInstance();
+
     @Override
     public void checkCommand() {
-
+        Scanner scanner = appView.getScanner();
     }
 }

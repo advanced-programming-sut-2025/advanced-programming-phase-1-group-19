@@ -1,5 +1,6 @@
 package Controllers;
 
+import Modules.Game;
 import Modules.Interactions.Messages.GameMessage;
 import Modules.Interactions.Messages.Message;
 import Modules.Map.Position;
@@ -19,7 +20,8 @@ public class GameController extends Controller {
         return user.getCurrentGame() != null;
     }
 
-    private boolean isMapIdValid(int mapId) {}
+    private boolean isMapIdValid(int mapId) {
+    }
 
     private boolean hasEnoughEnergy(int amount) {}
 

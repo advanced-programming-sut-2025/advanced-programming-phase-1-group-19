@@ -3,6 +3,8 @@ package Views;
 import Modules.Interactions.Commands.RegistrationCommand;
 import Modules.Interactions.Messages.RegistrationMessage;
 
+import java.util.Scanner;
+
 public class RegistrationMenu implements AppMenu {
     private static RegistrationMenu instance;
 
@@ -20,8 +22,11 @@ public class RegistrationMenu implements AppMenu {
 
     }
 
+    private final AppView appView = AppView.getInstance();
+
     @Override
     public void checkCommand() {
+        Scanner scanner = appView.getScanner();
 //        TODO: baraye forget password ask aboo
     }
 }

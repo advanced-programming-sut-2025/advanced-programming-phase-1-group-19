@@ -3,6 +3,8 @@ package Views;
 import Modules.Interactions.Commands.MainCommand;
 import Modules.Interactions.Messages.MainMessage;
 
+import java.util.Scanner;
+
 public class MainMenu implements AppMenu {
     private static MainMenu instance;
 
@@ -20,9 +22,11 @@ public class MainMenu implements AppMenu {
 
     }
 
+    private final AppView appView = AppView.getInstance();
+
     @Override
     public void checkCommand() {
-
+        Scanner scanner = appView.getScanner();
     }
 
 }
