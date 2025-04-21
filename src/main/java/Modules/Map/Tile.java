@@ -2,6 +2,7 @@ package Modules.Map;
 
 import Modules.Farming.Fertilizer;
 import Modules.Farming.Plant;
+import Modules.Game;
 import Modules.Time;
 
 import java.awt.image.BufferedImage;
@@ -16,11 +17,10 @@ public class Tile {
     private Time lastWateringTime;
 
     public Tile(Position position) {
-
-    }
-
-    public Tile(Position position, TileObject object) {
-
+        this.position = position;
+        isPlowed = false;
+        containsPlant = false;
+        lastWateringTime = Game.startingTime;
     }
 
     public Position getPosition() {
@@ -59,9 +59,13 @@ public class Tile {
         return containsPlant;
     }
 
-    public void plant(Plant plant) {}
+    public void plant(Plant plant) {
+//        TODO: also set containsPlant
+    }
 
     public void fertilize(Fertilizer fertilizer) {}
 
-    public void water() {}
+    public void water() {
+//        TODO: also set lastWateringTime
+    }
 }

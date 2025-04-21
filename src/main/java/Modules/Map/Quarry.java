@@ -4,7 +4,8 @@ import java.util.ArrayList;
 
 public class Quarry extends Building{
 
-    public Quarry(Position topLeft, Size size) {
-
+    public Quarry(ArrayList<Tile> tiles, Size size) {
+        this.tiles = tiles;
+        this.size = size;
     }
 }

@@ -1,11 +1,13 @@
 package Modules.Map;
 
 public enum FarmMap {
-    first(0),
-    second(1),
-    third(2),
-    fourth(3),
+    first(1),
+    second(2),
+    third(3),
+    fourth(4),
     ;
+
+    private final int id;
 
     private final Size size;
     private final Position housePosition;
@@ -16,14 +18,16 @@ public enum FarmMap {
 //    5*6
     private final Position lakePosition;
     private final Size lakeSize;
-    private final Position quarterPosition;
-    private final Size quarterSize;
+    private final Position quarryPosition;
+    private final Size quarrySize;
 
     FarmMap(int id) {
+        this.id = id;
+
         size = new Size(100, 100);
 
         switch (id) {
-            case 0: {
+            case 1: {
                 housePosition = new Position(12, 10);
                 houseSize = new Size(4, 4);
 
@@ -33,11 +37,11 @@ public enum FarmMap {
                 lakePosition = new Position(54, 9);
                 lakeSize = new Size(5, 5);
 
-                quarterPosition = new Position(78, 80);
-                quarterSize = new Size(6, 4);
+                quarryPosition = new Position(78, 80);
+                quarrySize = new Size(6, 4);
                 break;
             }
-            case 1: {
+            case 2: {
                 housePosition = new Position(66, 5);
                 houseSize = new Size(4, 4);
 
@@ -47,11 +51,11 @@ public enum FarmMap {
                 lakePosition = new Position(21, 14);
                 lakeSize = new Size(4, 5);
 
-                quarterPosition = new Position(83, 65);
-                quarterSize = new Size(4, 5);
+                quarryPosition = new Position(83, 65);
+                quarrySize = new Size(4, 5);
                 break;
             }
-            case 2: {
+            case 3: {
                 housePosition = new Position(74, 59);
                 houseSize = new Size(4, 4);
 
@@ -61,11 +65,11 @@ public enum FarmMap {
                 lakePosition = new Position(81, 9);
                 lakeSize = new Size(6, 5);
 
-                quarterPosition = new Position(22, 68);
-                quarterSize = new Size(6, 6);
+                quarryPosition = new Position(22, 68);
+                quarrySize = new Size(6, 6);
                 break;
             }
-            case 3: {
+            case 4: {
                 housePosition = new Position(21, 75);
                 houseSize = new Size(4, 4);
 
@@ -75,23 +79,31 @@ public enum FarmMap {
                 lakePosition = new Position(15, 12);
                 lakeSize = new Size(6, 5);
 
-                quarterPosition = new Position(58, 73);
-                quarterSize = new Size(6, 6);
+                quarryPosition = new Position(58, 73);
+                quarrySize = new Size(6, 6);
                 break;
             }
             default: {
-                housePosition = null;
-                houseSize = null;
-                greenHousePosition = null;
-                greenHouseSize = null;
-                lakePosition = null;
-                lakeSize = null;
-                quarterPosition = null;
-                quarterSize = null;
+                housePosition = new Position(0, 0);
+                houseSize = new Size(0, 0);
+                greenHousePosition = new Position(0, 0);
+                greenHouseSize = new Size(0, 0);
+                lakePosition = new Position(0, 0);
+                lakeSize = new Size(0, 0);
+                quarryPosition = new Position(0, 0);
+                quarrySize = new Size(0, 0);
                 break;
             }
         }
-//        TODO: build starting map of farm
+    }
+
+    public static FarmMap getFarmMap(int id) {
+        for(FarmMap farmMap : FarmMap.values()) {
+            if(id == farmMap.id) {
+                return farmMap;
+            }
+        }
+        return null;
     }
 
     public Size getSize() {
@@ -122,11 +134,42 @@ public enum FarmMap {
         return lakeSize;
     }
 
-    public Position getQuarterPosition() {
-        return quarterPosition;
+    public Position getQuarryPosition() {
+        return quarryPosition;
     }
 
-    public Size getQuarterSize() {
-        return quarterSize;
+    public Size getQuarrySize() {
+        return quarrySize;
+    }
+
+    public String printMap() {
+        StringBuilder ret = new StringBuilder();
+        for(int i = 0; i < size.height; i++) {
+            for(int j = 0; j < size.width; j++) {
+                char c;
+                if(i >= housePosition.x && i < housePosition.x + houseSize.height
+                && j >= housePosition.y && j < housePosition.y + houseSize.width) {
+                    c = 'H';
+                }
+                else if(i >= greenHousePosition.x && i < greenHousePosition.x + greenHouseSize.height
+                && j >= greenHousePosition.y && j < greenHousePosition.y + greenHouseSize.width) {
+                    c = 'G';
+                }
+                else if(i >= lakePosition.x && i < lakePosition.x + lakeSize.height
+                && j >= lakePosition.y && j < lakePosition.y + lakeSize.width) {
+                    c = 'L';
+                }
+                else if(i >= quarryPosition.x && i < quarryPosition.x + quarrySize.height
+                && j >= quarryPosition.y && j < quarryPosition.y + quarrySize.width) {
+                    c = 'Q';
+                }
+                else {
+                    c = '.';
+                }
+                ret.append(c);
+            }
+            ret.append("\n");
+        }
+        return ret.toString();
     }
 }

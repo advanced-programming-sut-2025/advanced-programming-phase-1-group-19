@@ -27,10 +27,22 @@ public class Player {
     private Time[] lastBuffTime; // 0:farming, 1: extraction, 2: foraging, 3: fishing, 4: energy;
     private int buffedEnergy;
     private ArrayList<FriendShip> friendShips;
+
     public Player(User user, Farm farm) {
         this.user = user;
         this.farm = farm;
-        // TODO: set initial pos value for player
+        this.position = new Position(farm.getTopLeft().x + 50, farm.getTopLeft().y + 50);
+        backPack = new BackPack();
+        trashCan = new TrashCan();
+        skills = new HashMap<>();
+        knownCraftingRecipes = new ArrayList<>();
+        knownCookingRecipes = new ArrayList<>();
+        lastBuffTime = new Time[5];
+        for(int i = 0; i < 5; i++) {
+            lastBuffTime[i] = Game.startingTime;
+        }
+        buffedEnergy = 0;
+        friendShips = new ArrayList<>();
     }
 
     public User getUser() {
