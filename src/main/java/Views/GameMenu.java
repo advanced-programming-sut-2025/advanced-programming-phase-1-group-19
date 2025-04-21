@@ -1,8 +1,8 @@
 package Views;
 
-import Controllers.GameController;
-import Modules.Interactions.Commands.GameCommand;
-import Modules.Interactions.Messages.GameMessage;
+import Controllers.*;
+import Modules.Interactions.Commands.*;
+import Modules.Interactions.Messages.*;
 
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -27,60 +27,80 @@ public class GameMenu implements AppMenu {
         }
         return scanner.nextLine().trim();
     }
+
     private void runCommand(GameCommand command, String input) {
-//        TODO: for force terminate get all votes from users and send to controller\
-        switch (command){
+        switch (command) {
+            case startNewGame: {
+                Pattern pattern = Pattern.compile("game new -u (?<usernames>.+?)");
+                Matcher matcher = pattern.matcher(input);
+                String allUsernames = matcher.group("usernames").trim();
+                if(allUsernames.isEmpty()) {
+                    System.out.println("You did not enter any usernames!");
+                }
+                String[] usernamesArray = allUsernames.split("\\s+");
+                GameMessage result = gameController.startNewGame(usernamesArray);
+                System.out.println(result.message());
+                break;
+            }
             case ShowTime :{
-                System.out.println(controller.showTime().message());
+                System.out.println(gameController.showTime().message());
                 break;
             }
             case ShowDate :{
-                System.out.println(controller.showDate().message());
+                System.out.println(gameController.showDate().message());
                 break;
             }
             case ShowDateTime :{
-                System.out.println(controller.showDateTime().message());
+                System.out.println(gameController.showDateTime().message());
                 break;
             }
             case ShowDayOfWeek:{
-                System.out.println(controller.showDayOfWeak().message());
+                System.out.println(gameController.showDayOfWeak().message());
                 break;
             }
             case CheatAdvanceTime:{
                 Pattern pattern = Pattern.compile("^\\s*cheat advance time (?<X>\\d+)h\\s*$");
                 Matcher matcher = pattern.matcher(input);
-                System.out.println(controller.cheatAdvanceTime(Integer.parseInt(matcher.group("X"))).message());
+                System.out.println(gameController.cheatAdvanceTime(Integer.parseInt(matcher.group("X"))).message());
                 break;
             }
             case CheatAdvanceDate:{
                 Pattern pattern = Pattern.compile("^\\s*cheat advance date (?<X>\\d+)d\\s*$");
                 Matcher matcher = pattern.matcher(input);
-                System.out.println(controller.cheatAdvanceDate(Integer.parseInt(matcher.group("X"))).message());
+                System.out.println(gameController.cheatAdvanceDate(Integer.parseInt(matcher.group("X"))).message());
                 break;
             }
             case Season:{
-                System.out.println(controller.showSeason().message());
+                System.out.println(gameController.showSeason().message());
                 break;
             }
             case ExitGame:{
-                System.out.println(controller.exitGame().message());
+                System.out.println(gameController.exitGame().message());
+                break;
             }
             case NextTurn:{
-                System.out.println(controller.nextTurn().message());
+                System.out.println(gameController.nextTurn().message());
+                break;
             }
             case ForceTerminate:{
-                System.out.println(controller.forceTerminate().message());
+                System.out.println(gameController.forceTerminate().message());
+                break;
             }
         }
     }
 
+
     private final AppView appView = AppView.getInstance();
     private final Scanner scanner = appView.getScanner();
-    private final GameController controller = GameController.getInstance();
+    private final GameController gameController = GameController.getInstance();
+
     @Override
     public void checkCommand() {
         String input = scanner.nextLine().trim();
-        if(input.matches("^\\s*Time\\s*$")){
+        if(input.matches("game new -u (?<usernames>.+?)")) {
+            runCommand(GameCommand.startNewGame, input);
+        }
+        else if(input.matches("^\\s*Time\\s*$")){
             runCommand(GameCommand.ShowTime, "");
         }
         else if(input.matches("^\\s*Date\\s*$")){

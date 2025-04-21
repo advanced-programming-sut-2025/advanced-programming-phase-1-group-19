@@ -9,11 +9,13 @@ public class Map {
     private NPCVillage npcVillage;
 
     private void setRandomObjects() {
-
+//        TODO: implement this
     }
 
     public Map(ArrayList<Farm> farms) {
-//        TODO: design all maps here
+        this.farms = farms;
+        this.npcVillage = new NPCVillage();
+        setRandomObjects();
     }
 
     public boolean isWalkable(Player player, Position destination) {

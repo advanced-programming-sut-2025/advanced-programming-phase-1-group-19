@@ -4,8 +4,9 @@ import java.util.ArrayList;
 
 public class Lake extends Building {
 
-    public Lake(Position topLeft, Size size) {
-
+    public Lake(ArrayList<Tile> tiles, Size size) {
+        this.tiles = tiles;
+        this.size = size;
     }
 
 }

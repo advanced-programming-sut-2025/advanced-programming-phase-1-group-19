@@ -10,6 +10,7 @@ public enum GameCommand implements Command {
     Season,
     NextTurn,
     ForceTerminate,
-    ExitGame
+    ExitGame,
+    startNewGame
     ;
 }

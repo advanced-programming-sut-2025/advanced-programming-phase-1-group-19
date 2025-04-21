@@ -17,10 +17,14 @@ public class Game {
     private Weather todayWeather;
     private Weather tomrrowWeather;
     private InGameMenu inGameMenu;
+    public final static Time startingTime = new Time();
 
-    public Game(ArrayList<User> users, ArrayList<Farm> farms) {
-//        TODO: fix players here
-//        TODO: create map heer
+    public Game(ArrayList<Player> players, Map map) {
+        this.players = players;
+        this.map = map;
+        this.time = new Time();
+        this.inGameMenu = null;
+//        TODO: set todayWeather and tomorrowWeather
     }
 
     public ArrayList<Player> getPlayers() {

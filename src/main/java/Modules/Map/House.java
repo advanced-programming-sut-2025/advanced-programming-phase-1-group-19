@@ -8,8 +8,9 @@ public class House extends Building {
 
     private Refrigerator refrigerator;
 
-    public House(Position topLeft, Size size) {
-
+    public House(ArrayList<Tile> tiles, Size size) {
+        this.tiles = tiles;
+        this.size = size;
     }
 
     public Refrigerator getRefrigerator() {
