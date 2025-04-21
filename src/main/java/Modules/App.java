@@ -47,6 +47,30 @@ public class App {
         this.stayLoggedIn = stayLoggedIn;
     }
 
+    public ArrayList<User> getUsers() {
+        return users;
+    }
+
+    public ArrayList<Game> getGames() {
+        return games;
+    }
+
+    public Game getCurrentGame() {
+        return currentGame;
+    }
+
+    public User getCurrentGameStarter() {
+        return currentGameStarter;
+    }
+
+    public void setCurrentGame(Game currentGame) {
+        this.currentGame = currentGame;
+    }
+
+    public void setCurrentGameStarter(User currentGameStarter) {
+        this.currentGameStarter = currentGameStarter;
+    }
+
     public void addUser(User user) {
         users.add(user);
     }

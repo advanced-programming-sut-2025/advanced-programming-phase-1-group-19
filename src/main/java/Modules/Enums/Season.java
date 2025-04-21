@@ -1,6 +1,10 @@
 package Modules.Enums;
 
 public enum Season {
+    Spring,
+    Summer,
+    Fall,
+    Winter
     ;
     private int id;
 
@@ -12,5 +16,9 @@ public enum Season {
         return id;
     }
 
-    public Season getNext() {}
+    public Season getNext() {
+        Season[] values = Season.values();
+        return values[(this.ordinal() + 1) % values.length];
+    }
+
 }
