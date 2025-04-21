@@ -42,16 +42,17 @@ public class GameController extends Controller {
         if(usernames.length > 3) {
             return new GameMessage(null, "Too many players!");
         }
-        User[] users = new User[usernames.length];
+        User[] users = new User[usernames.length + 1];
+        users[0] = app.getCurrentUser();
         for(int i = 0; i < usernames.length; i++) {
             User user = app.getUserByUsername(usernames[i]);
             if(user == null) {
                 return new GameMessage(null, "User " + usernames[i] + " not found!");
             }
             if(hasActiveGame(user)) {
-                return new GameMessage(null, "User " + usernames[i] + "is already in a game!");
+                return new GameMessage(null, "User " + usernames[i] + " is already in a game!");
             }
-            users[i] = user;
+            users[i+1] = user;
         }
         GameMenu menu = GameMenu.getInstance();
         String mapsPreview = "Users are set successfully, here are the available maps.\n";
@@ -67,7 +68,7 @@ public class GameController extends Controller {
             String idString = menu.getSingleLine(error + "choose map for user " + users[i].getUsername());
             error = "";
             if(!idString.matches("[1-4]")) {
-                error = "Wrong format, map number one was selected!\n";
+                error = "Wrong format, first map was selected!\n";
                 mapIDs[i] = 1;
             }
             else {
@@ -109,12 +110,12 @@ public class GameController extends Controller {
     }
 
     public GameMessage forceTerminate() {
-        Scanner scanner = AppView.getInstance().getScanner();
+        GameMenu gameMenu = GameMenu.getInstance();
         boolean quit = true;
         for(int i = 0; i < App.getInstance().getCurrentGame().getPlayers().size() - 1; i++){
             String input;
             do{
-                input = scanner.nextLine();
+                input = gameMenu.getSingleLine("");
                 if(input.matches("^\\s*n\\s*$")){
                     quit = false;
                 }

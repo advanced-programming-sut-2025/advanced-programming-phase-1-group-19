@@ -64,11 +64,12 @@ public class RegistrationMenu implements AppMenu {
                 break;
             }
             case login: {
-                String regex="^login\\s+-u\\s+(\\S+)\\s+-p\\s+(\\S+)(\\s+--stay-logged-in)?$\n";
+                String regex="^login\\s+-u\\s+(\\S+)\\s+-p\\s+(\\S+)(\\s+--stay-logged-in)?$";
                 Pattern pattern = Pattern.compile(regex);
                 Matcher matcher = pattern.matcher(input);
                 Boolean stayLoggedIn = false;
                 if(matcher.group(3)!=null){
+//                    TODO: fix this
                     stayLoggedIn = true;
                 }
                 System.out.println(controller.login(matcher.group(1), matcher.group(2),stayLoggedIn ).message());
@@ -97,14 +98,14 @@ public class RegistrationMenu implements AppMenu {
     @Override
     public void checkCommand() {
         String input = scanner.nextLine().trim();
-        if (input.matches("^\\s*show current menu\\s*$")) {
+        if (input.matches("^show current menu$")) {
             runCommand(RegistrationCommand.showCurrentMenu, input);
         }
         else if(input.matches("^\\s*register -u (?<username>.+?) -p (?<password>.+?) (?<passwordConfirm>.+?) -n " +
                 "(?<nickname>.+?) -e (?<email>.+?) -g (?<gender>.+?)\\s*$")) {
             runCommand(RegistrationCommand.register, input);
         }
-        else if(input.matches("^login\\s+-u\\s+(\\S+)\\s+-p\\s+(\\S+)(\\s+--stay-logged-in)?$\n")){
+        else if(input.matches("^login\\s+-u\\s+(\\S+)\\s+-p\\s+(\\S+)(\\s+--stay-logged-in)?$")){
             runCommand(RegistrationCommand.login, input);
         }
         else if(input.matches("^\\s*forget password -u (?<username>.+?)\\s*$")){

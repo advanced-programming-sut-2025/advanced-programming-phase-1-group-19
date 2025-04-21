@@ -1,16 +1,16 @@
 package Modules.Interactions.Commands;
 
 public enum GameCommand implements Command {
-    ShowTime,
-    ShowDate,
-    ShowDateTime,
-    ShowDayOfWeek,
-    CheatAdvanceTime,
-    CheatAdvanceDate,
-    Season,
-    NextTurn,
-    ForceTerminate,
-    ExitGame,
+    showTime,
+    showDate,
+    showDateTime,
+    showDayOfWeek,
+    cheatAdvanceTime,
+    cheatAdvanceDate,
+    season,
+    nextTurn,
+    forceTerminate,
+    exitGame,
     startNewGame,
     exit;
 }

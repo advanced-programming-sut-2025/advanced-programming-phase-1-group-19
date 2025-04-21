@@ -21,6 +21,7 @@ public class Game {
 
     public Game(ArrayList<Player> players, Map map) {
         this.players = players;
+        this.currentPlayer = players.getFirst();
         this.map = map;
         this.time = new Time();
         this.inGameMenu = null;

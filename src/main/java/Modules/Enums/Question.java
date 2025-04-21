@@ -20,6 +20,14 @@ public enum Question {
         this.id = this.ordinal() + 1;
     }
 
+    public static Question getQuestion(int id) {
+        for(Question question : values()) {
+            if(question.id == id)
+                return question;
+        }
+        return null;
+    }
+
     @Override
     public String toString() {
         return this.question;

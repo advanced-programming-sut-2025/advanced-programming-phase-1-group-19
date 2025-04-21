@@ -118,48 +118,8 @@ public class RegistrationController extends Controller implements UserInfoContro
         if (!answer.equals(answerConfirm)) {
             return new RegistrationMessage(null, "the answer and confirm are not equal");
         }
-        switch (id) {
-            case 1: {
-                app.getLastUser().setQuestion(Question.first);
-                break;
-            }
-            case 2: {
-                app.getLastUser().setQuestion(Question.second);
-                break;
-            }
-            case 3: {
-                app.getLastUser().setQuestion(Question.third);
-                break;
-            }
-            case 4: {
-                app.getLastUser().setQuestion(Question.fourth);
-                break;
-            }
-            case 5: {
-                app.getLastUser().setQuestion(Question.fifth);
-                break;
-            }
-            case 6: {
-                app.getLastUser().setQuestion(Question.sixth);
-                break;
-            }
-            case 7: {
-                app.getLastUser().setQuestion(Question.seventh);
-                break;
-            }
-            case 8: {
-                app.getLastUser().setQuestion(Question.eighth);
-                break;
-            }
-            case 9: {
-                app.getLastUser().setQuestion(Question.ninth);
-                break;
-            }
-            case 10: {
-                app.getLastUser().setQuestion(Question.tenth);
-                break;
-            }
-        }
+        Question question = Question.getQuestion(id);
+        app.getLastUser().setQuestion(question);
         app.getLastUser().setAnswer(answer);
         return new RegistrationMessage(null, "Your question and answer successfully saved");
     }

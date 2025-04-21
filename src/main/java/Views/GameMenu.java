@@ -34,7 +34,7 @@ public class GameMenu implements AppMenu {
                 Pattern pattern = Pattern.compile("game new -u (?<usernames>.+?)");
                 Matcher matcher = pattern.matcher(input);
                 String allUsernames = matcher.group("usernames").trim();
-                if(allUsernames.isEmpty()) {
+                if (allUsernames.isEmpty()) {
                     System.out.println("You did not enter any usernames!");
                 }
                 String[] usernamesArray = allUsernames.split("\\s+");
@@ -42,47 +42,47 @@ public class GameMenu implements AppMenu {
                 System.out.println(result.message());
                 break;
             }
-            case ShowTime :{
+            case showTime: {
                 System.out.println(gameController.showTime().message());
                 break;
             }
-            case ShowDate :{
+            case showDate: {
                 System.out.println(gameController.showDate().message());
                 break;
             }
-            case ShowDateTime :{
+            case showDateTime: {
                 System.out.println(gameController.showDateTime().message());
                 break;
             }
-            case ShowDayOfWeek:{
+            case showDayOfWeek: {
                 System.out.println(gameController.showDayOfWeak().message());
                 break;
             }
-            case CheatAdvanceTime:{
+            case cheatAdvanceTime: {
                 Pattern pattern = Pattern.compile("^\\s*cheat advance time (?<X>\\d+)h\\s*$");
                 Matcher matcher = pattern.matcher(input);
                 System.out.println(gameController.cheatAdvanceTime(Integer.parseInt(matcher.group("X"))).message());
                 break;
             }
-            case CheatAdvanceDate:{
+            case cheatAdvanceDate: {
                 Pattern pattern = Pattern.compile("^\\s*cheat advance date (?<X>\\d+)d\\s*$");
                 Matcher matcher = pattern.matcher(input);
                 System.out.println(gameController.cheatAdvanceDate(Integer.parseInt(matcher.group("X"))).message());
                 break;
             }
-            case Season:{
+            case season: {
                 System.out.println(gameController.showSeason().message());
                 break;
             }
-            case ExitGame:{
+            case exitGame: {
                 System.out.println(gameController.exitGame().message());
                 break;
             }
-            case NextTurn:{
+            case nextTurn: {
                 System.out.println(gameController.nextTurn().message());
                 break;
             }
-            case ForceTerminate:{
+            case forceTerminate: {
                 System.out.println(gameController.forceTerminate().message());
                 break;
             }
@@ -101,34 +101,34 @@ public class GameMenu implements AppMenu {
             runCommand(GameCommand.startNewGame, input);
         }
         else if(input.matches("^\\s*Time\\s*$")){
-            runCommand(GameCommand.ShowTime, "");
+            runCommand(GameCommand.showTime, "");
         }
         else if(input.matches("^\\s*Date\\s*$")){
-            runCommand(GameCommand.ShowDate, "");
+            runCommand(GameCommand.showDate, "");
         }
         else if(input.matches("^\\s*DateTime\\s*$")){
-            runCommand(GameCommand.ShowDateTime, "");
+            runCommand(GameCommand.showDateTime, "");
         }
         else if(input.matches("^\\s*day of the week\\s*$")){
-            runCommand(GameCommand.ShowDayOfWeek, "");
+            runCommand(GameCommand.showDayOfWeek, "");
         }
         else if(input.matches("^\\s*cheat advance time (?<X>\\d+)h\\s*$")){
-            runCommand(GameCommand.CheatAdvanceTime, input);
+            runCommand(GameCommand.cheatAdvanceTime, input);
         }
         else if(input.matches("^\\s*cheat advance date (?<X>\\d+)d\\s*$")){
-            runCommand(GameCommand.CheatAdvanceDate, input);
+            runCommand(GameCommand.cheatAdvanceDate, input);
         }
         else if(input.matches("^\\s*season\\s*$")){
-            runCommand(GameCommand.Season, "");
+            runCommand(GameCommand.season, "");
         }
         else if(input.matches("^\\s*next turn\\s*$")){
-            runCommand(GameCommand.NextTurn, "");
+            runCommand(GameCommand.nextTurn, "");
         }
         else if(input.matches("^\\s*force terminate\\s*$")){
-            runCommand(GameCommand.ForceTerminate, "");
+            runCommand(GameCommand.forceTerminate, "");
         }
         else if(input.matches("^\\s*exit game\\s*$")){
-            runCommand(GameCommand.ExitGame, "");
+            runCommand(GameCommand.exitGame, "");
         }
     }
 }
