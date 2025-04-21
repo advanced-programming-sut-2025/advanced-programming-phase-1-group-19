@@ -11,6 +11,6 @@ public enum GameCommand implements Command {
     NextTurn,
     ForceTerminate,
     ExitGame,
-    startNewGame
-    ;
+    startNewGame,
+    exit;
 }

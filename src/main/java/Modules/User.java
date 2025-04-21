@@ -2,6 +2,8 @@ package Modules;
 
 import Modules.Enums.Question;
 
+import java.util.ArrayList;
+
 public class User {
     private String username;
     private String password;
@@ -11,6 +13,7 @@ public class User {
     private Question question;
     private String answer;
     private Game currentGame;
+    private ArrayList<Integer> gamesMoney;
 
     public User(String username, String password, String nickname, String email, String gender) {
         this.username = username;
@@ -18,6 +21,7 @@ public class User {
         this.nickname = nickname;
         this.email = email;
         this.gender = gender;
+        this.gamesMoney = new ArrayList<>();
     }
 
     public String getNickname() {
@@ -74,5 +78,29 @@ public class User {
 
     public void setCurrentGame(Game currentGame) {
         this.currentGame = currentGame;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
+    }
+
+    public void addGamesMoney(int money) {
+        this.gamesMoney.add(money);
+    }
+
+    public int getGamesCount() {
+        return gamesMoney.size();
+    }
+
+    public int getMaxMoney() {
+        int maxMoney = 0;
+        for (Integer money : gamesMoney) {
+            maxMoney = maxMoney < money ? maxMoney : money;
+        }
+        return maxMoney;
     }
 }

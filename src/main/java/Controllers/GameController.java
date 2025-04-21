@@ -20,6 +20,13 @@ public class GameController extends Controller {
         return instance;
     }
 
+    @Override
+    public GameMessage showCurrentMenu() {
+        App app = App.getInstance();
+        app.setCurrentMenu(Menu.MainMenu);
+        return new GameMessage(null, "You are now in main menu");
+    }
+
     private final App app = App.getInstance();
 
     private boolean hasActiveGame(User user) {
@@ -96,10 +103,9 @@ public class GameController extends Controller {
         if(!app.getCurrentGameStarter().equals(app.getCurrentUser())){
             return new GameMessage(null, "you can't exit game!");
         }
-        else{
-            // TODO: save game
-            app.setCurrentGame(null);
-        }
+        // TODO: save game
+        app.setCurrentGame(null);
+        return new GameMessage(null, "exited game successfully!");
     }
 
     public GameMessage forceTerminate() {

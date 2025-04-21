@@ -1,9 +1,12 @@
 package Views;
 
+import Controllers.MainController;
 import Modules.Interactions.Commands.MainCommand;
 import Modules.Interactions.Messages.MainMessage;
 
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MainMenu implements AppMenu {
     private static MainMenu instance;
@@ -18,15 +21,53 @@ public class MainMenu implements AppMenu {
         return instance;
     }
 
-    private MainMessage runCommand(MainCommand command, String input) {
+    private final AppView appView = AppView.getInstance();
+
+    Scanner scanner = appView.getScanner();
+
+    private void runCommand(MainCommand command, String input) {
+        MainController controller=MainController.getInstance();
+        switch (command) {
+            case enter:{
+                String regex="^\\s*menu enter (?<menuname>.+?)\\s*$";
+                Pattern pattern = Pattern.compile(regex);
+                Matcher matcher1 = pattern.matcher(input);
+                System.out.println(controller.goToMenu(matcher1.group(1)));
+                break;
+            }
+            case showCurrentMenu:{
+                System.out.println(controller.showCurrentMenu().message());
+                break;
+            }
+            case logout:{
+                System.out.println(controller.logout().message());
+                break;
+            }
+            case exit:{
+                System.out.println(controller.exit().message());
+                break;
+            }
+        }
 
     }
 
-    private final AppView appView = AppView.getInstance();
+
 
     @Override
     public void checkCommand() {
-        Scanner scanner = appView.getScanner();
+        String input = scanner.nextLine();
+        if(input.matches("^\\s*menu enter (?<menuname>.+?)\\s*$")){
+            runCommand(MainCommand.enter, input);
+        }
+        else if(input.matches("^\\s*show current menu$")){
+            runCommand(MainCommand.showCurrentMenu, input);
+        }
+        else if(input.matches("^\\s*user logout\\s*$")){
+            runCommand(MainCommand.logout, input);
+        }
+        else if(input.matches("^\\s*menu exit\\s*$")){
+            runCommand(MainCommand.exit, input);
+        }
     }
 
 }

@@ -71,22 +71,6 @@ public class App {
         return games;
     }
 
-    public Game getCurrentGame() {
-        return currentGame;
-    }
-
-    public User getCurrentGameStarter() {
-        return currentGameStarter;
-    }
-
-    public void setCurrentGame(Game currentGame) {
-        this.currentGame = currentGame;
-    }
-
-    public void setCurrentGameStarter(User currentGameStarter) {
-        this.currentGameStarter = currentGameStarter;
-    }
-
     public void addUser(User user) {
         users.add(user);
     }
@@ -102,6 +86,14 @@ public class App {
             }
         }
         return null;
+    }
+
+    public void removeLastUser(){
+        users.removeLast();
+    }
+
+    public User getLastUser(){
+        return users.getLast();
     }
 
     public void addGame(Game game) {
