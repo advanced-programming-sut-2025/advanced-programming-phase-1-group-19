@@ -1,6 +1,7 @@
 package Modules;
 
 import Modules.Enums.InGameMenu;
+import Modules.Enums.Season;
 import Modules.Enums.Weather;
 import Modules.Map.Farm;
 import Modules.Map.Map;
@@ -20,6 +21,10 @@ public class Game {
     public Game(ArrayList<User> users, ArrayList<Farm> farms) {
 //        TODO: fix players here
 //        TODO: create map heer
+    }
+
+    public ArrayList<Player> getPlayers() {
+        return players;
     }
 
     public Player getCurrentPlayer() {
@@ -42,16 +47,35 @@ public class Game {
 //        TODO: get position from arraylist and set to next player
 //        TODO: check if it was the last player nextHour()
 //        TODO: check if the player is fainted
+        int index = players.indexOf(currentPlayer);
+        if(index == players.size() - 1) {
+            index = 0;
+            nextHour();
+        }
+        else{
+            index++;
+        }
+        setCurrentPlayer(players.get(index));
     }
 
-    public void nextSeason(){}
+    public void nextSeason(){
+        time.nextSeason();
+    }
 
     public void nextDay() {
 //        TODO: handle crow attack and thor attack of the new day
+//        TODO: fix fainted players
+        if(time.getDay() == 28){
+            time.nextSeason();
+        }
+        time.nextDay();
     }
 
     public void nextHour() {
-
+        if(time.getHour() == 22) {
+            nextDay();
+        }
+        time.nextHour();
     }
     public Time getTime() {
         return time;
