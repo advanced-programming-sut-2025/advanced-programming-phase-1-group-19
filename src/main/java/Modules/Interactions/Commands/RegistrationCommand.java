@@ -8,4 +8,5 @@ public enum RegistrationCommand implements Command {
     login,
     forgetPassword,
     answerQuestion,
+    exit;
 }

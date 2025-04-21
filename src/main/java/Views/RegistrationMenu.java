@@ -29,8 +29,7 @@ public class RegistrationMenu implements AppMenu {
         RegistrationController controller = RegistrationController.getInstance();
         switch (command) {
             case showCurrentMenu: {
-//                System.out.println(controller.showCurrentMenu().message());
-                //TODO:check the show current menu function in controller abstract class
+                System.out.println(controller.showCurrentMenu().message());
                 break;
             }
             case register: {

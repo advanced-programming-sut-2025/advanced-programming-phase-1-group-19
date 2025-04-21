@@ -1,5 +1,7 @@
 package Controllers;
 
+import Modules.App;
+import Modules.Enums.Menu;
 import Modules.Game;
 import Modules.Interactions.Messages.GameMessage;
 import Modules.Interactions.Messages.Message;
@@ -14,6 +16,13 @@ public class GameController extends Controller {
             instance = new GameController();
         }
         return instance;
+    }
+
+    @Override
+    public GameMessage showCurrentMenu() {
+        App app = App.getInstance();
+        app.setCurrentMenu(Menu.MainMenu);
+        return new GameMessage(null, "You are now in main menu");
     }
 
     private boolean hasActiveGame(User user) {

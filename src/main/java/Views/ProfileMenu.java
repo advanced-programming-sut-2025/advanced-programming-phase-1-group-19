@@ -24,39 +24,47 @@ public class ProfileMenu implements AppMenu {
     private final AppView appView = AppView.getInstance();
     Scanner scanner = appView.getScanner();
 
-    private ProfileMessage runCommand(ProfileCommand command, String input) {
-        ProfileController controller=ProfileController.getInstance();
+    private void runCommand(ProfileCommand command, String input) {
+        ProfileController controller = ProfileController.getInstance();
         switch (command) {
-            case changeUsername:{
-                String regex="^\\s*change username -u (?<username>.+?)\\s*$";
+            case changeUsername: {
+                String regex = "^\\s*change username -u (?<username>.+?)\\s*$";
                 Pattern pattern = Pattern.compile(regex);
                 Matcher matcher = pattern.matcher(input);
                 System.out.println(controller.changeUsername(matcher.group(1)).message());
                 break;
             }
-            case changeNickname:{
-                String regex="^\\s*change username -u (?<username>.+?)\\s*$";
+            case changeNickname: {
+                String regex = "^\\s*change username -u (?<username>.+?)\\s*$";
                 Pattern pattern = Pattern.compile(regex);
                 Matcher matcher = pattern.matcher(input);
                 System.out.println(controller.changeNickname(matcher.group(1)).message());
                 break;
             }
-            case changeEmail:{
-                String regex="^\\s*change email -e (?<email>.+?)\\s*$";
+            case changeEmail: {
+                String regex = "^\\s*change email -e (?<email>.+?)\\s*$";
                 Pattern pattern = Pattern.compile(regex);
                 Matcher matcher = pattern.matcher(input);
                 System.out.println(controller.changeEmail(matcher.group(1)).message());
                 break;
             }
-            case changePassword:{
-                String regex="^\\s*change password -p (?<newpassword>.+?) -o (?<oldpassword>.+?)\n\\s*$";
+            case changePassword: {
+                String regex = "^\\s*change password -p (?<newpassword>.+?) -o (?<oldpassword>.+?)\n\\s*$";
                 Pattern pattern = Pattern.compile(regex);
                 Matcher matcher = pattern.matcher(input);
-                System.out.println(controller.changePassword(matcher.group(1),matcher.group(2)).message());
+                System.out.println(controller.changePassword(matcher.group(1), matcher.group(2)).message());
                 break;
             }
-            case userInfo:{
-                System.out.println(controller.showUserInfo());
+            case userInfo: {
+                System.out.println(controller.showUserInfo().message());
+                break;
+            }
+            case showCurrentMenu: {
+                System.out.println(controller.showCurrentMenu().message());
+                break;
+            }
+            case exit: {
+                System.out.println(controller.exit().message());
                 break;
             }
         }
@@ -80,6 +88,9 @@ public class ProfileMenu implements AppMenu {
         }
         else if(input.matches("^\\s*uesr info\\s*$")){
             runCommand(ProfileCommand.userInfo, input);
+        }
+        else if(input.matches("^\\s*show current menu\\s*$")){
+            runCommand(ProfileCommand.showCurrentMenu, input);
         }
     }
 }

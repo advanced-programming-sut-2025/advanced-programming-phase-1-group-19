@@ -6,4 +6,6 @@ public enum ProfileCommand implements Command {
     changeEmail,
     changePassword,
     userInfo,
+    exit,
+    showCurrentMenu;
 }

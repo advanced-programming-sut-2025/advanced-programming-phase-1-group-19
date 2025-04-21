@@ -24,6 +24,11 @@ public class RegistrationController extends Controller implements UserInfoContro
         return instance;
     }
 
+    @Override
+    public RegistrationMessage showCurrentMenu(){
+        return new RegistrationMessage(null,Menu.RegistrationMenu.toString());
+    }
+
     private String generateRandomPassword() {
         Random randomLength = new Random();
         int length = randomLength.nextInt(10) + 8;

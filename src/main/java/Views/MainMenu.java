@@ -36,12 +36,15 @@ public class MainMenu implements AppMenu {
                 break;
             }
             case showCurrentMenu:{
-                controller.showCurrentMenu();
-                //TODO:check showCurrent menu function in controller abstract class
+                System.out.println(controller.showCurrentMenu().message());
                 break;
             }
             case logout:{
                 System.out.println(controller.logout().message());
+                break;
+            }
+            case exit:{
+                System.out.println(controller.exit().message());
                 break;
             }
         }
@@ -61,6 +64,9 @@ public class MainMenu implements AppMenu {
         }
         else if(input.matches("^\\s*user logout\\s*$")){
             runCommand(MainCommand.logout, input);
+        }
+        else if(input.matches("^\\s*menu exit\\s*$")){
+            runCommand(MainCommand.exit, input);
         }
     }
 

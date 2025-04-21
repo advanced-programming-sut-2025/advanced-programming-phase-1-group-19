@@ -15,6 +15,11 @@ public class MainController extends Controller {
         return instance;
     }
 
+    @Override
+    public MainMessage showCurrentMenu() {
+        return new MainMessage(null,Menu.MainMenu.toString());
+    }
+
     public MainMessage logout() {
         App app = App.getInstance();
         app.setCurrentUser(null);
@@ -38,7 +43,9 @@ public class MainController extends Controller {
     }
 
     @Override
-    public Message exit() {
-//        TODO: go to registration
+    public MainMessage exit() {
+        App app = App.getInstance();
+        app.setCurrentMenu(Menu.RegistrationMenu);
+        return new MainMessage(null, "You are now in registration menu");
     }
 }

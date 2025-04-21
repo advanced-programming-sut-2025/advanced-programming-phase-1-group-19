@@ -1,6 +1,8 @@
 package Controllers;
 
 import Modules.App;
+import Modules.Enums.Menu;
+import Modules.Interactions.Messages.MainMessage;
 import Modules.Interactions.Messages.Message;
 import Modules.Interactions.Messages.ProfileMessage;
 import Modules.User;
@@ -13,6 +15,11 @@ public class ProfileController extends Controller implements UserInfoController{
             instance = new ProfileController();
         }
         return instance;
+    }
+
+    @Override
+    public ProfileMessage showCurrentMenu() {
+        return new ProfileMessage(null, Menu.ProfileMenu.toString());
     }
 
     public ProfileMessage changeUsername(String newUsername) {
@@ -74,7 +81,9 @@ public class ProfileController extends Controller implements UserInfoController{
     }
 
     @Override
-    public Message exit() {
-//        TODO: back to main menu
+    public ProfileMessage exit() {
+        App app = App.getInstance();
+        app.setCurrentMenu(Menu.MainMenu);
+        return new ProfileMessage(null, "You are now in main menu");
     }
 }
