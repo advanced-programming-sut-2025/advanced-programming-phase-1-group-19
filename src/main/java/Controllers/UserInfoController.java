@@ -76,5 +76,10 @@ public interface UserInfoController {
         return false;
     }
 
-    public default boolean isPasswordConfirmCorrect(String password, String passwordConfirm) {}
+    public default boolean isPasswordConfirmCorrect(String password, String passwordConfirm) {
+        if(password.equals(passwordConfirm)) {
+            return true;
+        }
+        return false;
+    }
 }
