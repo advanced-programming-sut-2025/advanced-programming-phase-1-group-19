@@ -130,6 +130,9 @@ public class GameController extends Controller {
         }
         if(quit){
             // TODO: user.currentGame == null
+            for (Player player : App.getInstance().getCurrentGame().getPlayers()) {
+                player.getUser().setCurrentGame(null);
+            }
             App.getInstance().getGames().remove(App.getInstance().getCurrentGame());
             App.getInstance().setCurrentGame(null);
             App.getInstance().setCurrentGameStarter(null);
