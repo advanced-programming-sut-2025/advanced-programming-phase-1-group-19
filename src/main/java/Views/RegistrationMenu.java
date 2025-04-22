@@ -37,19 +37,19 @@ public class RegistrationMenu implements AppMenu {
                         "(?<nickname>.+?) -e (?<email>.+?) -g (?<gender>.+?)\\s*$";
                 Pattern pattern = Pattern.compile(regex);
                 Matcher matcher = pattern.matcher(input);
-                System.out.println(controller.Register(matcher.group(1), matcher.group(2), matcher.group(3), matcher.group(4), matcher.group(5), matcher.group(6)).message());
+                RegistrationMessage message=controller.Register(matcher.group(1), matcher.group(2), matcher.group(3), matcher.group(4), matcher.group(5), matcher.group(6));
+                System.out.println(message.message());
 
-                if(controller.Register(matcher.group(1), matcher.group(2), matcher.group(3), matcher.group(4),
-                        matcher.group(5), matcher.group(6)).command().equals(RegistrationCommand.askForPassword)){
-                    if(scanner.nextLine().equals("Yes")){
+                if(message.command().equals(RegistrationCommand.askForPassword)){
+                    String nextLine = scanner.nextLine();
+                    if(nextLine.equals("Yes")){
                         System.out.println(controller.acceptRandomPassword(true).message());
                     }
-                    else if(scanner.nextLine().equals("No")){
+                    else if(nextLine.equals("No")){
                         System.out.println(controller.acceptRandomPassword(false).message());
                     }
                 }
-                else if(controller.Register(matcher.group(1), matcher.group(2), matcher.group(3), matcher.group(4),
-                        matcher.group(5), matcher.group(6)).command().equals(RegistrationCommand.askQuestion)){
+                else if(message.command().equals(RegistrationCommand.askQuestion)){
                     for(int i=0;i<10;i++){
                         System.out.println(Question.values()[i]);
                     }
@@ -64,11 +64,11 @@ public class RegistrationMenu implements AppMenu {
                 break;
             }
             case login: {
-                String regex="^login\\s+-u\\s+(\\S+)\\s+-p\\s+(\\S+)(\\s+--stay-logged-in)?$";
+                String regex="^login\\s+-u\\s+(?<username>\\S+)\\s+-p\\s+(?<password>\\S+)(\\s+--stay-logged-in)?$";
                 Pattern pattern = Pattern.compile(regex);
                 Matcher matcher = pattern.matcher(input);
                 Boolean stayLoggedIn = false;
-                if(matcher.group(3)!=null){
+                if(input.contains("--stay-logged-in")){
 //                    TODO: fix this
                     stayLoggedIn = true;
                 }
@@ -79,8 +79,9 @@ public class RegistrationMenu implements AppMenu {
                 String regex="^\\s*forget password -u (?<username>.+?)\\s*$";
                 Pattern pattern = Pattern.compile(regex);
                 Matcher matcher = pattern.matcher(input);
-                System.out.println(controller.forgetPassword(matcher.group(1)).message());
-                if(controller.forgetPassword((matcher.group(1))).command().equals(RegistrationCommand.askQuestion)) {
+                RegistrationMessage message=controller.forgetPassword(matcher.group(1));
+                System.out.println(message.message());
+                if(message.command().equals(RegistrationCommand.askQuestion)) {
                     String answer = scanner.nextLine();
                     String regex1 = "^\\s*answer -a (?<answer>.+?)\\s*$";
                     Pattern pattern1 = Pattern.compile(regex1);
