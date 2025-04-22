@@ -20,4 +20,9 @@ public class Seed extends Item {
     public void delete() {
 
     }
+
+    @Override
+    public String getName(){
+        return type.;
+    }
 }

@@ -28,4 +28,9 @@ public class Tool extends Item {
     public void delete() {
 
     }
+
+    @Override
+    public String getName() {
+        return toolType.getName();
+    }
 }

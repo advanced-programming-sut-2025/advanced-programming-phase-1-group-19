@@ -189,6 +189,48 @@ public class GameController extends Controller {
             App.getInstance().getCurrentGame().nextHour();
         return new GameMessage(null, "time traveled " + x + " days");
     }
+
+    public GameMessage showEnergy(){
+        App app = App.getInstance();
+        return new GameMessage(null,"Your energy is: "+ app.getCurrentGame().getCurrentPlayer().getEnergy().getAmount());
+    }
+
+    public GameMessage showInventory(){
+        StringBuilder stringBuilder = new StringBuilder();
+        App app = App.getInstance();
+        Player player = app.getCurrentGame().getCurrentPlayer();
+        for (Item item : player.getBackPack().getItems().keySet()) {
+            stringBuilder.append("Item: ").append(item.getName()).append("\n");
+        }
+        return new GameMessage(null, "Your BackPack: \n"+stringBuilder.toString());
+    }
+
+    public GameMessage inventoryTrash(String itemName,int number,boolean delete){
+        App app = App.getInstance();
+        Player player = app.getCurrentGame().getCurrentPlayer();
+        if(delete){
+            for (Item item : player.getBackPack().getItems().keySet()) {
+                if(item.getName().equals(itemName)) {
+                    player.getBackPack().getItems().remove(item);
+                    break;
+                }
+            }
+            return new GameMessage(null,"You fully trashed item "+itemName);
+        }
+        for (Item item : player.getBackPack().getItems().keySet()) {
+            if(item.getName().equals(itemName)) {
+                int currentQty = player.getBackPack().getItems().get(item);
+                if (currentQty > number) {
+                    player.getBackPack().getItems().put(item, currentQty - number);
+                } else {
+                    player.getBackPack().getItems().remove(item);
+                }
+                break;
+            }
+        }
+        return new GameMessage(null, "You successfully trashed " + number + " of " + itemName);
+    }
+
     public GameMessage cheatThor(int x, int y) {}
 
     public GameMessage showWeather() {}

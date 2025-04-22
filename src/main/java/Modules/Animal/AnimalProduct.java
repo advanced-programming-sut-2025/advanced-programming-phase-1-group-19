@@ -31,4 +31,9 @@ public class AnimalProduct extends Item {
     public void delete() {
 
     }
+
+    @Override
+    public String getName() {
+        return type.getName();
+    }
 }

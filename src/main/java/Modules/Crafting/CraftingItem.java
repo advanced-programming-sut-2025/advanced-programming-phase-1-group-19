@@ -24,4 +24,9 @@ public class CraftingItem extends Item {
     public void delete() {
 
     }
+
+    @Override
+    public String getName() {
+        return recipe.getProductName();
+    }
 }
