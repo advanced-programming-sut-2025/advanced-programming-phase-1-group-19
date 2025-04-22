@@ -7,7 +7,16 @@ public class NPCVillage {
     private final Size size;
     private final ArrayList<Tile> tiles;
 
-    public NPCVillage() {}
+    public NPCVillage() {
+        topLeft = new Position(100, 100);
+        size = new Size(50, 50);
+        tiles = new ArrayList<>();
+        for(int i = 100; i < 150; i++) {
+            for(int j = 100; j < 150; j++) {
+                tiles.add(new Tile(new Position(i, j)));
+            }
+        }
+    }
 
     public Position getTopLeft() {
         return topLeft;

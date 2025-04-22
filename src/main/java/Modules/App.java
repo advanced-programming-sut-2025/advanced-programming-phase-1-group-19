@@ -39,12 +39,36 @@ public class App {
         this.currentUser = currentUser;
     }
 
+    public Game getCurrentGame() {
+        return currentGame;
+    }
+
+    public void setCurrentGame(Game currentGame) {
+        this.currentGame = currentGame;
+    }
+
+    public User getCurrentGameStarter() {
+        return currentGameStarter;
+    }
+
+    public void setCurrentGameStarter(User currentGameStarter) {
+        this.currentGameStarter = currentGameStarter;
+    }
+
     public boolean isStayLoggedIn() {
         return stayLoggedIn;
     }
 
     public void setStayLoggedIn(boolean stayLoggedIn) {
         this.stayLoggedIn = stayLoggedIn;
+    }
+
+    public ArrayList<User> getUsers() {
+        return users;
+    }
+
+    public ArrayList<Game> getGames() {
+        return games;
     }
 
     public void addUser(User user) {
@@ -64,9 +88,21 @@ public class App {
         return null;
     }
 
-    public void addGame(Game game) {}
+    public void removeLastUser(){
+        users.removeLast();
+    }
 
-    public void removeGame(Game game) {}
+    public User getLastUser(){
+        return users.getLast();
+    }
+
+    public void addGame(Game game) {
+        games.add(game);
+    }
+
+    public void removeGame(Game game) {
+        games.remove(game);
+    }
 
     public void loadGame() {
 //        TODO: load game from data based on loggedIn user and set currentGameStarter
