@@ -3,6 +3,7 @@ package Views;
 import Controllers.*;
 import Modules.Interactions.Commands.*;
 import Modules.Interactions.Messages.*;
+import Modules.Map.Position;
 
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -86,6 +87,27 @@ public class GameMenu implements AppMenu {
                 System.out.println(gameController.forceTerminate().message());
                 break;
             }
+            case walk: {
+                Pattern pattern = Pattern.compile("^walk -l (?<x>\\d+) (?<y>\\d+)");
+                Matcher matcher = pattern.matcher(input);
+                int x = Integer.parseInt(matcher.group("x"));
+                int y = Integer.parseInt(matcher.group("y"));
+                System.out.println(gameController.walk(new Position(x, y)).message());
+                break;
+            }
+            case printMap: {
+                Pattern pattern = Pattern.compile("^print map -l (?<x>\\d+) (?<y>\\d+) -s (?<size>\\d+)$");
+                Matcher matcher = pattern.matcher(input);
+                int x = Integer.parseInt(matcher.group("x"));
+                int y = Integer.parseInt(matcher.group("y"));
+                int size = Integer.parseInt(matcher.group("size"));
+                System.out.println(gameController.printMap(new Position(x, y), size).message());
+                break;
+            }
+            case helpPrintMap: {
+                System.out.println(gameController.helpPrintMap().message());
+                break;
+            }
         }
     }
 
@@ -126,6 +148,15 @@ public class GameMenu implements AppMenu {
         }
         else if(input.matches("^\\s*force terminate\\s*$")){
             runCommand(GameCommand.forceTerminate, "");
+        }
+        else if(input.matches("^walk -l (?<x>\\d+) (?<y>\\d+)$")) {
+            runCommand(GameCommand.walk, input);
+        }
+        else if(input.matches("^print map -l (?<x>\\d+) (?<y>\\d+) -s (?<size>\\d+)$")) {
+            runCommand(GameCommand.printMap, input);
+        }
+        else if(input.matches("^help reading map$")) {
+            runCommand(GameCommand.helpPrintMap, input);
         }
         else if(input.matches("^\\s*exit game\\s*$")){
             runCommand(GameCommand.exitGame, "");

@@ -8,14 +8,9 @@ public class Map {
     private ArrayList<Farm> farms = new ArrayList<>();
     private NPCVillage npcVillage;
 
-    private void setRandomObjects() {
-//        TODO: implement this
-    }
-
     public Map(ArrayList<Farm> farms) {
         this.farms = farms;
         this.npcVillage = new NPCVillage();
-        setRandomObjects();
     }
 
     public boolean isWalkable(Player player, Position destination) {

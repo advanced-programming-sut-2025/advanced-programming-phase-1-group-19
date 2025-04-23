@@ -193,7 +193,9 @@ public class GameController extends Controller {
 
     public GameMessage showWeather() {}
 
-    public GameMessage walk(Position position) {}
+    public GameMessage walk(Position position) {
+
+    }
 
     public GameMessage printMap(Position position, int size) {}
 

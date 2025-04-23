@@ -12,5 +12,8 @@ public enum GameCommand implements Command {
     forceTerminate,
     exitGame,
     startNewGame,
+    walk,
+    printMap,
+    helpPrintMap,
     exit;
 }
