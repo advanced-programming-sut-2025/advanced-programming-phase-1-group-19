@@ -199,7 +199,17 @@ public class GameController extends Controller {
 
     public GameMessage printMap(Position position, int size) {}
 
-    public GameMessage helpPrintMap() {}
+    public GameMessage helpPrintMap() {
+        String ret = "";
+        ret += ". ~> empty tiles\n";
+        ret += "H ~> house tiles\n";
+        ret += "G ~> green house tiles\n";
+        ret += "L ~> lake tiles\n";
+        ret += "Q ~> quarry tiles\n";
+
+//        TODO: fix this if needed to show other stuff
+        return new GameMessage(null, ret);
+    }
 
     public GameMessage openHouseMenu() {
 
