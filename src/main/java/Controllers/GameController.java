@@ -199,8 +199,12 @@ public class GameController extends Controller {
         StringBuilder stringBuilder = new StringBuilder();
         App app = App.getInstance();
         Player player = app.getCurrentGame().getCurrentPlayer();
-        for (Item item : player.getBackPack().getItems().keySet()) {
-            stringBuilder.append("Item: ").append(item.getName()).append("\n");
+        for (java.util.Map.Entry<Item, Integer> entry : player.getBackPack().getItems().entrySet()) {
+            Item item = entry.getKey();
+            Integer value = entry.getValue();
+            stringBuilder.append("Item: ").append(item.getName())
+                    .append(", Quantity: ").append(value)
+                    .append("\n");
         }
         return new GameMessage(null, "Your BackPack: \n"+stringBuilder.toString());
     }
