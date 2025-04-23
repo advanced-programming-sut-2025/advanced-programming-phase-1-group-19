@@ -231,6 +231,22 @@ public class GameController extends Controller {
         return new GameMessage(null, "You successfully trashed " + number + " of " + itemName);
     }
 
+    public GameMessage cheatEnergySet(int amount){
+        App app = App.getInstance();
+        Player player = app.getCurrentGame().getCurrentPlayer();
+        player.addEnergy(amount-player.getEnergy().getAmount());
+        return new GameMessage(null,"New energy set to "+amount);
+    }
+
+    public GameMessage unlimitedEnergySet(){
+        App app = App.getInstance();
+        Player player = app.getCurrentGame().getCurrentPlayer();
+        player.getEnergy().setUnlimited(true);
+        return new GameMessage(null,"Now your energy is unlimited");
+    }
+
+
+
     public GameMessage cheatThor(int x, int y) {}
 
     public GameMessage showWeather() {}

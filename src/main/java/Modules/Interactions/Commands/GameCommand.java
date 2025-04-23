@@ -12,5 +12,10 @@ public enum GameCommand implements Command {
     forceTerminate,
     exitGame,
     startNewGame,
+    showEnergy,
+    cheatEnergy,
+    energyUnlimited,
+    inventoryShow,
+    inventoryTrash,
     exit;
 }
