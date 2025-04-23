@@ -1,8 +1,9 @@
 package Modules.Map;
 
-import Modules.Player;
-
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 
 public class Map {
     private ArrayList<Farm> farms = new ArrayList<>();
@@ -13,7 +14,45 @@ public class Map {
         this.npcVillage = new NPCVillage();
     }
 
-    public boolean isWalkable(Position start, Position end) {
+    public ArrayList<Tile> getPath(Position start, Position end) {
+        HashMap<Tile, Tile> father = new HashMap<>();
+        ArrayList<Tile> queue = new ArrayList<>();
+        Tile startTile = getTile(start);
+        Tile endTile = getTile(end);
+        if(startTile == null || endTile == null) {
+            return null;
+        }
+        queue.add(startTile);
+        father.put(startTile, startTile);
+        while (!queue.isEmpty()) {
+            Tile tile = queue.removeFirst();
+            Position pos = tile.getPosition();
+            ArrayList<Tile> neighbors = new ArrayList<>();
+            neighbors.add(getTile(new Position(pos.x + 1, pos.y)));
+            neighbors.add(getTile(new Position(pos.x - 1, pos.y)));
+            neighbors.add(getTile(new Position(pos.x, pos.y + 1)));
+            neighbors.add(getTile(new Position(pos.x, pos.y - 1)));
+            for(Tile neighbor : neighbors) {
+                if(neighbor != null && neighbor.isTotallyEmpty() && !father.containsKey(neighbor)) {
+                    father.put(neighbor, tile);
+                    queue.add(neighbor);
+                }
+            }
+            if(father.containsKey(endTile)) {
+                break;
+            }
+        }
+        Tile node = endTile;
+        ArrayList<Tile> path = new ArrayList<>();
+        while (!father.get(node).equals(node)) {
+            path.add(node);
+            node = father.get(node);
+            if(father.get(node) == null) {
+                return null;
+            }
+        }
+        Collections.reverse(path);
+        return path;
 //        TODO: search the farms for the tile and check if you can go to that tile or not
     }
 
