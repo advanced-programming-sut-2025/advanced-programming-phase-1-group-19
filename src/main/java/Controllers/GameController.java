@@ -197,7 +197,47 @@ public class GameController extends Controller {
 
     }
 
-    public GameMessage printMap(Position position, int size) {}
+    public GameMessage printMap(Position position, int size) {
+        if(size > 80) {
+            return new GameMessage(null, "please use sizes smaller than 100");
+        }
+        Game game = App.getInstance().getCurrentGame();
+        Map map = game.getMap();
+        char[][] all = new char[size][size];
+        for(int i = 0; i < size; i++){
+            for(int j = 0; j < size; j++){
+                char c = ' ';
+                Tile tile = map.getTile(new Position(position.x + i, position.y + j));
+                if(tile != null){
+                    Building building = tile.getBuilding();
+                    if(building == null){
+                        c = '.';
+                    }
+                    else if(building instanceof House) {
+                        c = 'H';
+                    }
+                    else if(building instanceof GreenHouse) {
+                        c = 'G';
+                    }
+                    else if(building instanceof Lake) {
+                        c = 'L';
+                    }
+                    else if(building instanceof Quarry) {
+                        c = 'Q';
+                    }
+                }
+                all[i][j] = c;
+            }
+        }
+        StringBuilder ret = new StringBuilder();
+        for(int i = 0; i < size; i++){
+            for(int j = 0; j < size; j++){
+                ret.append(all[i][j]);
+            }
+            ret.append("\n");
+        }
+        return new GameMessage(null, ret.toString());
+    }
 
     public GameMessage helpPrintMap() {
         String ret = "";

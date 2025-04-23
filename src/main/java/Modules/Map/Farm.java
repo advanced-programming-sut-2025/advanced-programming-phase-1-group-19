@@ -114,6 +114,15 @@ public class Farm {
         return size;
     }
 
+    public Tile getTile(Position position) {
+        for (Tile tile : tiles) {
+            if (position.equals(tile.getPosition())) {
+                return tile;
+            }
+        }
+        return null;
+    }
+
     public ArrayList<Tile> getTiles() {
         return tiles;
     }

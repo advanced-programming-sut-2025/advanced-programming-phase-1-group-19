@@ -102,6 +102,7 @@ public class GameMenu implements AppMenu {
                 int y = Integer.parseInt(matcher.group("y"));
                 int size = Integer.parseInt(matcher.group("size"));
                 System.out.println(gameController.printMap(new Position(x, y), size).message());
+//                TODO: colorize for optional points
                 break;
             }
             case helpPrintMap: {

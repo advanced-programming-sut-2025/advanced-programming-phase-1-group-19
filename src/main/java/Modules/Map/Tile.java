@@ -23,6 +23,10 @@ public class Tile {
         lastWateringTime = Game.startingTime;
     }
 
+    public boolean isTotallyEmpty() {
+        return object == null && building == null;
+    }
+
     public Position getPosition() {
         return position;
     }
