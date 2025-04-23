@@ -165,7 +165,7 @@ public class GameMenu implements AppMenu {
         else if(input.matches("^\\s*energy show\\s*$")){
             runCommand(GameCommand.showEnergy,"");
         }
-        else if(input.matches("^\\s*energy set -v <value>\\s*$")){
+        else if(input.matches("^\\s*energy set -v (?<value>.+?)\\s*$")){
             runCommand(GameCommand.cheatEnergy,input);
         }
         else if(input.matches("^\\s*energy unlimited\\s*$")){

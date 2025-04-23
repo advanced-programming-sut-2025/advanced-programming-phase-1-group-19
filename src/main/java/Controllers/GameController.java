@@ -222,7 +222,7 @@ public class GameController extends Controller {
             return new GameMessage(null,"You fully trashed item "+itemName);
         }
         for (Item item : player.getBackPack().getItems().keySet()) {
-            if(item.getName().equals(itemName)) {
+            if (item.getName().equals(itemName)) {
                 int currentQty = player.getBackPack().getItems().get(item);
                 if (currentQty > number) {
                     player.getBackPack().getItems().put(item, currentQty - number);

@@ -16,16 +16,16 @@ public class Skill {
 
     public void addAmount(int increment) {
         this.amount += increment;
-        if(amount >= 150) {
+        if(level==0 && amount >= 150) {
             this.level=1;
         }
-        else if(amount >= 250) {
+        else if(level==1 && amount >= 250) {
             this.level=2;
         }
-        else if(amount >= 350) {
+        else if(level==2 && amount >= 350) {
             this.level=3;
         }
-        else if(amount >= 450) {
+        else if(level==3 && amount >= 450) {
             this.level=4;
         }
 
