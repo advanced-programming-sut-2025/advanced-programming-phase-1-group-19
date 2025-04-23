@@ -11,7 +11,7 @@ public class Time {
     public Time() {
         hour = 9;
         day = 1;
-        season = Season.Spring;
+        season = Season.spring;
     }
 
     public int getHour() {

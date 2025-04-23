@@ -12,5 +12,10 @@ public enum GameCommand implements Command {
     forceTerminate,
     exitGame,
     startNewGame,
+    weather,
+    weatherForecast,
+    cheatWeatherForecast,
+    cheatThor,
+    buildGreenHouse,
     exit;
 }
