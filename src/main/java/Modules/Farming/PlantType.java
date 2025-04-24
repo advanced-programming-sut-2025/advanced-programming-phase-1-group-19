@@ -21,7 +21,7 @@ public enum PlantType {
     private final boolean canBeComeGiant;
     private final boolean isTree;
 
-    CropType() {
+    PlantType() {
 //        TODO: set initial values
     }
 

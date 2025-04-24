@@ -14,9 +14,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class RegistrationController extends Controller implements UserInfoController{
+public class RegistrationController extends Controller implements UserInfoController {
     private static RegistrationController instance;
-    private RegistrationController() {}
+
+    private RegistrationController() {
+    }
+
     public static RegistrationController getInstance() {
         if (instance == null) {
             instance = new RegistrationController();
@@ -25,8 +28,8 @@ public class RegistrationController extends Controller implements UserInfoContro
     }
 
     @Override
-    public RegistrationMessage showCurrentMenu(){
-        return new RegistrationMessage(null,Menu.RegistrationMenu.toString());
+    public RegistrationMessage showCurrentMenu() {
+        return new RegistrationMessage(null, Menu.RegistrationMenu.toString());
     }
 
     private String generateRandomPassword() {
@@ -53,60 +56,61 @@ public class RegistrationController extends Controller implements UserInfoContro
         return passwordChars.toString();
     }
 
-    public RegistrationMessage Register (String username, String password, String passwordConfirm, String nickName, String email, String gender) {
+    public RegistrationMessage Register(String username, String password, String passwordConfirm, String nickName, String email, String gender) {
         App app = App.getInstance();
-        if(isUsernameTaken(username)){
-            return new RegistrationMessage(null, "this username is already taken\nthis is a recommended password: "+password+"-9");
+        if (isUsernameTaken(username)) {
+            return new RegistrationMessage(null, "this username is already taken\nthis is a recommended password: " + password + "-9");
         }
 
-        if(!isUsernameValid(username)){
-            return new RegistrationMessage(null,"Username format is invalid");
+        if (!isUsernameValid(username)) {
+            return new RegistrationMessage(null, "Username format is invalid");
         }
 
-        if(!isEmailValid(email)){
-            return new RegistrationMessage(null,"Email format is invalid");
+        if (!isEmailValid(email)) {
+            return new RegistrationMessage(null, "Email format is invalid");
         }
-        if(password.equals("random")){
+        if (password.equals("random")) {
             String randomPassword = generateRandomPassword();
-            User newUser=new User(username,randomPassword,nickName,email,gender);
+            String codedRandomPassword = sha256(randomPassword);
+            User newUser = new User(username, codedRandomPassword, nickName, email, gender);
             app.addUser(newUser);
-            return new RegistrationMessage(RegistrationCommand.askForPassword, "This is a random password: "+password+"\ndo you want to set this as your password?");
+            return new RegistrationMessage(RegistrationCommand.askForPassword, "This is a random password: " + password + "\ndo you want to set this as your password?");
         }
 
-        if(!isPasswordValid(password)){
-            return new RegistrationMessage(null,"Password format is invalid");
+        if (!isPasswordValid(password)) {
+            return new RegistrationMessage(null, "Password format is invalid");
         }
 
-        if(!doesPasswordHaveUpperCase(password)){
-            return new RegistrationMessage(null,"Password doesn't have uppercase letters'");
+        if (!doesPasswordHaveUpperCase(password)) {
+            return new RegistrationMessage(null, "Password doesn't have uppercase letters'");
         }
 
-        if(!doesPasswordHaveLowerCase(password)){
-            return new RegistrationMessage(null,"Password doesn't have lowercase letters'");
+        if (!doesPasswordHaveLowerCase(password)) {
+            return new RegistrationMessage(null, "Password doesn't have lowercase letters'");
         }
 
-        if(!doesPasswordHaveNumber(password)){
-            return new RegistrationMessage(null,"Password doesn't have digits");
+        if (!doesPasswordHaveNumber(password)) {
+            return new RegistrationMessage(null, "Password doesn't have digits");
         }
 
-        if(!doesPasswordHaveSpecialChar(password)){
-            return new RegistrationMessage(null,"Password doesn't have special characters");
+        if (!doesPasswordHaveSpecialChar(password)) {
+            return new RegistrationMessage(null, "Password doesn't have special characters");
         }
 
-        if(!isPasswordConfirmCorrect(password, passwordConfirm)){
-            return new RegistrationMessage(null,"Your Password confirmation is incorrect");
+        if (!isPasswordConfirmCorrect(password, passwordConfirm)) {
+            return new RegistrationMessage(null, "Your Password confirmation is incorrect");
         }
-        User newUser=new User(username,password,nickName,email,gender);
+        String codedPassword = sha256(password);
+        User newUser = new User(username, codedPassword, nickName, email, gender);
         app.addUser(newUser);
         return new RegistrationMessage(RegistrationCommand.askQuestion, "You are successfully registered");
 
     }
 
     public RegistrationMessage acceptRandomPassword(boolean accept) {
-        if(accept){
+        if (accept) {
             return new RegistrationMessage(null, "You are successfully registered");
-        }
-        else{
+        } else {
             App app = App.getInstance();
             app.removeLastUser();
             return new RegistrationMessage(RegistrationCommand.askForPassword, "Ok you can try again");
@@ -130,7 +134,8 @@ public class RegistrationController extends Controller implements UserInfoContro
         if (!isUsernameTaken(username)) {
             return new RegistrationMessage(null, "Wrong Username");
         }
-        if (!user.getPassword().equals(password)) {
+        String codedPassword = sha256(password);
+        if (!user.getPassword().equals(codedPassword)) {
             return new RegistrationMessage(null, "Wrong Password");
         }
         if (stayLoggedIn) {
