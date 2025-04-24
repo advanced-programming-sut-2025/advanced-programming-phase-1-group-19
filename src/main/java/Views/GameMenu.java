@@ -101,8 +101,13 @@ public class GameMenu implements AppMenu {
                 int x = Integer.parseInt(matcher.group("x"));
                 int y = Integer.parseInt(matcher.group("y"));
                 int size = Integer.parseInt(matcher.group("size"));
-                System.out.println(gameController.printMap(new Position(x, y), size).message());
-//                TODO: colorize for optional points
+
+                String out = gameController.printMap(new Position(x, y), size).message();
+                out = out.replace("H", "\u001B[35mH\u001B[0m");
+                out = out.replace("G", "\u001B[32mG\u001B[0m");
+                out = out.replace("L", "\u001B[34mL\u001B[0m");
+                out = out.replace("Q", "\u001B[33mQ\u001B[0m");
+                System.out.println(out);
                 break;
             }
             case helpPrintMap: {

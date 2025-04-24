@@ -262,10 +262,10 @@ public class GameController extends Controller {
     public GameMessage helpPrintMap() {
         String ret = "";
         ret += ". ~> empty tiles\n";
-        ret += "H ~> house tiles\n";
-        ret += "G ~> green house tiles\n";
-        ret += "L ~> lake tiles\n";
-        ret += "Q ~> quarry tiles\n";
+        ret += "\u001B[35mH\u001B[0m ~> house tiles\n";
+        ret += "\u001B[32mG\u001B[0m ~> green house tiles\n";
+        ret += "\u001B[34mL\u001B[0m ~> lake tiles\n";
+        ret += "\u001B[33mQ\u001B[0m ~> quarry tiles\n";
 
 //        TODO: fix this if needed to show other stuff
         return new GameMessage(null, ret);
