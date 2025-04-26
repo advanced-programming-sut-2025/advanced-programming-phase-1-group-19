@@ -32,6 +32,7 @@ public class Player {
         this.user = user;
         this.farm = farm;
         this.position = new Position(farm.getTopLeft().x + 50, farm.getTopLeft().y + 50);
+        this.energy = new Energy();
         backPack = new BackPack();
         trashCan = new TrashCan();
         skills = new HashMap<>();

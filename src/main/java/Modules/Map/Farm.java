@@ -17,6 +17,10 @@ public class Farm {
     private Barn barn;
     private Coop coop;
 
+    private void setRandomObjects() {
+//        TODO: implement this
+    }
+
     public Farm(FarmMap farmMap, int turn) {
         switch (turn) {
             case 0: {
@@ -98,6 +102,8 @@ public class Farm {
         for (Tile tile : quarryTiles) {
             tile.setBuilding(quarry);
         }
+
+        setRandomObjects();
     }
 
     public Position getTopLeft() {
@@ -106,6 +112,15 @@ public class Farm {
 
     public Size getSize() {
         return size;
+    }
+
+    public Tile getTile(Position position) {
+        for (Tile tile : tiles) {
+            if (position.equals(tile.getPosition())) {
+                return tile;
+            }
+        }
+        return null;
     }
 
     public ArrayList<Tile> getTiles() {

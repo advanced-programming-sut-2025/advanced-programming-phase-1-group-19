@@ -26,6 +26,15 @@ public class NPCVillage {
         return size;
     }
 
+    public Tile getTile(Position position) {
+        for(Tile tile : tiles) {
+            if(tile.getPosition().equals(position)) {
+                return tile;
+            }
+        }
+        return null;
+    }
+
     public ArrayList<Tile> getTiles() {
         return tiles;
     }

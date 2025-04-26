@@ -6,8 +6,6 @@ import Modules.Interactions.Messages.*;
 import Modules.Map.*;
 import Views.*;
 
-import java.util.Scanner;
-
 import java.util.ArrayList;
 
 public class GameController extends Controller {
@@ -193,11 +191,85 @@ public class GameController extends Controller {
 
     public GameMessage showWeather() {}
 
-    public GameMessage walk(Position position) {}
+    public GameMessage walk(Position end) {
+        Game game = app.getCurrentGame();
+        Map map = game.getMap();
+        Player player = game.getCurrentPlayer();
+        Position start = player.getPosition();
+        if(start.equals(end)){
+            return new GameMessage(null, "Dude you are already there :/");
+        }
+        ArrayList<Tile> path = map.getPath(start, end);
+        if(path == null){
+            return new GameMessage(null, "Ops, sorry you cant go there");
+        }
+        int moves = 0;
+        String faintMessage = "";
+        for(Tile tile : path){
+            player.setPosition(tile.getPosition());
+            moves++;
+            if(moves % 20 == 0) {
+//                TODO: reduce energy by one;
+//                TODO: go to next person and faint if energy == 0
+//                TODO: set faintMessage to "Oh you have fainted middle way :(\n"
+            }
+        }
+        return new GameMessage(null, faintMessage + "Your current position is (" + player.getPosition().x + ", " + player.getPosition().y + ")");
+    }
 
-    public GameMessage printMap(Position position, int size) {}
+    public GameMessage printMap(Position position, int size) {
+        if(size > 80) {
+            return new GameMessage(null, "please use sizes smaller than 100");
+        }
+        Game game = App.getInstance().getCurrentGame();
+        Map map = game.getMap();
+        char[][] all = new char[size][size];
+        for(int i = 0; i < size; i++){
+            for(int j = 0; j < size; j++){
+                char c = ' ';
+                Tile tile = map.getTile(new Position(position.x + i, position.y + j));
+                if(tile != null){
+                    Building building = tile.getBuilding();
+                    if(building == null){
+                        c = '.';
+                    }
+                    else if(building instanceof House) {
+                        c = 'H';
+                    }
+                    else if(building instanceof GreenHouse) {
+                        c = 'G';
+                    }
+                    else if(building instanceof Lake) {
+                        c = 'L';
+                    }
+                    else if(building instanceof Quarry) {
+                        c = 'Q';
+                    }
+                }
+                all[i][j] = c;
+            }
+        }
+        StringBuilder ret = new StringBuilder();
+        for(int i = 0; i < size; i++){
+            for(int j = 0; j < size; j++){
+                ret.append(all[i][j]);
+            }
+            ret.append("\n");
+        }
+        return new GameMessage(null, ret.toString());
+    }
 
-    public GameMessage helpPrintMap() {}
+    public GameMessage helpPrintMap() {
+        String ret = "";
+        ret += ". ~> empty tiles\n";
+        ret += "\u001B[35mH\u001B[0m ~> house tiles\n";
+        ret += "\u001B[32mG\u001B[0m ~> green house tiles\n";
+        ret += "\u001B[34mL\u001B[0m ~> lake tiles\n";
+        ret += "\u001B[33mQ\u001B[0m ~> quarry tiles\n";
+
+//        TODO: fix this if needed to show other stuff
+        return new GameMessage(null, ret);
+    }
 
     public GameMessage openHouseMenu() {
 

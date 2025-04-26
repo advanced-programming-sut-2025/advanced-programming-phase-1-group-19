@@ -58,18 +58,20 @@ public class ProfileController extends Controller implements UserInfoController{
         return new ProfileMessage(null,"Email successfully changed");
     }
 
-    public ProfileMessage changePassword(String newPassword, String OldPassword) {
+    public ProfileMessage changePassword(String newPassword, String oldPassword) {
         App app = App.getInstance();
         if(!isPasswordValid(newPassword)) {
             return new ProfileMessage(null,"Password format is invalid");
         }
-        if(newPassword.equals(OldPassword)) {
+        if(newPassword.equals(oldPassword)) {
             return new ProfileMessage(null,"Your password must be different");
         }
-        if(!app.getCurrentUser().getPassword().equals(newPassword)) {
+        String codedOldPassword = sha256(oldPassword);
+        String codedNewPassword = sha256(newPassword);
+        if(!app.getCurrentUser().getPassword().equals(codedOldPassword)) {
             return new ProfileMessage(null,"Password is invalid");
         }
-        app.getCurrentUser().setPassword(newPassword);
+        app.getCurrentUser().setPassword(codedNewPassword);
         return new ProfileMessage(null,"Password successfully changed");
     }
 
