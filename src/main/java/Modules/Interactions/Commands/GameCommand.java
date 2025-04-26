@@ -15,5 +15,10 @@ public enum GameCommand implements Command {
     walk,
     printMap,
     helpPrintMap,
+    weather,
+    weatherForecast,
+    cheatWeatherForecast,
+    cheatThor,
+    buildGreenHouse,
     exit;
 }

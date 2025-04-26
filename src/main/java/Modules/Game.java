@@ -8,6 +8,8 @@ import Modules.Map.Map;
 import Modules.Map.Position;
 
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.RandomAccess;
 
 public class Game {
     private ArrayList<Player> players;
@@ -25,7 +27,8 @@ public class Game {
         this.map = map;
         this.time = new Time();
         this.inGameMenu = null;
-//        TODO: set todayWeather and tomorrowWeather
+        todayWeather = Weather.getRandomWeather(Season.spring);
+        tomrrowWeather = Weather.getRandomWeather(Season.spring);
     }
 
     public ArrayList<Player> getPlayers() {
@@ -70,6 +73,25 @@ public class Game {
     public void nextDay() {
 //        TODO: handle crow attack and thor attack of the new day
 //        TODO: fix fainted players
+//        TODO: handle special effect for each Weather!
+        // todayWeather for nextDay is tomrrowWeather for today!
+        todayWeather = tomrrowWeather;
+        setTomorrowWeather();
+        switch (tomrrowWeather){
+            case rain -> {
+//                TODO:watering plants automatically
+//                TODO:1.5x while using tools
+                break;
+            }
+            case storm -> {
+//                TODO:has rain affects and also break trees
+                break;
+            }
+            case snow -> {
+//                TODO:1.5x while using tools
+                break;
+            }
+        }
         if(time.getDay() == 28){
             time.nextSeason();
         }
@@ -86,9 +108,20 @@ public class Game {
         return time;
     }
 
-    public void thor(){}
+    public void thor(){
+        Farm farm = currentPlayer.getFarm();
+        int height = farm.getSize().height;
+        int width = farm.getSize().width;
+        int x = farm.getTopLeft().x;
+        int y = farm.getTopLeft().y;
+        for(int i = 0; i < 3; i++){
+//            TODO set newx and newy and then call thor(new Position(newx, newy));
+        }
+    }
 
-    public void thor(Position position){}
+    public void thor(Position position){
+//        TODO: check if tile is tree it burns and gives coal while harvesting!
+    }
 
     public Weather getTodayWeather() {
         return todayWeather;
@@ -99,10 +132,17 @@ public class Game {
     }
 
     public void setTomorrowWeather() {
-//        TODO : predict
+        if(time.getDay() == 28) {
+            tomrrowWeather = Weather.getRandomWeather(time.getSeason().getNext());
+        }
+        else{
+            tomrrowWeather = Weather.getRandomWeather(time.getSeason());
+        }
     }
 
-    public void setTomorrowWeather(Weather tomorrowWeather) {}
+    public void setTomorrowWeather(Weather tomorrowWeather) {
+        this.tomrrowWeather = tomorrowWeather;
+    }
 
 
     public InGameMenu getInGameMenu() {

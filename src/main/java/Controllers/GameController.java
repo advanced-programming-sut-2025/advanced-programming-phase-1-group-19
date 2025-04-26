@@ -127,7 +127,9 @@ public class GameController extends Controller {
             while (!input.matches("^\\s*n\\s*$") && !input.matches("^\\s*y\\s*$"));
         }
         if(quit){
-            // TODO: user.currentGame == null
+            for (Player player : App.getInstance().getCurrentGame().getPlayers()) {
+                player.getUser().setCurrentGame(null);
+            }
             App.getInstance().getGames().remove(App.getInstance().getCurrentGame());
             App.getInstance().setCurrentGame(null);
             App.getInstance().setCurrentGameStarter(null);
@@ -187,9 +189,18 @@ public class GameController extends Controller {
             App.getInstance().getCurrentGame().nextHour();
         return new GameMessage(null, "time traveled " + x + " days");
     }
-    public GameMessage cheatThor(int x, int y) {}
+    public GameMessage cheatThor(int x, int y) {
+        App.getInstance().getCurrentGame().thor(new Position(x, y));
+        return new GameMessage(null, "you thor " + x + " " + y);
+    }
 
-    public GameMessage showWeather() {}
+    public GameMessage showWeather() {
+        return new GameMessage(null, "today weather is : " + App.getInstance().getCurrentGame().getTodayWeather());
+    }
+
+    public GameMessage weatherForecast() {
+        return new GameMessage(null, "tomorrow weather is forecasted : " + App.getInstance().getCurrentGame().getTomrrowWeather());
+    }
 
     public GameMessage walk(Position end) {
         Game game = app.getCurrentGame();
@@ -215,6 +226,18 @@ public class GameController extends Controller {
             }
         }
         return new GameMessage(null, faintMessage + "Your current position is (" + player.getPosition().x + ", " + player.getPosition().y + ")");
+    }
+    public GameMessage cheatForecast(String weather) {
+        if(Weather.getWeatherType(weather) == null){
+            return new GameMessage(null, "not such weather type");
+        }
+        App.getInstance().getCurrentGame().setTomorrowWeather(Weather.getWeatherType(weather));
+        return new GameMessage(null, "you successfully cheated weather forecast!");
+    }
+
+    public GameMessage buildGreenHouse() {
+//        TODO: check if we have enough coin and wood!
+
     }
 
     public GameMessage printMap(Position position, int size) {

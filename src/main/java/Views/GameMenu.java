@@ -114,6 +114,29 @@ public class GameMenu implements AppMenu {
                 System.out.println(gameController.helpPrintMap().message());
                 break;
             }
+            case weather:{
+                System.out.println(gameController.showWeather().message());
+                break;
+            }
+            case weatherForecast:{
+                System.out.println(gameController.weatherForecast().message());
+                break;
+            }
+            case cheatWeatherForecast:{
+                Pattern pattern = Pattern.compile("^cheat weather set (?<type>.*)$");
+                Matcher matcher = pattern.matcher(input);
+                System.out.println(gameController.cheatForecast(matcher.group("type")).message());
+                break;
+            }
+            case buildGreenHouse:{
+                System.out.println(gameController.buildGreenHouse().message());
+                break;
+            }
+            case cheatThor:{
+                Pattern pattern = Pattern.compile("^cheat Thor -l <(?<x>\\d+) , (?<y>\\d+)>$");
+                Matcher matcher = pattern.matcher(input);
+                System.out.println(gameController.cheatThor(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
+            }
         }
     }
 
@@ -166,6 +189,21 @@ public class GameMenu implements AppMenu {
         }
         else if(input.matches("^\\s*exit game\\s*$")){
             runCommand(GameCommand.exitGame, "");
+        }
+        else if(input.matches("^weather$")){
+            runCommand(GameCommand.weather, "");
+        }
+        else if(input.matches("^weather forecast$")){
+            runCommand(GameCommand.weatherForecast, "");
+        }
+        else if(input.matches("^cheat weather set (?<type>.*)$")){
+            runCommand(GameCommand.cheatWeatherForecast, input);
+        }
+        else if(input.matches("^greenhouse build$")){
+            runCommand(GameCommand.buildGreenHouse, "");
+        }
+        else if(input.matches("^cheat Thor -l <(?<x>\\d+) , (?<y>\\d+)>$")){
+            runCommand(GameCommand.cheatThor, input);
         }
     }
 }

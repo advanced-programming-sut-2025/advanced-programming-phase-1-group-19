@@ -1,13 +1,12 @@
 package Modules.Enums;
 
 public enum Season {
-    Spring,
-    Summer,
-    Fall,
-    Winter
+    spring,
+    summer,
+    fall,
+    winter
     ;
     private int id;
-
     Season() {
         this.id = this.ordinal();
     }
