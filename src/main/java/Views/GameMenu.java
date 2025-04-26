@@ -137,6 +137,38 @@ public class GameMenu implements AppMenu {
                 Matcher matcher = pattern.matcher(input);
                 System.out.println(gameController.cheatThor(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
             }
+            case showEnergy: {
+                System.out.println(gameController.showEnergy().message());
+                break;
+            }
+            case cheatEnergy: {
+                String pattern="^\\s*energy set -v (?<value>.+?)\\s*$";
+                Pattern pattern1 = Pattern.compile(pattern);
+                Matcher matcher1 = pattern1.matcher(input);
+                System.out.println(gameController.cheatEnergySet(Integer.parseInt(matcher1.group(1))).message());
+                break;
+            }
+            case energyUnlimited: {
+                System.out.println(gameController.unlimitedEnergySet().message());
+                break;
+            }
+            case inventoryShow:{
+                System.out.println(gameController.showInventory().message());
+                break;
+            }
+            case inventoryTrash: {
+                String pattern="^\\s*inventory trash -i (?<itemName>.+?)(?: -n (?<number>\\d+))?\\s*$";
+                Pattern pattern1 = Pattern.compile(pattern);
+                Matcher matcher1 = pattern1.matcher(input);
+                if(input.contains("-n")) {
+                    System.out.println(gameController.inventoryTrash(matcher1.group(1),Integer.parseInt(matcher1.group(2)) ,false));
+                }
+                else {
+                    System.out.println(gameController.inventoryTrash(matcher1.group(1), 0,true));
+
+                }
+                break;
+            }
         }
     }
 
@@ -189,6 +221,18 @@ public class GameMenu implements AppMenu {
         }
         else if(input.matches("^\\s*exit game\\s*$")){
             runCommand(GameCommand.exitGame, "");
+        }
+        else if(input.matches("^\\s*energy show\\s*$")){
+            runCommand(GameCommand.showEnergy,"");
+        }
+        else if(input.matches("^\\s*energy set -v (?<value>.+?)\\s*$")){
+            runCommand(GameCommand.cheatEnergy,input);
+        }
+        else if(input.matches("^\\s*energy unlimited\\s*$")){
+            runCommand(GameCommand.energyUnlimited,"");
+        }
+        else if(input.matches("^\\s*inventory trash -i (?<itemName>.+?) -n (?<number>.+?)\\s*$")){
+            runCommand(GameCommand.inventoryTrash,input);
         }
         else if(input.matches("^weather$")){
             runCommand(GameCommand.weather, "");

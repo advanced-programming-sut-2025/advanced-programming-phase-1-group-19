@@ -15,6 +15,10 @@ public class BackPack {
 
     }
 
+    public HashMap<Item, Integer> getItems() {
+        return items;
+    }
+
     public void upgradeLevel() {}
 
     public void addItem(Item item, int count) {}

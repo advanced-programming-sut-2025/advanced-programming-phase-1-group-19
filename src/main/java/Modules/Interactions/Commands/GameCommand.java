@@ -20,5 +20,10 @@ public enum GameCommand implements Command {
     cheatWeatherForecast,
     cheatThor,
     buildGreenHouse,
+    showEnergy,
+    cheatEnergy,
+    energyUnlimited,
+    inventoryShow,
+    inventoryTrash,
     exit;
 }

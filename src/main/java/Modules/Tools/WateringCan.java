@@ -36,4 +36,10 @@ public class WateringCan extends Tool {
     public void use() {
 
     }
+
+    @Override
+    public String getName() {
+        return "Watering Can";
+//        TODO:add its type
+    }
 }

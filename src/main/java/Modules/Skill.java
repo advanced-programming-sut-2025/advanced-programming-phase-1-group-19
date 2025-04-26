@@ -15,9 +15,24 @@ public class Skill {
     }
 
     public void addAmount(int increment) {
-//        TODO:also check if it is needed to level up
+        this.amount += increment;
+        if(level==0 && amount >= 150) {
+            this.level=1;
+        }
+        else if(level==1 && amount >= 250) {
+            this.level=2;
+        }
+        else if(level==2 && amount >= 350) {
+            this.level=3;
+        }
+        else if(level==3 && amount >= 450) {
+            this.level=4;
+        }
+
     }
 
-    public int getLevel() {}
+    public int getLevel() {
+        return level;
+    }
 }
 

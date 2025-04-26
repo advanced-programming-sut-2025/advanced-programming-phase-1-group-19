@@ -24,4 +24,9 @@ public class Food extends Item {
     public void delete() {
 
     }
+
+    @Override
+    public String getName() {
+        return recipe.getProductName();
+    }
 }

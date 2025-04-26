@@ -235,6 +235,69 @@ public class GameController extends Controller {
         return new GameMessage(null, "you successfully cheated weather forecast!");
     }
 
+    public GameMessage showEnergy(){
+        App app = App.getInstance();
+        return new GameMessage(null,"Your energy is: "+ app.getCurrentGame().getCurrentPlayer().getEnergy().getAmount());
+    }
+
+    public GameMessage showInventory(){
+        StringBuilder stringBuilder = new StringBuilder();
+        App app = App.getInstance();
+        Player player = app.getCurrentGame().getCurrentPlayer();
+        for (java.util.Map.Entry<Item, Integer> entry : player.getBackPack().getItems().entrySet()) {
+            Item item = entry.getKey();
+            Integer value = entry.getValue();
+            stringBuilder.append("Item: ").append(item.getName())
+                    .append(", Quantity: ").append(value)
+                    .append("\n");
+        }
+        return new GameMessage(null, "Your BackPack: \n"+stringBuilder.toString());
+    }
+
+    public GameMessage inventoryTrash(String itemName,int number,boolean delete){
+        App app = App.getInstance();
+        Player player = app.getCurrentGame().getCurrentPlayer();
+        if(delete){
+            for (Item item : player.getBackPack().getItems().keySet()) {
+                if(item.getName().equals(itemName)) {
+                    player.getBackPack().getItems().remove(item);
+                    break;
+                }
+            }
+            return new GameMessage(null,"You fully trashed item "+itemName);
+        }
+        for (Item item : player.getBackPack().getItems().keySet()) {
+            if (item.getName().equals(itemName)) {
+                int currentQty = player.getBackPack().getItems().get(item);
+                if (currentQty > number) {
+                    player.getBackPack().getItems().put(item, currentQty - number);
+                } else {
+                    player.getBackPack().getItems().remove(item);
+                }
+                break;
+            }
+        }
+        return new GameMessage(null, "You successfully trashed " + number + " of " + itemName);
+    }
+
+    public GameMessage cheatEnergySet(int amount){
+        App app = App.getInstance();
+        Player player = app.getCurrentGame().getCurrentPlayer();
+        player.addEnergy(amount-player.getEnergy().getAmount());
+        return new GameMessage(null,"New energy set to "+amount);
+    }
+
+    public GameMessage unlimitedEnergySet(){
+        App app = App.getInstance();
+        Player player = app.getCurrentGame().getCurrentPlayer();
+        player.getEnergy().setUnlimited(true);
+        return new GameMessage(null,"Now your energy is unlimited");
+    }
+
+
+
+    public GameMessage cheatThor(int x, int y) {}
+
     public GameMessage buildGreenHouse() {
 //        TODO: check if we have enough coin and wood!
 

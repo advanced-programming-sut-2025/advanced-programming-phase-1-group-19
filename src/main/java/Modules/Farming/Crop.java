@@ -23,6 +23,9 @@ public class Crop extends Item {
 
     }
 
-
+    @Override
+    public String getName() {
+        return type.getName();
+    }
 
 }
