@@ -4,10 +4,11 @@ import Modules.*;
 import Modules.Enums.*;
 import Modules.Interactions.Messages.*;
 import Modules.Map.*;
+import Modules.Tools.BackPack;
+import Modules.Tools.Tool;
 import Views.*;
-
+import java.util.Map;
 import java.util.ArrayList;
-
 public class GameController extends Controller {
     private static GameController instance;
     private GameController() {}
@@ -294,21 +295,65 @@ public class GameController extends Controller {
         return new GameMessage(null,"Now your energy is unlimited");
     }
 
-
-
-    public GameMessage cheatThor(int x, int y) {}
-
     public GameMessage buildGreenHouse() {
 //        TODO: check if we have enough coin and wood!
 
     }
 
+    public GameMessage equipTool(String toolName) {
+        BackPack backPack = App.getInstance().getCurrentGame().getCurrentPlayer().getBackPack();
+        boolean toolFound = false;
+        for (Map.Entry<Item, Integer> entry : backPack.getItems().entrySet()) {
+            Item item = entry.getKey();
+            // only one tool of each type!
+            if(item.getName().equals(toolName)){
+                App.getInstance().getCurrentGame().getCurrentPlayer().setCurrentTool((Tool) item);
+                toolFound = true;
+                break;
+            }
+        }
+        if(!toolFound){
+            return new GameMessage(null, "you don't have that tool!")
+        }
+        else{
+            return new GameMessage(null, "You have equipped " + toolName);
+        }
+    }
+
+    public GameMessage showCurrentTool(){
+        Tool tool = App.getInstance().getCurrentGame().getCurrentPlayer().getCurrentTool();
+        if(tool == null){
+            return new GameMessage(null, "you don't have equipped tool!");
+        }
+        else{
+            return new GameMessage(null, "You have equipped " + tool.getName());
+        }
+    }
+
+    public GameMessage showAllTools(){
+        BackPack backPack = App.getInstance().getCurrentGame().getCurrentPlayer().getBackPack();
+        StringBuilder stringBuilder = new StringBuilder("All tools: \n");
+        for (Map.Entry<Item, Integer> entry : backPack.getItems().entrySet()) {
+            Item item = entry.getKey();
+            if(item instanceof Tool tool){
+                stringBuilder.append("Tool: ").append(tool.getName()).append("\n");
+            }
+        }
+        stringBuilder.deleteCharAt(stringBuilder.length()-1);
+        return new GameMessage(null,stringBuilder.toString());
+    }
+
+    public GameMessage upgradeTool(String toolName){
+        // TODO:check if in blacksmith!
+        // TODO: check if enough money and energy
+
+    }
     public GameMessage printMap(Position position, int size) {
         if(size > 80) {
             return new GameMessage(null, "please use sizes smaller than 100");
         }
         Game game = App.getInstance().getCurrentGame();
-        Map map = game.getMap();
+        Map map = (Map) game.getMap();
         char[][] all = new char[size][size];
         for(int i = 0; i < size; i++){
             for(int j = 0; j < size; j++){

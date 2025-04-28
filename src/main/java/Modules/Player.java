@@ -8,10 +8,12 @@ import Modules.Enums.SkillType;
 import Modules.Map.Farm;
 import Modules.Map.Position;
 import Modules.Tools.BackPack;
+import Modules.Tools.Tool;
 import Modules.Tools.TrashCan;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.function.ToLongBiFunction;
 
 public class Player {
     private User user;
@@ -27,7 +29,7 @@ public class Player {
     private Time[] lastBuffTime; // 0:farming, 1: extraction, 2: foraging, 3: fishing, 4: energy;
     private int buffedEnergy;
     private ArrayList<FriendShip> friendShips;
-
+    private Tool currentTool = null;
     public Player(User user, Farm farm) {
         this.user = user;
         this.farm = farm;
@@ -123,5 +125,13 @@ public class Player {
     }
     public FriendShip getFriendShipByPlayer(Player player) {
 
+    }
+
+    public Tool getCurrentTool() {
+        return currentTool;
+    }
+
+    public void setCurrentTool(Tool currentTool) {
+        this.currentTool = currentTool;
     }
 }
