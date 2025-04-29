@@ -3,8 +3,6 @@ package Modules.Tools;
 import java.util.ArrayList;
 
 public class WateringCan extends Tool {
-
-    private static ArrayList<LevelInfo> levels = new ArrayList<>();
     private static ArrayList<Integer> maxCapacity = new ArrayList<>();
     private int amount;
 
@@ -14,33 +12,33 @@ public class WateringCan extends Tool {
         maxCapacity.add(70);
         maxCapacity.add(85);
         maxCapacity.add(100);
-        levels.add(new LevelInfo("initial", 5, 5));
-        levels.add(new LevelInfo("copper", 4, 4));
-        levels.add(new LevelInfo("iron", 3, 3));
-        levels.add(new LevelInfo("gold", 2, 2));
-        levels.add(new LevelInfo("iridium", 1, 1));
-        // TODO: if farming max! one less energy!
     }
 
-    public WateringCan() {
-
+    public WateringCan(String name, int takenSpace) {
+        super(name, takenSpace);
+        this.amount = 0;
     }
 
     public void fill() {
-
+        this.amount = maxCapacity.get(level);
     }
 
     public int getCurrentCapacity() {
-
+        return amount;
     }
 
-    public void decreaseCapacity(int amount) {}
+    public void decreaseCapacity(int amount) {
+        this.amount -= amount;
+    }
 
     @Override
     public LevelInfo getLevelInfo() {
-
+        return super.getLevelInfo();
     }
 
+    public void upgradeLevel() {
+        super.upgradeLevel();
+    }
     @Override
     public void use() {
 
@@ -48,7 +46,7 @@ public class WateringCan extends Tool {
 
     @Override
     public String getName() {
-        return "Watering Can";
+        return "WateringCan";
 //        TODO:add its type
     }
 }

@@ -9,9 +9,11 @@ public enum ToolType {
     fishingPole,
     scythe,
     milkPail,
-    shear;
+    shear,
+    wateringCan
+    ;
 
-    private final String name;
+    private String name;
     private ArrayList<LevelInfo> levels;
 
     ToolType() {
@@ -70,6 +72,16 @@ public enum ToolType {
                 levels.add(new LevelInfo("initial", 4,  4));
                 break;
             }
+            case "wateringCan": {
+                name = "WateringCan";
+                levels.add(new LevelInfo("initial", 5, 5));
+                levels.add(new LevelInfo("copper", 4, 4));
+                levels.add(new LevelInfo("iron", 3, 3));
+                levels.add(new LevelInfo("gold", 2, 2));
+                levels.add(new LevelInfo("iridium", 1, 1));
+                // TODO: if farming max! one less energy!
+                break;
+            }
 //            TODO: do it for others and set names
         }
     }
@@ -89,5 +101,9 @@ public enum ToolType {
             }
         }
         return null;
+    }
+
+    public ArrayList<LevelInfo> getLevels() {
+        return levels;
     }
 }
