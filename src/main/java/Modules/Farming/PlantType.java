@@ -994,4 +994,13 @@ public enum PlantType {
     public boolean isTree() {
         return isTree;
     }
+
+    public static PlantType getPlantTypeByName(String name) {
+        for(PlantType plantType : PlantType.values()) {
+            if(plantType.getName().equals(name)) {
+                return plantType;
+            }
+        }
+        return null;
+    }
 }

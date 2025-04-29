@@ -108,4 +108,13 @@ public enum SeedType {
     public String getName() {
         return name;
     }
+
+    public static SeedType getSeedTypeByName(String name) {
+        for(SeedType seedType : SeedType.values()) {
+            if(seedType.getName().equals(name)) {
+                return seedType;
+            }
+        }
+        return null;
+    }
 }

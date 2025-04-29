@@ -169,6 +169,12 @@ public class GameMenu implements AppMenu {
                 }
                 break;
             }
+            case craftInfo: {
+                Pattern pattern = Pattern.compile("^craftinfo -n (?<name>.+)$");
+                Matcher matcher = pattern.matcher(input);
+                String name = matcher.group("name");
+                System.out.println(gameController.craftInfo(name).message());
+            }
         }
     }
 
@@ -248,6 +254,9 @@ public class GameMenu implements AppMenu {
         }
         else if(input.matches("^cheat Thor -l <(?<x>\\d+) , (?<y>\\d+)>$")){
             runCommand(GameCommand.cheatThor, input);
+        }
+        else if(input.matches("^craftinfo -n (?<name>.+?)$")) {
+            runCommand(GameCommand.craftInfo, input);
         }
     }
 }

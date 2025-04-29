@@ -2,6 +2,9 @@ package Controllers;
 
 import Modules.*;
 import Modules.Enums.*;
+import Modules.Farming.CropType;
+import Modules.Farming.PlantType;
+import Modules.Farming.SeedType;
 import Modules.Interactions.Messages.*;
 import Modules.Map.*;
 import Views.*;
@@ -358,6 +361,40 @@ public class GameController extends Controller {
     }
 
     public GameMessage openHouseMenu() {
+
+    }
+
+    public GameMessage craftInfo(String name) {
+        PlantType plant = PlantType.getPlantTypeByName(name);
+        if(plant == null) {
+            return new GameMessage(null, "no plant found with this name!");
+        }
+        SeedType seed = plant.getSeed();
+        CropType crop = plant.getCrop();
+
+        String ret = "";
+        ret += "Name: " + plant.getName() + "\n";
+        ret += "Source: " + seed.getName() + " Seeds\n";
+        ret += "Stages: ";
+        for(int stage : plant.getStages()) {
+            ret += stage + " ";
+        }
+        ret += "\n";
+        ret += "Total Harvest Time: " + plant.getTotalTime() + "\n";
+        int x = plant.getReGrowth();
+        ret += "One Time: " + (x == -1);
+        ret += "Regrowth Time: " + (x == -1 ? "" : x) + "\n";
+        ret += "Base Sell Price: " + crop.getInitialPrice() + "\n";
+        ret += "Is Edible: " + crop.isEdible() + "\n";
+        ret += "Base Energy: " + crop.getEnergy() + "\n";
+        ret += "Seasons: ";
+        for(Season season : plant.getSeasonsAvailable()) {
+            ret += season.name() + " ";
+        }
+        ret += "\n";
+        ret += "Can Become Giant: " + plant.isCanBeComeGiant() + "\n";
+
+        return new GameMessage(null, ret);
 
     }
 

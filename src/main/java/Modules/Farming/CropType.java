@@ -547,4 +547,13 @@ public enum CropType {
     public boolean isEdible() {
         return isEdible;
     }
+
+    public static CropType getCropTypeByName(String name) {
+        for (CropType cropType : CropType.values()) {
+            if(cropType.getName().equals(name)) {
+                return cropType;
+            }
+        }
+        return null;
+    }
 }
