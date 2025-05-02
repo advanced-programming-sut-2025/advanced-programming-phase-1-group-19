@@ -1,12 +1,18 @@
 package Controllers;
 
 import Modules.*;
+import Modules.Animal.Animal;
+import Modules.Animal.Fish;
+import Modules.Animal.FishType;
 import Modules.Enums.*;
 import Modules.Interactions.Messages.*;
 import Modules.Map.*;
+import Modules.Tools.Tool;
+import Modules.Tools.ToolType;
 import Views.*;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class GameController extends Controller {
     private static GameController instance;
@@ -364,6 +370,204 @@ public class GameController extends Controller {
         Game game = app.getCurrentGame();
         game.setInGameMenu(InGameMenu.houseMenu);
         return new GameMessage(null, "You opened house menu");
+    }
+
+    public GameMessage petAnimal(String animalName){
+        App app = App.getInstance();
+        Player player=app.getCurrentGame().getCurrentPlayer();
+        Animal animal1=player.getFarm().getBarn().getAnimalByName(animalName);
+        Animal animal2=player.getFarm().getBarn().getAnimalByName(animalName);
+        if(animal1==null && animal2==null){
+            return new GameMessage(null,"There is no such animal");
+        }
+        if(animal1!=null && Math.abs(player.getPosition().x-animal1.getPosition().x)<=1 && Math.abs(player.getPosition().y-animal1.getPosition().y)<=1){
+            animal1.increaseFriendship(15);
+            animal1.setLastPettingTime(app.getCurrentGame().getTime());
+            return new GameMessage(null,"You successfully pet "+animalName);
+        }
+
+        if(animal2!=null && Math.abs(player.getPosition().x-animal2.getPosition().x)<=1 && Math.abs(player.getPosition().y-animal2.getPosition().y)<=1){
+            animal2.increaseFriendship(15);
+            animal2.setLastPettingTime(app.getCurrentGame().getTime());
+            return new GameMessage(null,"You successfully pet "+animalName);
+        }
+
+        return new GameMessage(null,"You do not have access to this animal");
+    }
+
+    public GameMessage cheatFriendship(String animalName,int amount){
+        App app = App.getInstance();
+        Game game=app.getCurrentGame();
+        Player player=app.getCurrentGame().getCurrentPlayer();
+        Animal animal=player.getFarm().getBarn().getAnimalByName(animalName);
+        if(animal==null){
+            return new GameMessage(null,"There is no such animal");
+        }
+        animal.setFriendship(amount);
+        return new GameMessage(null,"You successfully set your friendship : "+amount);
+    }
+
+    public GameMessage getFriendship(String animalName){
+        App app = App.getInstance();
+        Game game=app.getCurrentGame();
+        Player player=app.getCurrentGame().getCurrentPlayer();
+        Animal animal=player.getFarm().getBarn().getAnimalByName(animalName);
+        boolean hasBeenPetToday=game.getTime().getDay()==animal.getLastPetingTime().getDay() &&
+                game.getTime().getSeason()==animal.getLastPetingTime().getSeason();
+
+        boolean hasBeenFedToday=game.getTime().getDay()==animal.getLastFeedingTime().getDay() &&
+                game.getTime().getSeason()==animal.getLastFeedingTime().getSeason();
+
+        StringBuilder stringBuilder=new StringBuilder();
+        stringBuilder.append("You have :\n");
+        if(player.getFarm().getBarn()!=null){
+            stringBuilder.append("Barn Animals:\n");
+            for (Animal animal1 : player.getFarm().getBarn().getAnimals()) {
+                stringBuilder.append(animal1.getName()+"\n");
+            }
+        }
+        if(player.getFarm().getCoop()!=null){
+            stringBuilder.append("Coop Animals:\n");
+            for (Animal animal1 : player.getFarm().getBarn().getAnimals()) {
+                stringBuilder.append(animal1.getName()+"\n");
+            }
+        }
+        if(hasBeenPetToday){
+            stringBuilder.append("Has Your Animal Been Pet Today : true\n");
+        }
+        else{
+            stringBuilder.append("Has Your Animal Been Pet Today : false\n");
+        }
+        if(hasBeenFedToday){
+            stringBuilder.append("Has Your Animal Been Fed Today : true\n");
+        }
+        else{
+            stringBuilder.append("Has Your Animal Been Fed Today : false\n");
+        }
+        return new GameMessage(null,stringBuilder.toString());
+    }
+
+    public GameMessage shepherdAnimals(String animalName,int x,int y) {
+        App app = App.getInstance();
+        Game game = app.getCurrentGame();
+        Player player = app.getCurrentGame().getCurrentPlayer();
+        Animal animal = player.getFarm().getBarn().getAnimalByName(animalName);
+        if (animal == null) {
+            animal = player.getFarm().getCoop().getAnimalByName(animalName);
+        }
+        if (animal == null) {
+            return new GameMessage(null, "There is no such animal");
+        }
+        if (!animal.isOutside()) {
+            if (game.getTodayWeather() != Weather.sunny) {
+                return new GameMessage(null, "The animal can not go outside in this weather");
+            }
+            animal.setOutside(true);
+            animal.setPosition(new Position(x, y));
+            return new GameMessage(null,"The animal successfully moved");
+        } else {
+            if (animal.getType().isInCage()) {
+                animal.setPosition(player.getFarm().getCoop().getPlacedTile().getPosition());
+                animal.setOutside(false);
+                return new GameMessage(null, "The animal entered the cage");
+            } else {
+                animal.setPosition(player.getFarm().getBarn().getPlacedTile().getPosition());
+                animal.setOutside(true);
+                return new GameMessage(null, "The animal entered the barn");
+            }
+
+        }
+    }
+
+    public GameMessage feedingHay(String animalName) {
+        App app = App.getInstance();
+        Game game = app.getCurrentGame();
+        Player player = app.getCurrentGame().getCurrentPlayer();
+        Animal animal = player.getFarm().getBarn().getAnimalByName(animalName);
+        if (animal == null) {
+            animal = player.getFarm().getCoop().getAnimalByName(animalName);
+        }
+        if (animal == null) {
+            return new GameMessage(null, "There is no such animal");
+        }
+        if (animal.isOutside()) {
+            return new GameMessage(null, "The animal must be in the coop to feed hay");
+        }
+        animal.setLastFeedingTime(game.getTime());
+        return new GameMessage(null,"The animal successfully fed");
+    }
+
+    public GameMessage showProducts(){
+        App app = App.getInstance();
+        Game game = app.getCurrentGame();
+        Player player = app.getCurrentGame().getCurrentPlayer();
+        player.getFarm()
+    }
+
+    private Fish generateRandomFish(Season season) {
+        Random rand = new Random();
+        int fishCount = rand.nextInt(4) + 1;
+        if(season==Season.spring){
+            switch (fishCount) {
+                case 1:{
+                    return new Fish();
+                    break;
+                }
+            }
+        }
+
+    }
+
+    public GameMessage fishing(String fishingPole){
+        App app = App.getInstance();
+        Game game = app.getCurrentGame();
+        Player player = app.getCurrentGame().getCurrentPlayer();
+        switch (fishingPole) {
+            case "Training":{
+                for (Item item : player.getBackPack().getItems().keySet()) {
+                    if(item.getName().equals("Fishing Pole")){
+                        Tool tool = (Tool) item;
+                        if(tool.getLevel() == 0){
+
+                        }
+                    }
+                }
+                break;
+            }
+            case "Bamboo":{
+                for (Item item : player.getBackPack().getItems().keySet()) {
+                    if(item.getName().equals("Fishing Pole")){
+                        Tool tool = (Tool) item;
+                        if(tool.getLevel() == 1){
+
+                        }
+                    }
+                }
+                break;
+            }
+            case "Fiberglass":{
+                for (Item item : player.getBackPack().getItems().keySet()) {
+                    if(item.getName().equals("Fishing Pole")){
+                        Tool tool = (Tool) item;
+                        if(tool.getLevel() == 2){
+
+                        }
+                    }
+                }
+                break;
+            }
+            case "Iridium":{
+                for (Item item : player.getBackPack().getItems().keySet()) {
+                    if(item.getName().equals("Fishing Pole")){
+                        Tool tool = (Tool) item;
+                        if(tool.getLevel() == 3){
+
+                        }
+                    }
+                }
+                break;
+            }
+        }
     }
 
 

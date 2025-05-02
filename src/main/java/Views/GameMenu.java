@@ -172,7 +172,13 @@ public class GameMenu implements AppMenu {
                 break;
             }
             case goToHouseMenu:{
-
+                System.out.println(gameController.openHouseMenu().message());
+                break;
+            }
+            case cookingRefrigerator:{
+                Pattern pattern = Pattern.compile("^\\s*cooking refrigerator (?<putOrPick>.+?) (?<item>.+?)\\s*$");
+                Matcher matcher = pattern.matcher(input);
+                System.out.println(houseController.refrigerator(matcher.group(1),));
                 break;
             }
         }
@@ -182,6 +188,7 @@ public class GameMenu implements AppMenu {
     private final AppView appView = AppView.getInstance();
     private final Scanner scanner = appView.getScanner();
     private final GameController gameController = GameController.getInstance();
+    private  HouseController houseController = new HouseController();
 
     @Override
     public void checkCommand() {
@@ -257,6 +264,9 @@ public class GameMenu implements AppMenu {
         }
         else if(input.matches("^\\s*go to house menu\\s*$")){
             runCommand(GameCommand.goToHouseMenu, "");
+        }
+        else if(input.matches("^\\s*cooking refrigerator (?<putOrPick>.+?) (?<item>.+?)\\s*$")){
+            runCommand(GameCommand.cookingRefrigerator, input);
         }
     }
 }

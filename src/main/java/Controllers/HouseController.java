@@ -7,9 +7,11 @@ import Modules.App;
 import Modules.Crafting.CookingRecipe;
 import Modules.Crafting.Food;
 import Modules.Enums.InGameMenu;
+import Modules.Game;
 import Modules.Interactions.Messages.GameMessage;
 import Modules.Interactions.Messages.Message;
 import Modules.Item;
+import Modules.Map.Map;
 import Modules.Map.Position;
 import Modules.Map.Tile;
 import Modules.Player;
@@ -25,10 +27,18 @@ public class HouseController extends Controller {
 
     }
 
-    public GameMessage refrigerator(Item item,int amount,boolean put) {
+    public GameMessage refrigerator(String itemName,int amount,boolean put) {
         App app = App.getInstance();
         Player player=app.getCurrentGame().getCurrentPlayer();
-        if(put && !player.getBackPack().getItems().containsKey(item)) {
+        boolean doesExist=false;
+        Item item=null;
+        for (Item item1 : player.getBackPack().getItems().keySet()) {
+            if(item1.getName().equals(itemName)) {
+                doesExist=true;
+                item=item1;
+            }
+        }
+        if(put && !doesExist) {
             return new GameMessage(null,"You don't have this item in your backpack");
         }
         if(!put && !player.getFarm().getHouse().getRefrigerator().doesItemExist(item)) {
@@ -127,11 +137,27 @@ public class HouseController extends Controller {
     }
 
     public GameMessage buyAnimal(String animalType,String animalName){
+        App app = App.getInstance();
+        Player player=app.getCurrentGame().getCurrentPlayer();
         AnimalType animalType1=AnimalType.getAnimalTypeByName(animalType);
         if(animalType1==null){
             return new GameMessage(null,"There is no such animal");
         }
-//        if(animalType1.){}
+        if(animalType1.isInCage()){
+            if(player.getFarm().getCoop()==null){
+                return new GameMessage(null,"There is no coop");
+            }
+//                TODO:check if there is the needed cage for this animal
+            player.getFarm().getCoop().animals.add(new Animal(animalType1,player,animalName));
+        }
+        else {
+            if(player.getFarm().getBarn()==null){
+                return new GameMessage(null,"There is no barn");
+            }
+//            TODO:check if there is the needed barn
+            player.getFarm().getBarn().addAnimal(new Animal(animalType1,player,animalName));
+        }
+        return new GameMessage(null,"You successfully bought animal");
     }
 
 }

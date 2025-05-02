@@ -31,6 +31,10 @@ public class Skill {
 
     }
 
+    public int getAmount() {
+        return amount;
+    }
+
     public int getLevel() {
         return level;
     }

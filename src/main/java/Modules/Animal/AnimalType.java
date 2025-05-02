@@ -12,7 +12,6 @@ public enum AnimalType {
     rabbit(true),
     dinosaur(true),
     ;
-    private String name;
     private int capacity;
     private int cost;
     private int daysTillProduct;
@@ -21,10 +20,6 @@ public enum AnimalType {
 
     AnimalType(boolean isInCage) {
         this.isInCage = isInCage;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public int getCapacity() {
@@ -44,6 +39,14 @@ public enum AnimalType {
         else if(name.equals("goat")) return goat;
         else if(name.equals("sheep")) return sheep;
         else if(name.equals("pig")) return pig;
+        else if(name.equals("chicken")) return chicken;
+        else if(name.equals("duck")) return duck;
+        else if(name.equals("rabbit")) return rabbit;
+        else if(name.equals("dinosaur")) return dinosaur;
         else return null;
+    }
+
+    public boolean isInCage() {
+        return isInCage;
     }
 }

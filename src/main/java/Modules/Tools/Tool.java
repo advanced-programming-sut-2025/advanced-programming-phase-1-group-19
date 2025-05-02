@@ -6,6 +6,14 @@ public class Tool extends Item {
     private ToolType toolType;
     protected int level = 0;
 
+    public int getLevel() {
+        return level;
+    }
+
+    public Tool(String name, int takenSpace) {
+        super(name, takenSpace);
+    }
+
     public LevelInfo getLevelInfo() {
 //        TODO: get level info from tool type
     }
@@ -32,5 +40,9 @@ public class Tool extends Item {
     @Override
     public String getName() {
         return toolType.getName();
+    }
+
+    public ToolType getToolType() {
+        return toolType;
     }
 }

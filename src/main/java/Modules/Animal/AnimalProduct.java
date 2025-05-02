@@ -7,7 +7,10 @@ public class AnimalProduct extends Item {
     private AnimalProductType type;
     private Quality quality;
 
-    public AnimalProduct(AnimalProductType type) {}
+    public AnimalProduct(String name, int takenSpace, AnimalProductType type) {
+        super(name, takenSpace);
+        this.type = type;
+    }
 
     public AnimalProductType getType() {
         return type;

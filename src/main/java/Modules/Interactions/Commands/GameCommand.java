@@ -26,5 +26,6 @@ public enum GameCommand implements Command {
     inventoryShow,
     inventoryTrash,
     goToHouseMenu,
+    cookingRefrigerator,
     exit;
 }
