@@ -10,6 +10,7 @@ import Modules.Map.Position;
 import Modules.Tools.BackPack;
 import Modules.Tools.Tool;
 import Modules.Tools.TrashCan;
+import Modules.Tools.WateringCan;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,6 +37,10 @@ public class Player {
         this.position = new Position(farm.getTopLeft().x + 50, farm.getTopLeft().y + 50);
         this.energy = new Energy();
         backPack = new BackPack();
+        Tool scythe = new Tool("scythe", 0);
+        WateringCan wateringCan = new WateringCan("wateringCan", 0);
+        backPack.addItem(scythe, 1);
+        backPack.addItem(wateringCan, 1);
         trashCan = new TrashCan();
         skills = new HashMap<>();
         knownCraftingRecipes = new ArrayList<>();

@@ -19,4 +19,8 @@ public abstract class Item extends TileObject {
     public String getName() {
         return name;
     }
+
+    public int getTakenSpace() {
+        return takenSpace;
+    }
 }

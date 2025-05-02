@@ -25,5 +25,10 @@ public enum GameCommand implements Command {
     energyUnlimited,
     inventoryShow,
     inventoryTrash,
+    toolEquip,
+    toolCurrentShow,
+    toolShowAvailable,
+    toolUpgrade,
+    toolUse,
     exit;
 }

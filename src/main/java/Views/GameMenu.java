@@ -135,7 +135,7 @@ public class GameMenu implements AppMenu {
             case cheatThor:{
                 Pattern pattern = Pattern.compile("^cheat Thor -l <(?<x>\\d+) , (?<y>\\d+)>$");
                 Matcher matcher = pattern.matcher(input);
-                System.out.println(gameController.cheatThor(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
+                System.out.println(gameController.cheatThor(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))).message());
             }
             case showEnergy: {
                 System.out.println(gameController.showEnergy().message());
@@ -161,14 +161,45 @@ public class GameMenu implements AppMenu {
                 Pattern pattern1 = Pattern.compile(pattern);
                 Matcher matcher1 = pattern1.matcher(input);
                 if(input.contains("-n")) {
-                    System.out.println(gameController.inventoryTrash(matcher1.group(1),Integer.parseInt(matcher1.group(2)) ,false));
+                    System.out.println(gameController.inventoryTrash(matcher1.group(1),Integer.parseInt(matcher1.group(2)) ,false).message());
                 }
                 else {
-                    System.out.println(gameController.inventoryTrash(matcher1.group(1), 0,true));
+                    System.out.println(gameController.inventoryTrash(matcher1.group(1), 0,true).message());
 
                 }
                 break;
             }
+            case toolEquip:{
+                Pattern pattern  = Pattern.compile("^\\s*tools equip (?<toolName>.+)\\s*$");
+                Matcher matcher = pattern.matcher(input);
+                System.out.println(gameController.equipTool(matcher.group("toolName")).message());
+                break;
+            }
+            case toolCurrentShow:{
+                Pattern pattern = Pattern.compile("^\\s*tools show current\\s*$");
+                Matcher matcher = pattern.matcher(input);
+                System.out.println(gameController.showCurrentTool().message());
+                break;
+            }
+            case toolShowAvailable:{
+                Pattern pattern = Pattern.compile("^\\s*tools show available\\s*$");
+                Matcher matcher = pattern.matcher(input);
+                System.out.println(gameController.showAllTools().message());
+                break;
+            }
+            case toolUpgrade:{
+                Pattern pattern = Pattern.compile("^\\s*tools upgrade (?<toolName>.+)\\s*$");
+                Matcher matcher = pattern.matcher(input);
+                System.out.println(gameController.upgradeTool(matcher.group("toolName")).message());
+                break;
+            }
+            case toolUse:{
+                Pattern pattern = Pattern.compile("^\\s*tools use -d (?<direction>.+)\\s*$");
+                Matcher matcher = pattern.matcher(input);
+                System.out.println(gameController.useTool(matcher.group("direction")).message());
+                break;
+            }
+
         }
     }
 
@@ -248,6 +279,21 @@ public class GameMenu implements AppMenu {
         }
         else if(input.matches("^cheat Thor -l <(?<x>\\d+) , (?<y>\\d+)>$")){
             runCommand(GameCommand.cheatThor, input);
+        }
+        else if(input.matches("^\\s*tools equip (?<toolName>.+)\\s*$")){
+            runCommand(GameCommand.toolEquip, input);
+        }
+        else if(input.matches("^\\s*tools show current\\s*$")){
+            runCommand(GameCommand.toolCurrentShow, input);
+        }
+        else if(input.matches("^\\s*tools show available\\s*$")){
+            runCommand(GameCommand.toolShowAvailable, input);
+        }
+        else if(input.matches("^\\s*tools upgrade (?<toolName>.+)\\s*$")){
+            runCommand(GameCommand.toolUpgrade, input);
+        }
+        else if(input.matches("^\\s*tools use -d (?<direction>.+)\\s*$")){
+            runCommand(GameCommand.toolUse, input);
         }
     }
 }
