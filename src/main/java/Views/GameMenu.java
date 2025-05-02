@@ -2,6 +2,8 @@ package Views;
 
 import Controllers.*;
 import Modules.App;
+import Modules.Enums.InGameMenu;
+import Modules.Game;
 import Modules.Interactions.Commands.*;
 import Modules.Interactions.Messages.*;
 import Modules.Map.Position;
@@ -178,7 +180,74 @@ public class GameMenu implements AppMenu {
             case cookingRefrigerator:{
                 Pattern pattern = Pattern.compile("^\\s*cooking refrigerator (?<putOrPick>.+?) (?<item>.+?)\\s*$");
                 Matcher matcher = pattern.matcher(input);
-                System.out.println(houseController.refrigerator(matcher.group(1),));
+                if(matcher.group(1).equals("Put")) {
+                    System.out.println(houseController.refrigerator(matcher.group(2),1,true).message());
+                }
+                else {
+                    System.out.println(houseController.refrigerator(matcher.group(2),1,false).message());
+                }
+                break;
+            }
+            case showCookingRecipe:{
+                System.out.println(houseController.showCookingRecipe().message());
+                break;
+            }
+            case cooking:{
+                Pattern pattern = Pattern.compile("^\\s*cooking prepare (?<recipeName>.+?)\\s*$");
+                Matcher matcher = pattern.matcher(input);
+                System.out.println(houseController.cookingPrepare(matcher.group(1)).message());
+                break;
+            }
+            case eatFood:{
+                Pattern pattern=Pattern.compile("^\\s*eat (?<foodName>.+?)\\s*$");
+                Matcher matcher=pattern.matcher(input);
+                System.out.println(houseController.eatFood(matcher.group(1)).message());
+                break;
+            }
+            case buildBarn:{
+                Pattern pattern=Pattern.compile("^\\s*build -a (?<buildingName>.+?) -l (?<x>\\d+) (?<y>\\d+)\\s*$");
+                Matcher matcher=pattern.matcher(input);
+                System.out.println(houseController.buildBarn(matcher.group(1),Integer.parseInt(matcher.group(2)), Integer.parseInt(matcher.group(3)) ).message());
+                break;
+            }
+            case buyAnimal:{
+                Pattern pattern=Pattern.compile("^\\s*buy animal -a (?<animal>.+?) -n (?<name>.+?)\\s*$");
+                Matcher matcher=pattern.matcher(input);
+                System.out.println(houseController.buyAnimal(matcher.group(1),matcher.group(2)).message());
+                break;
+            }
+            case petting:{
+                Pattern pattern=Pattern.compile("^\\s*pet -n (?<name>.+?)\\s*$");
+                Matcher matcher=pattern.matcher(input);
+                System.out.println(gameController.petAnimal(matcher.group(1)).message());
+                break;
+            }
+            case cheatAnimalFriendship:{
+                Pattern pattern=Pattern.compile("cheat set friendship -n (?<animalName>.+?) -c (?<amount>.+?)");
+                Matcher matcher=pattern.matcher(input);
+                System.out.println(gameController.cheatFriendship(matcher.group(1),Integer.parseInt(matcher.group(2)) ).message());
+                break;
+            }
+            case showAnimals:{
+                System.out.println(gameController.getFriendship().message());
+                break;
+            }
+            case shepherdAnimals:{
+                Pattern pattern=Pattern.compile("^\\s*shepherd animals -n (?<animalName>.+?) -l (?<x>\\d+) (?<y>\\d+)\n\\s*$");
+                Matcher matcher=pattern.matcher(input);
+                System.out.println(gameController.shepherdAnimals(matcher.group(1),Integer.parseInt(matcher.group(2)),Integer.parseInt(matcher.group(3)) ).message());
+                break;
+            }
+            case feedHay:{
+                Pattern pattern=Pattern.compile("^\\s*feed hay -n (?<animalName>.+?)\\s*$");
+                Matcher matcher=pattern.matcher(input);
+                System.out.println(gameController.feedingHay(matcher.group(1)).message());
+                break;
+            }
+            case fishing:{
+                Pattern pattern=Pattern.compile("fishing -p (?<fishingPole>.+?)");
+                Matcher matcher=pattern.matcher(input);
+                System.out.println(gameController.fishing(matcher.group(1)).message());
                 break;
             }
         }
@@ -266,7 +335,66 @@ public class GameMenu implements AppMenu {
             runCommand(GameCommand.goToHouseMenu, "");
         }
         else if(input.matches("^\\s*cooking refrigerator (?<putOrPick>.+?) (?<item>.+?)\\s*$")){
-            runCommand(GameCommand.cookingRefrigerator, input);
+            App app=App.getInstance();
+            Game game=app.getCurrentGame();
+            if(game.getInGameMenu() == InGameMenu.houseMenu){
+                runCommand(GameCommand.cookingRefrigerator, input);
+            }
+        }
+        else if(input.matches("^\\s*cooking show recipes\\s*$")) {
+            App app = App.getInstance();
+            Game game = app.getCurrentGame();
+            if (game.getInGameMenu() == InGameMenu.houseMenu) {
+                runCommand(GameCommand.showCookingRecipe, "");
+            }
+        }
+        else if(input.matches("^\\s*cooking prepare (?<recipeName>.+?)\\s*$")) {
+            App app = App.getInstance();
+            Game game = app.getCurrentGame();
+            if (game.getInGameMenu() == InGameMenu.houseMenu) {
+                runCommand(GameCommand.cooking, input);
+            }
+        }
+        else if(input.matches("^\\s*eat (?<foodName>.+?)\\s*$")) {
+            App app = App.getInstance();
+            Game game = app.getCurrentGame();
+            if (game.getInGameMenu() == InGameMenu.houseMenu) {
+                runCommand(GameCommand.eatFood, input);
+            }
+        }
+        else if(input.matches("^\\s*build -a (?<buildingName>.+?) -l (?<x>\\d+) (?<y>\\d+)\\s*$")){
+            App app = App.getInstance();
+            Game game = app.getCurrentGame();
+            if (game.getInGameMenu() == InGameMenu.houseMenu) {
+                runCommand(GameCommand.buildBarn, input);
+            }
+        }
+        else if(input.matches("^\\s*buy animal -a (?<animal>.+?) -n (?<name>.+?)\\s*$")){
+            App app = App.getInstance();
+            Game game = app.getCurrentGame();
+            if (game.getInGameMenu() == InGameMenu.houseMenu) {
+                runCommand(GameCommand.buyAnimal, input);
+            }
+        }
+        else if(input.matches("^\\s*pet -n (?<name>.+?)\\s*$")){
+            App app = App.getInstance();
+            Game game = app.getCurrentGame();
+            runCommand(GameCommand.petting, input);
+        }
+        else if(input.matches("cheat set friendship -n (?<animalName>.+?) -c (?<amount>.+?)")){
+            runCommand(GameCommand.cheatAnimalFriendship, input);
+        }
+        else if(input.matches("^\\s*animals\\s*$")){
+            runCommand(GameCommand.showAnimals, "");
+        }
+        else if(input.matches("^\\s*shepherd animals -n (?<animalName>.+?) -l (?<x>\\d+) (?<y>\\d+)\n\\s*$")){
+            runCommand(GameCommand.shepherdAnimals, input);
+        }
+        else if(input.matches("^\\s*feed hay -n (?<animalName>.+?)\\s*$")){
+            runCommand(GameCommand.feedHay, input);
+        }
+        else if(input.matches("fishing -p (?<fishingPole>.+?)")){
+            runCommand(GameCommand.fishing, input);
         }
     }
 }

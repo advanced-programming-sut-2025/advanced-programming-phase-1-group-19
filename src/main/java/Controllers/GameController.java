@@ -407,43 +407,44 @@ public class GameController extends Controller {
         return new GameMessage(null,"You successfully set your friendship : "+amount);
     }
 
-    public GameMessage getFriendship(String animalName){
+    public GameMessage getFriendship(){
         App app = App.getInstance();
         Game game=app.getCurrentGame();
         Player player=app.getCurrentGame().getCurrentPlayer();
-        Animal animal=player.getFarm().getBarn().getAnimalByName(animalName);
-        boolean hasBeenPetToday=game.getTime().getDay()==animal.getLastPetingTime().getDay() &&
-                game.getTime().getSeason()==animal.getLastPetingTime().getSeason();
-
-        boolean hasBeenFedToday=game.getTime().getDay()==animal.getLastFeedingTime().getDay() &&
-                game.getTime().getSeason()==animal.getLastFeedingTime().getSeason();
-
+        boolean hasBeenPetToday=false;
+        boolean hasBeenFedToday=false;
         StringBuilder stringBuilder=new StringBuilder();
         stringBuilder.append("You have :\n");
         if(player.getFarm().getBarn()!=null){
             stringBuilder.append("Barn Animals:\n");
             for (Animal animal1 : player.getFarm().getBarn().getAnimals()) {
                 stringBuilder.append(animal1.getName()+"\n");
+                hasBeenPetToday=game.getTime().getDay()==animal1.getLastPetingTime().getDay() &&
+                        game.getTime().getSeason()==animal1.getLastPetingTime().getSeason();
+                if(hasBeenPetToday){
+                    stringBuilder.append("Has Your Animal Been Pet Today : true\n\n");
+                }
+                else{
+                    stringBuilder.append("Has Your Animal Been Pet Today : false\n\n");
+                }
             }
         }
         if(player.getFarm().getCoop()!=null){
             stringBuilder.append("Coop Animals:\n");
             for (Animal animal1 : player.getFarm().getBarn().getAnimals()) {
                 stringBuilder.append(animal1.getName()+"\n");
+                hasBeenFedToday=game.getTime().getDay()==animal1.getLastFeedingTime().getDay() &&
+                        game.getTime().getSeason()==animal1.getLastFeedingTime().getSeason();
+
+                if(hasBeenFedToday){
+                    stringBuilder.append("Has Your Animal Been Fed Today : true\n\n");
+                }
+                else{
+                    stringBuilder.append("Has Your Animal Been Fed Today : false\n\n");
+                }
             }
         }
-        if(hasBeenPetToday){
-            stringBuilder.append("Has Your Animal Been Pet Today : true\n");
-        }
-        else{
-            stringBuilder.append("Has Your Animal Been Pet Today : false\n");
-        }
-        if(hasBeenFedToday){
-            stringBuilder.append("Has Your Animal Been Fed Today : true\n");
-        }
-        else{
-            stringBuilder.append("Has Your Animal Been Fed Today : false\n");
-        }
+
         return new GameMessage(null,stringBuilder.toString());
     }
 

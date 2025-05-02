@@ -5,7 +5,7 @@ import Modules.Item;
 import java.util.HashMap;
 
 public enum CookingRecipe implements Recipe{
-
+    friedEgg("Fried Egg",new HashMap<>(){{put()}})
     ;
 
     private String productName;
@@ -14,11 +14,18 @@ public enum CookingRecipe implements Recipe{
     private Buff buff;
     private int energy;
 
-    CookingRecipe() {}
+    CookingRecipe(String productName, HashMap<Item, Integer> ingredients, int price, Buff buff, int energy) {
+        this.productName = productName;
+        this.ingredients = ingredients;
+        Price = price;
+        this.buff = buff;
+        this.energy = energy;
+    }
 
-    public CookingRecipe getCookingRecipeByName(String name) {
+    public static CookingRecipe getCookingRecipeByName(String name) {
 
     }
+
 
     public Buff getBuff() {
         return buff;

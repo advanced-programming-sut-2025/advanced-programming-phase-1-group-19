@@ -3,6 +3,7 @@ package Controllers;
 import Modules.Animal.Animal;
 import Modules.Animal.AnimalType;
 import Modules.Animal.Barn;
+import Modules.Animal.Coop;
 import Modules.App;
 import Modules.Crafting.CookingRecipe;
 import Modules.Crafting.Food;
@@ -69,7 +70,7 @@ public class HouseController extends Controller {
         Player player=app.getCurrentGame().getCurrentPlayer();
         for(int i=0;i<player.getKnownCookingRecipes().size();i++){
             CookingRecipe recipe=player.getKnownCookingRecipes().get(i);
-            if(recipe.toString().equals(recipeName)){
+            if(recipe.name().equals(recipeName)){
                 //TODO: check how aboo has wrote recipes
                 for(Item item:recipe.getIngredients().keySet()){
                     if(!player.getBackPack().getItems().containsKey(item)  && !player.getFarm().getHouse().getRefrigerator().doesItemExist(item)) {
@@ -98,7 +99,18 @@ public class HouseController extends Controller {
                 }
                 player.getBackPack().addItem(new Food(null,0,recipe),1);
                 //TODO:look for the food to add it to your inventory
-                player.decreaseEnergy(3);
+                if(player.getEnergy().getAmount()<3){
+                    player.setFainted(true);
+                }
+                else {
+                    player.decreaseEnergy(3);
+                }
+                if(player.getBackPack().getCapacity()>0){
+                    player.getBackPack().addItem(new Food(recipe.getProductName(),1,recipe),1);
+                }
+                else {
+                    return new GameMessage(null,"You don't have any space in your backpack");
+                }
                 return new GameMessage(null,"You successfully cooked");
             }
         }
@@ -118,22 +130,33 @@ public class HouseController extends Controller {
 
     }
 
-    public GameMessage buildBarn(int x,int y){
+    public GameMessage buildBarn(String type,int x,int y) {
         App app = App.getInstance();
-        Player player=app.getCurrentGame().getCurrentPlayer();
-        Position position=new Position(x,y);
-        if(player.getFarm().getTile(position) == null) {
-            return new GameMessage(null,"This position is out of your farm");
+        Player player = app.getCurrentGame().getCurrentPlayer();
+        Position position = new Position(x, y);
+        if (player.getFarm().getTile(position) == null) {
+            return new GameMessage(null, "This position is out of your farm");
         }
-        Tile tile=player.getFarm().getTile(position);
-        if(!tile.isTotallyEmpty()){
-            return new GameMessage(null,"This position is not empty");
+        Tile tile = player.getFarm().getTile(position);
+        if (!tile.isTotallyEmpty()) {
+            return new GameMessage(null, "This position is not empty");
         }
 //        TODO:check if the player has enough money
-        Barn barn=new Barn();
-        player.getFarm().setBarn(barn);
-        tile.setObject(barn);
-        return new GameMessage(null,"You successfully build barn");
+        if (type.equals("Barn")) {
+            Barn barn = new Barn();
+            player.getFarm().setBarn(barn);
+            tile.setObject(barn);
+            return new GameMessage(null, "You successfully build barn");
+        }
+        else if (type.equals("Coop")) {
+            Coop coop = new Coop();
+            player.getFarm().setCoop(coop);
+            tile.setObject(coop);
+            return new GameMessage(null, "You successfully build coop");
+        }
+        else {
+            return new GameMessage(null, "this is an invalid type");
+        }
     }
 
     public GameMessage buyAnimal(String animalType,String animalName){

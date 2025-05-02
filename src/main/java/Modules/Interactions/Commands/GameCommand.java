@@ -27,5 +27,16 @@ public enum GameCommand implements Command {
     inventoryTrash,
     goToHouseMenu,
     cookingRefrigerator,
+    showCookingRecipe,
+    cooking,
+    eatFood,
+    buildBarn,
+    buyAnimal,
+    petting,
+    cheatAnimalFriendship,
+    showAnimals,
+    shepherdAnimals,
+    feedHay,
+    fishing,
     exit;
 }
