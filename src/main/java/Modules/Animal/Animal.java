@@ -10,15 +10,20 @@ public class Animal {
     private final AnimalType type;
     private final Player owner;
     private int friendship;
-    private Tile position;
+    private Position position;
     private boolean isOutside;
     private Time lastFeedingTime;
     private Time lastPetingTime;
     private Time lastProducingTime;
 
-    public Animal(AnimalType type) {}
+    public Animal(AnimalType type, Player owner) {
+        this.type = type;
+        this.owner = owner;
+    }
 
-    public AnimalType getType() {}
+    public AnimalType getType() {
+        return type;
+    }
 
     public void increaseFriendship(int amount) {}
 

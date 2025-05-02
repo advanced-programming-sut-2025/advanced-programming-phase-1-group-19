@@ -358,7 +358,12 @@ public class GameController extends Controller {
     }
 
     public GameMessage openHouseMenu() {
-
+        App app = App.getInstance();
+        Player player = app.getCurrentGame().getCurrentPlayer();
+//        TODO:check if the player is near to the house or not
+        Game game = app.getCurrentGame();
+        game.setInGameMenu(InGameMenu.houseMenu);
+        return new GameMessage(null, "You opened house menu");
     }
 
 

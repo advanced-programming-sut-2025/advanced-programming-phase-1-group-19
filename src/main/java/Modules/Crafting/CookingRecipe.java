@@ -5,6 +5,7 @@ import Modules.Item;
 import java.util.HashMap;
 
 public enum CookingRecipe implements Recipe{
+
     ;
 
     private String productName;
@@ -15,7 +16,9 @@ public enum CookingRecipe implements Recipe{
 
     CookingRecipe() {}
 
-    public CookingRecipe getCookingRecipeByName(String name) {}
+    public CookingRecipe getCookingRecipeByName(String name) {
+
+    }
 
     public Buff getBuff() {
         return buff;
@@ -32,7 +35,7 @@ public enum CookingRecipe implements Recipe{
 
     @Override
     public HashMap<Item, Integer> getIngredients() {
-
+        return ingredients;
     }
 
     @Override

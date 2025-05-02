@@ -104,6 +104,10 @@ public class Player {
 //        TODO: first check if the player can learn the recipe or not
     }
 
+    public ArrayList<CookingRecipe> getKnownCookingRecipes() {
+        return knownCookingRecipes;
+    }
+
     public ArrayList<CraftingRecipe> getKnownCraftingRecipes() {}
 
     public boolean knowCookingRecipe(CookingRecipe recipe) {

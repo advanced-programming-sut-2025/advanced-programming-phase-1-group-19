@@ -12,7 +12,7 @@ public class BackPack {
     private int amount;
 
     public BackPack() {
-
+        this.level = 0;
     }
 
     public HashMap<Item, Integer> getItems() {
@@ -21,9 +21,13 @@ public class BackPack {
 
     public void upgradeLevel() {}
 
-    public void addItem(Item item, int count) {}
+    public void addItem(Item item, int count) {
+
+    }
 
     public int getCapacity() {
+        int capacity = maxCapacity-items.size();
+        return capacity;
 //        TODO: calculate free space
     }
 }

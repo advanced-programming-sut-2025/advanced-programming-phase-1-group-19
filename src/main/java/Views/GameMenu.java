@@ -1,9 +1,11 @@
 package Views;
 
 import Controllers.*;
+import Modules.App;
 import Modules.Interactions.Commands.*;
 import Modules.Interactions.Messages.*;
 import Modules.Map.Position;
+import Modules.Player;
 
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -169,6 +171,10 @@ public class GameMenu implements AppMenu {
                 }
                 break;
             }
+            case goToHouseMenu:{
+
+                break;
+            }
         }
     }
 
@@ -248,6 +254,9 @@ public class GameMenu implements AppMenu {
         }
         else if(input.matches("^cheat Thor -l <(?<x>\\d+) , (?<y>\\d+)>$")){
             runCommand(GameCommand.cheatThor, input);
+        }
+        else if(input.matches("^\\s*go to house menu\\s*$")){
+            runCommand(GameCommand.goToHouseMenu, "");
         }
     }
 }

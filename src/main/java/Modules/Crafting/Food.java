@@ -6,9 +6,14 @@ public class Food extends Item {
 
     private CookingRecipe recipe;
 
-    public Food(CookingRecipe recipe) {}
+    public Food(String name, int takenSpace, CookingRecipe recipe) {
+        super(name, takenSpace);
+        this.recipe = recipe;
+    }
 
-    public CookingRecipe getRecipe() {}
+    public CookingRecipe getRecipe() {
+        return recipe;
+    }
 
     @Override
     public void use() {
