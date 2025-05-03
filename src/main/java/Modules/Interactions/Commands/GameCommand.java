@@ -27,5 +27,6 @@ public enum GameCommand implements Command {
     inventoryTrash,
     craftInfo,
     plant,
+    showPlant,
     exit;
 }

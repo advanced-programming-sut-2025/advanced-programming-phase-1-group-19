@@ -302,10 +302,6 @@ public class GameController extends Controller {
         return new GameMessage(null, "Now your energy is unlimited");
     }
 
-
-    public GameMessage cheatThor(int x, int y) {
-    }
-
     public GameMessage buildGreenHouse() {
 //        TODO: check if we have enough coin and wood!
 
@@ -467,13 +463,17 @@ public class GameController extends Controller {
 
             Time lastWatering = Time.maximum(Time.maximum(tile.getLastWateringTime(), t[1].getLastWateringTime())
                     , Time.maximum(t[2].getLastWateringTime(), t[3].getLastWateringTime()));
-            Time harvest = Time.minimum(Time.minimum(plant.getHarvestTime(), p[1].getHarvestTime())
-                    , Time.minimum(p[2].getHarvestTime(), p[3].getHarvestTime()));
+            Time planting = Time.minimum(Time.minimum(plant.getPlantingTime(), p[1].getPlantingTime())
+                    , Time.minimum(p[2].getPlantingTime(), p[3].getPlantingTime()));
 
-            tile.setLastWateringTime(lastWatering); plant.setHarvestTime(harvest);
-            t[1].setLastWateringTime(lastWatering); p[1].setHarvestTime(harvest);
-            t[2].setLastWateringTime(lastWatering); p[2].setHarvestTime(harvest);
-            t[3].setLastWateringTime(lastWatering); p[3].setHarvestTime(harvest);
+            tile.setLastWateringTime(lastWatering);
+            plant.setPlantingTime(planting);
+            t[1].setLastWateringTime(lastWatering);
+            p[1].setPlantingTime(planting);
+            t[2].setLastWateringTime(lastWatering);
+            p[2].setPlantingTime(planting);
+            t[3].setLastWateringTime(lastWatering);
+            p[3].setPlantingTime(planting);
 
         } else if (flag[3] && flag[4] && flag[5]) {
             plant.setGianPosition(0);
@@ -483,13 +483,17 @@ public class GameController extends Controller {
 
             Time lastWatering = Time.maximum(Time.maximum(tile.getLastWateringTime(), t[3].getLastWateringTime())
                     , Time.maximum(t[4].getLastWateringTime(), t[5].getLastWateringTime()));
-            Time harvest = Time.minimum(Time.minimum(plant.getHarvestTime(), p[3].getHarvestTime())
-                    , Time.minimum(p[4].getHarvestTime(), p[5].getHarvestTime()));
+            Time planting = Time.minimum(Time.minimum(plant.getPlantingTime(), p[3].getPlantingTime())
+                    , Time.minimum(p[4].getPlantingTime(), p[5].getPlantingTime()));
 
-            tile.setLastWateringTime(lastWatering); plant.setHarvestTime(harvest);
-            t[3].setLastWateringTime(lastWatering); p[3].setHarvestTime(harvest);
-            t[4].setLastWateringTime(lastWatering); p[4].setHarvestTime(harvest);
-            t[5].setLastWateringTime(lastWatering); p[5].setHarvestTime(harvest);
+            tile.setLastWateringTime(lastWatering);
+            plant.setPlantingTime(planting);
+            t[3].setLastWateringTime(lastWatering);
+            p[3].setPlantingTime(planting);
+            t[4].setLastWateringTime(lastWatering);
+            p[4].setPlantingTime(planting);
+            t[5].setLastWateringTime(lastWatering);
+            p[5].setPlantingTime(planting);
 
         } else if (flag[5] && flag[6] && flag[7]) {
             plant.setGianPosition(1);
@@ -500,15 +504,19 @@ public class GameController extends Controller {
 
             Time lastWatering = Time.maximum(Time.maximum(tile.getLastWateringTime(), t[5].getLastWateringTime())
                     , Time.maximum(t[6].getLastWateringTime(), t[7].getLastWateringTime()));
-            Time harvest = Time.minimum(Time.minimum(plant.getHarvestTime(), p[5].getHarvestTime())
-                    , Time.minimum(p[6].getHarvestTime(), p[7].getHarvestTime()));
+            Time planting = Time.minimum(Time.minimum(plant.getPlantingTime(), p[5].getPlantingTime())
+                    , Time.minimum(p[6].getPlantingTime(), p[7].getPlantingTime()));
 
-            tile.setLastWateringTime(lastWatering); plant.setHarvestTime(harvest);
-            t[5].setLastWateringTime(lastWatering); p[5].setHarvestTime(harvest);
-            t[6].setLastWateringTime(lastWatering); p[6].setHarvestTime(harvest);
-            t[7].setLastWateringTime(lastWatering); p[7].setHarvestTime(harvest);
+            tile.setLastWateringTime(lastWatering);
+            plant.setPlantingTime(planting);
+            t[5].setLastWateringTime(lastWatering);
+            p[5].setPlantingTime(planting);
+            t[6].setLastWateringTime(lastWatering);
+            p[6].setPlantingTime(planting);
+            t[7].setLastWateringTime(lastWatering);
+            p[7].setPlantingTime(planting);
 
-        }else if (flag[7] && flag[0] && flag[1]) {
+        } else if (flag[7] && flag[0] && flag[1]) {
             plant.setGianPosition(3);
             p[7].setGianPosition(2);
             p[0].setGianPosition(0);
@@ -517,15 +525,39 @@ public class GameController extends Controller {
 
             Time lastWatering = Time.maximum(Time.maximum(tile.getLastWateringTime(), t[7].getLastWateringTime())
                     , Time.maximum(t[0].getLastWateringTime(), t[1].getLastWateringTime()));
-            Time harvest = Time.minimum(Time.minimum(plant.getHarvestTime(), p[7].getHarvestTime())
-                    , Time.minimum(p[0].getHarvestTime(), p[1].getHarvestTime()));
+            Time planting = Time.minimum(Time.minimum(plant.getPlantingTime(), p[7].getPlantingTime())
+                    , Time.minimum(p[0].getPlantingTime(), p[1].getPlantingTime()));
 
-            tile.setLastWateringTime(lastWatering); plant.setHarvestTime(harvest);
-            t[7].setLastWateringTime(lastWatering); p[7].setHarvestTime(harvest);
-            t[0].setLastWateringTime(lastWatering); p[0].setHarvestTime(harvest);
-            t[1].setLastWateringTime(lastWatering); p[1].setHarvestTime(harvest);
-
+            tile.setLastWateringTime(lastWatering);
+            plant.setPlantingTime(planting);
+            t[7].setLastWateringTime(lastWatering);
+            p[7].setPlantingTime(planting);
+            t[0].setLastWateringTime(lastWatering);
+            p[0].setPlantingTime(planting);
+            t[1].setLastWateringTime(lastWatering);
+            p[1].setPlantingTime(planting);
         }
+        return new GameMessage(null, "seed planted successfully!");
+    }
+
+    public GameMessage showPlant(Position position) {
+        Game game = app.getCurrentGame();
+        Map map = game.getMap();
+        Tile tile = map.getTile(position);
+        if(tile == null) {
+            return new GameMessage(null, "choose a valid tile!");
+        }
+        if(!tile.containsPlant() || tile.getObject() == null || !(tile.getObject() instanceof Plant)) {
+            return new GameMessage(null, "this tile doesn't contain a plant!");
+        }
+        Plant plant = (Plant) tile.getObject();
+        PlantType plantType = plant.getType();
+        String ret = "";
+        ret += "Name: " + plantType.getName() + "\n";
+        ret += "Is Giant: " + (plant.getGianPosition() != -1) + "\n";
+        ret += "Last Watering Time: " + tile.getLastWateringTime() + "\n";
+        ret += "Planting Time: " + plant.getPlantingTime();
+        return new GameMessage(null, ret);
     }
 
 

@@ -6,16 +6,16 @@ import Modules.Time;
 public class Plant extends TileObject {
 
     private PlantType type;
-    private Time harvestTime;
+    private Time plantingTime;
     private int regrownTimes;
     private int gianPosition;
 //    0 1
 //    2 3 and -1 if not gianted
 
-    public Plant(PlantType type, Time harvestTime,) {
+    public Plant(PlantType type, Time plantingTime) {
         super();
         this.type = type;
-        this.harvestTime = harvestTime;
+        this.plantingTime = plantingTime;
         this.regrownTimes = 0;
         this.gianPosition = -1;
     }
@@ -24,8 +24,8 @@ public class Plant extends TileObject {
         return type;
     }
 
-    public Time getHarvestTime() {
-        return harvestTime;
+    public Time getPlantingTime() {
+        return plantingTime;
     }
 
 
@@ -37,8 +37,8 @@ public class Plant extends TileObject {
         return gianPosition;
     }
 
-    public void setHarvestTime(Time harvestTime) {
-        this.harvestTime = harvestTime;
+    public void setPlantingTime(Time plantingTime) {
+        this.plantingTime = plantingTime;
     }
 
     public void setRegrownTimes(int regrownTimes) {
@@ -47,10 +47,6 @@ public class Plant extends TileObject {
 
     public void setGianPosition(int gianPosition) {
         this.gianPosition = gianPosition;
-    }
-
-    public String show() {
-//        TODO: implement for showPlant command
     }
 
     public void harvest() {}

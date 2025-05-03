@@ -189,6 +189,16 @@ public class GameMenu implements AppMenu {
                 System.out.println(gameController.plant(seed, direction));
                 break;
             }
+            case showPlant: {
+                Pattern pattern = Pattern.compile("^show plant <(?<x>\\d+) , (?<y>\\d+)>$");
+                Matcher matcher = pattern.matcher(input);
+                String xString = matcher.group("x");
+                String yString = matcher.group("y");
+                int x = Integer.parseInt(xString);
+                int y = Integer.parseInt(yString);
+                System.out.println(gameController.showPlant(new Position(x, y)));
+                break;
+            }
         }
     }
 
@@ -274,6 +284,9 @@ public class GameMenu implements AppMenu {
         }
         else if(input.matches("^plant -s (?<seed>\\S+) -d (?<direction>\\S+)$")) {
             runCommand(GameCommand.plant, input);
+        }
+        else if(input.matches("^show plant <(?<x>\\d+) , (?<y>\\d+)>$")) {
+            runCommand(GameCommand.showPlant, input);
         }
     }
 }

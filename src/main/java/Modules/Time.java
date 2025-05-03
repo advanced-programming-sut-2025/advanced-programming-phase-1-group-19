@@ -78,11 +78,25 @@ public class Time {
     }
 
     public int calDaysDifference(Time time){
+        Time time1 = Time.minimum(this, time);
+        Time time2 = Time.maximum(this, time);
 
+        int seasonDiff = time2.getSeason().ordinal() - time1.getSeason().ordinal();
+        int dayDiff = time2.getDay() - time1.getDay();
+
+        return seasonDiff * 28 + dayDiff;
     }
 
     public int calHoursDifference(Time time){
+        int dayDiff = calDaysDifference(time);
+        int hourDiff = Time.maximum(this, time).getHour() - Time.minimum(this, time).getHour();
 
+        return dayDiff * 24 + hourDiff;
+    }
+
+    @Override
+    public String toString() {
+        return season.name() + " / " + day + "th day / " + hour;
     }
 
     public static Time minimum(Time time1, Time time2){
