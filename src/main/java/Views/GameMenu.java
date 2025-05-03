@@ -1,8 +1,11 @@
 package Views;
 
 import Controllers.*;
+import Modules.Farming.Seed;
+import Modules.Farming.SeedType;
 import Modules.Interactions.Commands.*;
 import Modules.Interactions.Messages.*;
+import Modules.Map.Direction;
 import Modules.Map.Position;
 
 import java.util.Scanner;
@@ -174,6 +177,17 @@ public class GameMenu implements AppMenu {
                 Matcher matcher = pattern.matcher(input);
                 String name = matcher.group("name");
                 System.out.println(gameController.craftInfo(name).message());
+                break;
+            }
+            case plant: {
+                Pattern pattern = Pattern.compile("^plant -s (?<seed>\\S+) -d (?<direction>\\S+)$");
+                Matcher matcher = pattern.matcher(input);
+                String seedName = matcher.group("seed");
+                String directionName = matcher.group("direction");
+                SeedType seed = SeedType.valueOf(seedName);
+                Direction direction = Direction.getDirection(directionName);
+                System.out.println(gameController.plant(seed, direction));
+                break;
             }
         }
     }
@@ -257,6 +271,9 @@ public class GameMenu implements AppMenu {
         }
         else if(input.matches("^craftinfo -n (?<name>.+?)$")) {
             runCommand(GameCommand.craftInfo, input);
+        }
+        else if(input.matches("^plant -s (?<seed>\\S+) -d (?<direction>\\S+)$")) {
+            runCommand(GameCommand.plant, input);
         }
     }
 }

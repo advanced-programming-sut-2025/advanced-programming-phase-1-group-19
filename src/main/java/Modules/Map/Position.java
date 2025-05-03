@@ -13,4 +13,10 @@ public class Position {
         x += dx;
         y += dy;
     }
+
+    public void move(Direction direction) {
+        int dx = direction.getDx();
+        int dy = direction.getDy();
+        move(dx, dy);
+    }
 }

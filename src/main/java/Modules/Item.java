@@ -8,9 +8,10 @@ public abstract class Item extends TileObject {
     protected final int takenSpace;
     protected final boolean isEdible;
 
-    public Item(String name, int takenSpace) {
+    public Item(String name, int takenSpace, boolean isEdible) {
         this.name = name;
         this.takenSpace = takenSpace;
+        this.isEdible = isEdible;
     }
 
     public abstract void use();

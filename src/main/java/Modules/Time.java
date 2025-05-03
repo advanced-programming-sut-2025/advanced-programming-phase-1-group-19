@@ -84,4 +84,33 @@ public class Time {
     public int calHoursDifference(Time time){
 
     }
+
+    public static Time minimum(Time time1, Time time2){
+        if(time1.getSeason().ordinal() != time2.getSeason().ordinal()){
+            if(time1.getSeason().ordinal() < time2.getSeason().ordinal()){
+                return time1;
+            }
+            return time2;
+        }
+        else if(time1.getDay() != time2.getDay()){
+            if(time1.getDay() < time2.getDay()){
+                return time1;
+            }
+            return time2;
+        }
+        else{
+            if(time1.getHour() < time2.getHour()){
+                return time1;
+            }
+            return time2;
+        }
+    }
+
+    public static Time maximum(Time time1, Time time2){
+        Time temp = minimum(time1, time2);
+        if(time1.equals(temp)){
+            return time2;
+        }
+        return time1;
+    }
 }

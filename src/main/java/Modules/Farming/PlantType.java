@@ -1003,4 +1003,13 @@ public enum PlantType {
         }
         return null;
     }
+
+    public static PlantType getPlantTypeBySeed(SeedType seed) {
+        for (PlantType plantType : PlantType.values()) {
+            if(plantType.getSeed().equals(seed)) {
+                return plantType;
+            }
+        }
+        return null;
+    }
 }

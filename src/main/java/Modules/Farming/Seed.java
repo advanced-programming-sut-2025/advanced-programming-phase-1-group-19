@@ -6,6 +6,11 @@ public class Seed extends Item {
 
     private SeedType type;
 
+    public Seed(SeedType type) {
+        super(type.getName(), 1, false);
+        this.type = type;
+    }
+
     @Override
     public void use() {
 
@@ -23,6 +28,10 @@ public class Seed extends Item {
 
     @Override
     public String getName(){
-        return type.;
+        return type.getName();
+    }
+
+    public SeedType getType() {
+        return type;
     }
 }

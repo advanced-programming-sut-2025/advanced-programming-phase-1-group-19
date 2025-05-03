@@ -1,19 +1,24 @@
 package Controllers;
 
 import Modules.*;
-import Modules.Enums.*;
-import Modules.Farming.CropType;
-import Modules.Farming.PlantType;
-import Modules.Farming.SeedType;
-import Modules.Interactions.Messages.*;
+import Modules.Enums.Menu;
+import Modules.Enums.Season;
+import Modules.Enums.Weather;
+import Modules.Farming.*;
+import Modules.Interactions.Messages.GameMessage;
+import Modules.Interactions.Messages.Message;
 import Modules.Map.*;
-import Views.*;
+import Modules.Tools.BackPack;
+import Views.GameMenu;
 
 import java.util.ArrayList;
 
 public class GameController extends Controller {
     private static GameController instance;
-    private GameController() {}
+
+    private GameController() {
+    }
+
     public static GameController getInstance() {
         if (instance == null) {
             instance = new GameController();
@@ -37,27 +42,28 @@ public class GameController extends Controller {
     private boolean isMapIdValid(int mapId) {
     }
 
-    private boolean hasEnoughEnergy(int amount) {}
+    private boolean hasEnoughEnergy(int amount) {
+    }
 
     public GameMessage startNewGame(String[] usernames) {
-        if(usernames.length > 3) {
+        if (usernames.length > 3) {
             return new GameMessage(null, "Too many players!");
         }
         User[] users = new User[usernames.length + 1];
         users[0] = app.getCurrentUser();
-        for(int i = 0; i < usernames.length; i++) {
+        for (int i = 0; i < usernames.length; i++) {
             User user = app.getUserByUsername(usernames[i]);
-            if(user == null) {
+            if (user == null) {
                 return new GameMessage(null, "User " + usernames[i] + " not found!");
             }
-            if(hasActiveGame(user)) {
+            if (hasActiveGame(user)) {
                 return new GameMessage(null, "User " + usernames[i] + " is already in a game!");
             }
-            users[i+1] = user;
+            users[i + 1] = user;
         }
         GameMenu menu = GameMenu.getInstance();
         String mapsPreview = "Users are set successfully, here are the available maps.\n";
-        for(FarmMap farmMap : FarmMap.values()) {
+        for (FarmMap farmMap : FarmMap.values()) {
             mapsPreview += farmMap.name() + " map:\n";
             mapsPreview += farmMap.printMap() + "\n";
         }
@@ -65,20 +71,19 @@ public class GameController extends Controller {
         menu.getSingleLine(mapsPreview);
         int[] mapIDs = new int[users.length];
         String error = "";
-        for(int i = 0; i < users.length; i++) {
+        for (int i = 0; i < users.length; i++) {
             String idString = menu.getSingleLine(error + "choose map for user " + users[i].getUsername());
             error = "";
-            if(!idString.matches("[1-4]")) {
+            if (!idString.matches("[1-4]")) {
                 error = "Wrong format, first map was selected!\n";
                 mapIDs[i] = 1;
-            }
-            else {
+            } else {
                 mapIDs[i] = Integer.parseInt(idString);
             }
         }
         ArrayList<Player> players = new ArrayList<>();
         ArrayList<Farm> farms = new ArrayList<>();
-        for(int i = 0; i < users.length; i++) {
+        for (int i = 0; i < users.length; i++) {
             Farm farm = new Farm(FarmMap.getFarmMap(mapIDs[i]), i);
             Player player = new Player(users[i], farm);
             farms.add(farm);
@@ -91,18 +96,19 @@ public class GameController extends Controller {
         app.setCurrentGame(game);
         app.setCurrentGameStarter(app.getCurrentUser());
 
-        for(User user : users) {
+        for (User user : users) {
             user.setCurrentGame(game);
         }
 
         return new GameMessage(null, error + "New game created successfully!!!");
     }
 
-    public GameMessage loadGame() {}
+    public GameMessage loadGame() {
+    }
 
     public GameMessage exitGame() {
         App app = App.getInstance();
-        if(!app.getCurrentGameStarter().equals(app.getCurrentUser())){
+        if (!app.getCurrentGameStarter().equals(app.getCurrentUser())) {
             return new GameMessage(null, "you can't exit game!");
         }
         // TODO: save game
@@ -113,23 +119,21 @@ public class GameController extends Controller {
     public GameMessage forceTerminate() {
         GameMenu gameMenu = GameMenu.getInstance();
         boolean quit = true;
-        for(int i = 0; i < App.getInstance().getCurrentGame().getPlayers().size() - 1; i++){
+        for (int i = 0; i < App.getInstance().getCurrentGame().getPlayers().size() - 1; i++) {
             String input;
-            do{
+            do {
                 input = gameMenu.getSingleLine("");
-                if(input.matches("^\\s*n\\s*$")){
+                if (input.matches("^\\s*n\\s*$")) {
                     quit = false;
-                }
-                else if(input.matches("^\\s*y\\s*$")){
+                } else if (input.matches("^\\s*y\\s*$")) {
 
-                }
-                else{
+                } else {
                     System.out.println("invalid vote");
                 }
             }
             while (!input.matches("^\\s*n\\s*$") && !input.matches("^\\s*y\\s*$"));
         }
-        if(quit){
+        if (quit) {
             for (Player player : App.getInstance().getCurrentGame().getPlayers()) {
                 player.getUser().setCurrentGame(null);
             }
@@ -137,33 +141,32 @@ public class GameController extends Controller {
             App.getInstance().setCurrentGame(null);
             App.getInstance().setCurrentGameStarter(null);
             return new GameMessage(null, "Game has been terminated!");
-        }
-        else{
+        } else {
             return new GameMessage(null, "Not enough votes");
         }
     }
 
     public GameMessage nextTurn() {
-       Game game = App.getInstance().getCurrentGame();
-        do{
+        Game game = App.getInstance().getCurrentGame();
+        do {
             game.setNextPlayer();
-        }while(game.getCurrentPlayer().isFainted());
+        } while (game.getCurrentPlayer().isFainted());
         return new GameMessage(null, "next turn");
     }
 
-    public GameMessage showTime(){
+    public GameMessage showTime() {
         int hour = App.getInstance().getCurrentGame().getTime().getHour();
         return new GameMessage(null, String.valueOf(hour));
     }
 
-    public GameMessage showDate(){
+    public GameMessage showDate() {
         Time time = App.getInstance().getCurrentGame().getTime();
         int date = time.getDay();
         Season season = time.getSeason();
         return new GameMessage(null, date + " " + season.toString());
     }
 
-    public GameMessage showDateTime(){
+    public GameMessage showDateTime() {
         Time time = App.getInstance().getCurrentGame().getTime();
         int hour = time.getHour();
         int date = time.getDay();
@@ -171,27 +174,28 @@ public class GameController extends Controller {
         return new GameMessage(null, hour + " " + date + " " + season.toString());
     }
 
-    public GameMessage showDayOfWeak(){
+    public GameMessage showDayOfWeak() {
         return new GameMessage(null, App.getInstance().getCurrentGame().getTime().calculateWeekDay());
     }
 
-    public GameMessage showSeason(){
+    public GameMessage showSeason() {
         Time time = App.getInstance().getCurrentGame().getTime();
         Season season = time.getSeason();
         return new GameMessage(null, season.toString());
     }
 
-    public GameMessage cheatAdvanceTime(int x){
+    public GameMessage cheatAdvanceTime(int x) {
         for (int i = 0; i < x; i++)
             App.getInstance().getCurrentGame().nextHour();
         return new GameMessage(null, "time traveled " + x + " hours");
     }
 
-    public GameMessage cheatAdvanceDate(int x){
+    public GameMessage cheatAdvanceDate(int x) {
         for (int i = 0; i < 22 * x; i++)
             App.getInstance().getCurrentGame().nextHour();
         return new GameMessage(null, "time traveled " + x + " days");
     }
+
     public GameMessage cheatThor(int x, int y) {
         App.getInstance().getCurrentGame().thor(new Position(x, y));
         return new GameMessage(null, "you thor " + x + " " + y);
@@ -210,19 +214,19 @@ public class GameController extends Controller {
         Map map = game.getMap();
         Player player = game.getCurrentPlayer();
         Position start = player.getPosition();
-        if(start.equals(end)){
+        if (start.equals(end)) {
             return new GameMessage(null, "Dude you are already there :/");
         }
         ArrayList<Tile> path = map.getPath(start, end);
-        if(path == null){
+        if (path == null) {
             return new GameMessage(null, "Ops, sorry you cant go there");
         }
         int moves = 0;
         String faintMessage = "";
-        for(Tile tile : path){
+        for (Tile tile : path) {
             player.setPosition(tile.getPosition());
             moves++;
-            if(moves % 20 == 0) {
+            if (moves % 20 == 0) {
 //                TODO: reduce energy by one;
 //                TODO: go to next person and faint if energy == 0
 //                TODO: set faintMessage to "Oh you have fainted middle way :(\n"
@@ -230,20 +234,21 @@ public class GameController extends Controller {
         }
         return new GameMessage(null, faintMessage + "Your current position is (" + player.getPosition().x + ", " + player.getPosition().y + ")");
     }
+
     public GameMessage cheatForecast(String weather) {
-        if(Weather.getWeatherType(weather) == null){
+        if (Weather.getWeatherType(weather) == null) {
             return new GameMessage(null, "not such weather type");
         }
         App.getInstance().getCurrentGame().setTomorrowWeather(Weather.getWeatherType(weather));
         return new GameMessage(null, "you successfully cheated weather forecast!");
     }
 
-    public GameMessage showEnergy(){
+    public GameMessage showEnergy() {
         App app = App.getInstance();
-        return new GameMessage(null,"Your energy is: "+ app.getCurrentGame().getCurrentPlayer().getEnergy().getAmount());
+        return new GameMessage(null, "Your energy is: " + app.getCurrentGame().getCurrentPlayer().getEnergy().getAmount());
     }
 
-    public GameMessage showInventory(){
+    public GameMessage showInventory() {
         StringBuilder stringBuilder = new StringBuilder();
         App app = App.getInstance();
         Player player = app.getCurrentGame().getCurrentPlayer();
@@ -254,20 +259,20 @@ public class GameController extends Controller {
                     .append(", Quantity: ").append(value)
                     .append("\n");
         }
-        return new GameMessage(null, "Your BackPack: \n"+stringBuilder.toString());
+        return new GameMessage(null, "Your BackPack: \n" + stringBuilder.toString());
     }
 
-    public GameMessage inventoryTrash(String itemName,int number,boolean delete){
+    public GameMessage inventoryTrash(String itemName, int number, boolean delete) {
         App app = App.getInstance();
         Player player = app.getCurrentGame().getCurrentPlayer();
-        if(delete){
+        if (delete) {
             for (Item item : player.getBackPack().getItems().keySet()) {
-                if(item.getName().equals(itemName)) {
+                if (item.getName().equals(itemName)) {
                     player.getBackPack().getItems().remove(item);
                     break;
                 }
             }
-            return new GameMessage(null,"You fully trashed item "+itemName);
+            return new GameMessage(null, "You fully trashed item " + itemName);
         }
         for (Item item : player.getBackPack().getItems().keySet()) {
             if (item.getName().equals(itemName)) {
@@ -283,23 +288,23 @@ public class GameController extends Controller {
         return new GameMessage(null, "You successfully trashed " + number + " of " + itemName);
     }
 
-    public GameMessage cheatEnergySet(int amount){
+    public GameMessage cheatEnergySet(int amount) {
         App app = App.getInstance();
         Player player = app.getCurrentGame().getCurrentPlayer();
-        player.addEnergy(amount-player.getEnergy().getAmount());
-        return new GameMessage(null,"New energy set to "+amount);
+        player.addEnergy(amount - player.getEnergy().getAmount());
+        return new GameMessage(null, "New energy set to " + amount);
     }
 
-    public GameMessage unlimitedEnergySet(){
+    public GameMessage unlimitedEnergySet() {
         App app = App.getInstance();
         Player player = app.getCurrentGame().getCurrentPlayer();
         player.getEnergy().setUnlimited(true);
-        return new GameMessage(null,"Now your energy is unlimited");
+        return new GameMessage(null, "Now your energy is unlimited");
     }
 
 
-
-    public GameMessage cheatThor(int x, int y) {}
+    public GameMessage cheatThor(int x, int y) {
+    }
 
     public GameMessage buildGreenHouse() {
 //        TODO: check if we have enough coin and wood!
@@ -307,31 +312,27 @@ public class GameController extends Controller {
     }
 
     public GameMessage printMap(Position position, int size) {
-        if(size > 80) {
+        if (size > 80) {
             return new GameMessage(null, "please use sizes smaller than 100");
         }
         Game game = App.getInstance().getCurrentGame();
         Map map = game.getMap();
         char[][] all = new char[size][size];
-        for(int i = 0; i < size; i++){
-            for(int j = 0; j < size; j++){
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
                 char c = ' ';
                 Tile tile = map.getTile(new Position(position.x + i, position.y + j));
-                if(tile != null){
+                if (tile != null) {
                     Building building = tile.getBuilding();
-                    if(building == null){
+                    if (building == null) {
                         c = '.';
-                    }
-                    else if(building instanceof House) {
+                    } else if (building instanceof House) {
                         c = 'H';
-                    }
-                    else if(building instanceof GreenHouse) {
+                    } else if (building instanceof GreenHouse) {
                         c = 'G';
-                    }
-                    else if(building instanceof Lake) {
+                    } else if (building instanceof Lake) {
                         c = 'L';
-                    }
-                    else if(building instanceof Quarry) {
+                    } else if (building instanceof Quarry) {
                         c = 'Q';
                     }
                 }
@@ -339,8 +340,8 @@ public class GameController extends Controller {
             }
         }
         StringBuilder ret = new StringBuilder();
-        for(int i = 0; i < size; i++){
-            for(int j = 0; j < size; j++){
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
                 ret.append(all[i][j]);
             }
             ret.append("\n");
@@ -366,7 +367,7 @@ public class GameController extends Controller {
 
     public GameMessage craftInfo(String name) {
         PlantType plant = PlantType.getPlantTypeByName(name);
-        if(plant == null) {
+        if (plant == null) {
             return new GameMessage(null, "no plant found with this name!");
         }
         SeedType seed = plant.getSeed();
@@ -376,7 +377,7 @@ public class GameController extends Controller {
         ret += "Name: " + plant.getName() + "\n";
         ret += "Source: " + seed.getName() + " Seeds\n";
         ret += "Stages: ";
-        for(int stage : plant.getStages()) {
+        for (int stage : plant.getStages()) {
             ret += stage + " ";
         }
         ret += "\n";
@@ -388,14 +389,143 @@ public class GameController extends Controller {
         ret += "Is Edible: " + crop.isEdible() + "\n";
         ret += "Base Energy: " + crop.getEnergy() + "\n";
         ret += "Seasons: ";
-        for(Season season : plant.getSeasonsAvailable()) {
+        for (Season season : plant.getSeasonsAvailable()) {
             ret += season.name() + " ";
         }
         ret += "\n";
         ret += "Can Become Giant: " + plant.isCanBeComeGiant() + "\n";
 
         return new GameMessage(null, ret);
+    }
 
+    public GameMessage plant(SeedType seedType, Direction direction) {
+        if (direction == null) {
+            return new GameMessage(null, "select a valid direction!\n(u, d, l, r, ur, ul, dr, dl)");
+        }
+        if (seedType == null) {
+            return new GameMessage(null, "select a valid seed!");
+        }
+        Game game = app.getCurrentGame();
+        Map map = game.getMap();
+        Player player = game.getCurrentPlayer();
+        BackPack inventory = player.getBackPack();
+        Seed seed = inventory.getSeedInBachPack(seedType);
+        if (seed == null) {
+            return new GameMessage(null, "you dont have that seed!");
+        }
+        PlantType plantType = PlantType.getPlantTypeBySeed(seedType);
+        if (plantType == null) {
+            return new GameMessage(null, "oops, check the plantType and seedType files :(");
+        }
+
+        Position playerPosition = player.getPosition();
+        Position targetPosition = new Position(playerPosition.x, playerPosition.y);
+        targetPosition.move(direction);
+
+        Plant plant = new Plant(plantType, game.getTime());
+        Tile tile = map.getTile(targetPosition);
+//        TODO: check for greenHouse
+        if (tile == null || tile.getObject() != null || tile.getBuilding() != null) {
+            return new GameMessage(null, "you must choose a valid and empty tile!");
+        }
+
+        tile.setObject(plant);
+        tile.setContainsPlant(true);
+        plant.setPlacedTile(tile);
+        inventory.removeItem(seed, 1);
+
+//        CHECKING FOR GIANT PLANT:
+        Tile[] t = new Tile[8];
+        t[0] = map.getTile(new Position(targetPosition.x - 1, targetPosition.y - 1));
+        t[1] = map.getTile(new Position(targetPosition.x - 1, targetPosition.y));
+        t[2] = map.getTile(new Position(targetPosition.x - 1, targetPosition.y + 1));
+        t[3] = map.getTile(new Position(targetPosition.x, targetPosition.y + 1));
+        t[4] = map.getTile(new Position(targetPosition.x + 1, targetPosition.y + 1));
+        t[5] = map.getTile(new Position(targetPosition.x + 1, targetPosition.y));
+        t[6] = map.getTile(new Position(targetPosition.x + 1, targetPosition.y - 1));
+        t[7] = map.getTile(new Position(targetPosition.x, targetPosition.y - 1));
+        boolean[] flag = new boolean[8];
+        Plant[] p = new Plant[8];
+        for (int i = 0; i < 8; i++) {
+            if (t[i] == null) {
+                flag[i] = false;
+                continue;
+            }
+            if (t[i].containsPlant()) {
+                p[i] = (Plant) t[i].getObject();
+                if (p[i].getType().getSeed().equals(seedType) && p[i].getGianPosition() == -1) {
+                    flag[i] = true;
+                }
+            }
+            flag[i] = false;
+        }
+        if (flag[1] && flag[2] && flag[3]) {
+            plant.setGianPosition(2);
+            p[1].setGianPosition(0);
+            p[2].setGianPosition(1);
+            p[3].setGianPosition(3);
+
+            Time lastWatering = Time.maximum(Time.maximum(tile.getLastWateringTime(), t[1].getLastWateringTime())
+                    , Time.maximum(t[2].getLastWateringTime(), t[3].getLastWateringTime()));
+            Time harvest = Time.minimum(Time.minimum(plant.getHarvestTime(), p[1].getHarvestTime())
+                    , Time.minimum(p[2].getHarvestTime(), p[3].getHarvestTime()));
+
+            tile.setLastWateringTime(lastWatering); plant.setHarvestTime(harvest);
+            t[1].setLastWateringTime(lastWatering); p[1].setHarvestTime(harvest);
+            t[2].setLastWateringTime(lastWatering); p[2].setHarvestTime(harvest);
+            t[3].setLastWateringTime(lastWatering); p[3].setHarvestTime(harvest);
+
+        } else if (flag[3] && flag[4] && flag[5]) {
+            plant.setGianPosition(0);
+            p[3].setGianPosition(1);
+            p[4].setGianPosition(3);
+            p[5].setGianPosition(2);
+
+            Time lastWatering = Time.maximum(Time.maximum(tile.getLastWateringTime(), t[3].getLastWateringTime())
+                    , Time.maximum(t[4].getLastWateringTime(), t[5].getLastWateringTime()));
+            Time harvest = Time.minimum(Time.minimum(plant.getHarvestTime(), p[3].getHarvestTime())
+                    , Time.minimum(p[4].getHarvestTime(), p[5].getHarvestTime()));
+
+            tile.setLastWateringTime(lastWatering); plant.setHarvestTime(harvest);
+            t[3].setLastWateringTime(lastWatering); p[3].setHarvestTime(harvest);
+            t[4].setLastWateringTime(lastWatering); p[4].setHarvestTime(harvest);
+            t[5].setLastWateringTime(lastWatering); p[5].setHarvestTime(harvest);
+
+        } else if (flag[5] && flag[6] && flag[7]) {
+            plant.setGianPosition(1);
+            p[5].setGianPosition(3);
+            p[6].setGianPosition(2);
+            p[7].setGianPosition(0);
+
+
+            Time lastWatering = Time.maximum(Time.maximum(tile.getLastWateringTime(), t[5].getLastWateringTime())
+                    , Time.maximum(t[6].getLastWateringTime(), t[7].getLastWateringTime()));
+            Time harvest = Time.minimum(Time.minimum(plant.getHarvestTime(), p[5].getHarvestTime())
+                    , Time.minimum(p[6].getHarvestTime(), p[7].getHarvestTime()));
+
+            tile.setLastWateringTime(lastWatering); plant.setHarvestTime(harvest);
+            t[5].setLastWateringTime(lastWatering); p[5].setHarvestTime(harvest);
+            t[6].setLastWateringTime(lastWatering); p[6].setHarvestTime(harvest);
+            t[7].setLastWateringTime(lastWatering); p[7].setHarvestTime(harvest);
+
+        }else if (flag[7] && flag[0] && flag[1]) {
+            plant.setGianPosition(3);
+            p[7].setGianPosition(2);
+            p[0].setGianPosition(0);
+            p[1].setGianPosition(1);
+
+
+            Time lastWatering = Time.maximum(Time.maximum(tile.getLastWateringTime(), t[7].getLastWateringTime())
+                    , Time.maximum(t[0].getLastWateringTime(), t[1].getLastWateringTime()));
+            Time harvest = Time.minimum(Time.minimum(plant.getHarvestTime(), p[7].getHarvestTime())
+                    , Time.minimum(p[0].getHarvestTime(), p[1].getHarvestTime()));
+
+            tile.setLastWateringTime(lastWatering); plant.setHarvestTime(harvest);
+            t[7].setLastWateringTime(lastWatering); p[7].setHarvestTime(harvest);
+            t[0].setLastWateringTime(lastWatering); p[0].setHarvestTime(harvest);
+            t[1].setLastWateringTime(lastWatering); p[1].setHarvestTime(harvest);
+
+        }
     }
 
 

@@ -59,12 +59,17 @@ public class Tile {
         return lastWateringTime;
     }
 
-    public boolean containsPlant() {
-        return containsPlant;
+    public void setContainsPlant(boolean containsPlant) {
+        this.containsPlant = containsPlant;
+//        TODO: when there is no more plant change it to false
     }
 
-    public void plant(Plant plant) {
-//        TODO: also set containsPlant
+    public void setLastWateringTime(Time lastWateringTime) {
+        this.lastWateringTime = lastWateringTime;
+    }
+
+    public boolean containsPlant() {
+        return containsPlant;
     }
 
     public void fertilize(Fertilizer fertilizer) {}
