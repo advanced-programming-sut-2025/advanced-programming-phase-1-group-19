@@ -262,6 +262,7 @@ public class GameController extends Controller {
         if(delete){
             for (Item item : player.getBackPack().getItems().keySet()) {
                 if(item.getName().equals(itemName)) {
+                    //TODO: add refund!
                     player.getBackPack().getItems().remove(item);
                     break;
                 }
@@ -270,6 +271,7 @@ public class GameController extends Controller {
         }
         for (Item item : player.getBackPack().getItems().keySet()) {
             if (item.getName().equals(itemName)) {
+                //TODO: add refund!
                 int currentQty = player.getBackPack().getItems().get(item);
                 if (currentQty > number) {
                     player.getBackPack().getItems().put(item, currentQty - number);

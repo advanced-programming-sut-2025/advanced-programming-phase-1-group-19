@@ -7,10 +7,12 @@ public abstract class Item extends TileObject {
     protected final String name;
     protected final int takenSpace;
     protected final boolean isEdible;
+    abstract public int getPrice();
 
-    public Item(String name, int takenSpace) {
+    public Item(String name, int takenSpace, boolean isEdible) {
         this.name = name;
         this.takenSpace = takenSpace;
+        this.isEdible = isEdible;
     }
 
     public abstract void use();
@@ -23,4 +25,5 @@ public abstract class Item extends TileObject {
     public int getTakenSpace() {
         return takenSpace;
     }
+
 }

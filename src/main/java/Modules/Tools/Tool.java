@@ -9,7 +9,7 @@ public class Tool extends Item {
     protected int level = 0;
 
     public Tool(String name, int takenSpace) {
-        super(name, takenSpace);
+        super(name, takenSpace, false);
         this.toolType = ToolType.getToolTypeByName(name);
         this.level = 0;
     }
@@ -23,6 +23,11 @@ public class Tool extends Item {
         if(toolType.getLevels().size() > level + 1){
             level++;
         }
+    }
+
+    @Override
+    public int getPrice() {
+        return 0;
     }
 
     @Override
