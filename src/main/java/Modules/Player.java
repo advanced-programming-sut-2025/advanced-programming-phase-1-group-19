@@ -118,7 +118,9 @@ public class Player {
 //        TODO: first check if the player can learn the recipe or not
     }
 
-    public void applyBuff(Buff buff) {}
+    public void applyBuff(Buff buff) {
+
+    }
 
     public boolean isBuffed(SkillType skillType) {}
 

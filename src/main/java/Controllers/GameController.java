@@ -2,6 +2,7 @@ package Controllers;
 
 import Modules.*;
 import Modules.Animal.Animal;
+import Modules.Animal.AnimalType;
 import Modules.Animal.Fish;
 import Modules.Animal.FishType;
 import Modules.Enums.*;
@@ -150,6 +151,7 @@ public class GameController extends Controller {
        Game game = App.getInstance().getCurrentGame();
         do{
             game.setNextPlayer();
+            game.setInGameMenu(null);
         }while(game.getCurrentPlayer().isFainted());
         return new GameMessage(null, "next turn");
     }
@@ -502,8 +504,96 @@ public class GameController extends Controller {
         App app = App.getInstance();
         Game game = app.getCurrentGame();
         Player player = app.getCurrentGame().getCurrentPlayer();
-        player.getFarm()
+        StringBuilder stringBuilder = new StringBuilder();
+        if(player.getFarm().getBarn() != null){
+            for (Animal animal : player.getFarm().getBarn().getAnimals()) {
+                if(animal.doesProduce()){
+                    stringBuilder.append(animal.getName()+" Produces:  ");
+                    stringBuilder.append(animal.whichProduct().getName());
+                    stringBuilder.append("\n");
+                }
+            }
+        }
+        if(player.getFarm().getCoop() != null){
+            for (Animal animal : player.getFarm().getCoop().getAnimals()) {
+                if(animal.doesProduce()){
+                    stringBuilder.append(animal.getName()+" Produces:  ");
+                    stringBuilder.append(animal.whichProduct().getName());
+                    stringBuilder.append("\n");
+                }
+            }
+        }
+        return new GameMessage(null,stringBuilder.toString());
     }
+
+    public GameMessage collectProducts(String animalName){
+        App app = App.getInstance();
+        Game game = app.getCurrentGame();
+        Player player = app.getCurrentGame().getCurrentPlayer();
+        Animal animal= player.getFarm().getBarn().getAnimalByName(animalName);
+        if (animal == null) {
+            animal = player.getFarm().getCoop().getAnimalByName(animalName);
+        }
+        if (animal == null) {
+            return new GameMessage(null, "There is no such animal");
+        }
+        if(animal.getCurrentProduct() != null){
+            if(animal.getName().equals("cow") || animal.getName().equals("goat")){
+//               TODO:check if there is watering can in inventory
+                if(player.getBackPack().getCapacity()==0){
+                    return new GameMessage(null,"There is no space in your backpack");
+                }
+                player.getBackPack().addItem(animal.getCurrentProduct(),1);
+                animal.setCurrentProduct(null);
+                return new GameMessage(null,animal.getCurrentProduct().getName()+" collected");
+            }
+            else if(animal.getName().equals("sheep")){
+//               TODO:check if there is gheuchi in inventory
+                if(player.getBackPack().getCapacity()==0){
+                    return new GameMessage(null,"There is no space in your backpack");
+                }
+                player.getBackPack().addItem(animal.getCurrentProduct(),1);
+                animal.setCurrentProduct(null);
+                return new GameMessage(null,animal.getCurrentProduct().getName()+" collected");
+            }
+            else if(animal.getName().equals("pig")){
+                if(animal.isOutside()){
+                    if(player.getBackPack().getCapacity()==0){
+                        return new GameMessage(null,"There is no space in your backpack");
+                    }
+                    player.getBackPack().addItem(animal.getCurrentProduct(),1);
+                    animal.setCurrentProduct(null);
+                    return new GameMessage(null,animal.getCurrentProduct().getName()+" collected");
+                }
+            }
+        }
+        return null;
+    }
+
+    public GameMessage sellAnimal(String animalName) {
+        App app = App.getInstance();
+        Game game = app.getCurrentGame();
+        Player player = app.getCurrentGame().getCurrentPlayer();
+        Animal animal = player.getFarm().getBarn().getAnimalByName(animalName);
+        if (animal != null) {
+            int price = animal.calSellingPrice();
+//            TODO:increase player money
+            player.getFarm().getBarn().getAnimals().remove(animal);
+            return new GameMessage(null,animal.getCurrentProduct().getName()+" sold");
+        }
+        else{
+            animal = player.getFarm().getCoop().getAnimalByName(animalName);
+            if (animal != null) {
+                int price = animal.calSellingPrice();
+//                TODO:increase player money
+                player.getFarm().getCoop().getAnimals().remove(animal);
+                return new GameMessage(null,animal.getCurrentProduct().getName()+" sold");
+            }
+            return new GameMessage(null, "There is no such animal");
+        }
+    }
+
+
 
     private Fish generateRandomFish(Season season) {
         Random rand = new Random();

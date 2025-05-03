@@ -38,5 +38,7 @@ public enum GameCommand implements Command {
     shepherdAnimals,
     feedHay,
     fishing,
+    collectProducts,
+    sellAnimal,
     exit;
 }

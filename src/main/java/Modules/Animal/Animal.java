@@ -7,6 +7,9 @@ import Modules.Map.Tile;
 import Modules.Player;
 import Modules.Time;
 
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+
 public class Animal {
 
     private final String name;
@@ -18,12 +21,16 @@ public class Animal {
     private Time lastFeedingTime;
     private Time lastPetingTime;
     private Time lastProducingTime;
+    private boolean isCollected;
+    private AnimalProduct currentProduct;
 
-    public Animal(AnimalType type, Player owner,String name) {
+
+    public Animal(AnimalType type, Player owner, String name) {
         this.type = type;
         this.owner = owner;
         this.name = name;
         this.isOutside = false;
+        this.isCollected=true;
     }
 
     public AnimalType getType() {
@@ -34,7 +41,35 @@ public class Animal {
         this.position = position;
     }
 
+    public AnimalProduct whichProduct(){
+        if(this.currentProduct!=null){
+            return this.currentProduct;
+        }
+        if(this.type.getProducts().size() == 1 ){
+            this.currentProduct = this.type.getProducts().get(0);
+            return type.getProducts().get(0);
+        }
+        if(this.friendship>=100){
+            double x =((this.friendship+(150* ThreadLocalRandom.current().nextDouble(0.5, 1.5)))/100);
+            double roll=Math.random();
+            if(roll < x){
+                this.currentProduct = this.type.getProducts().get(1);
+                return type.getProducts().get(1);
+            }
+            else{
+                this.currentProduct = this.type.getProducts().get(0);
+                return type.getProducts().get(0);
+            }
+        }
+        else{
+            this.currentProduct = this.type.getProducts().get(0);
+            return type.getProducts().get(0);
+        }
+    }
 
+    public AnimalProduct getCurrentProduct() {
+        return currentProduct;
+    }
 
     public void increaseFriendship(int amount) {
         if(friendship+amount<1000){
@@ -63,20 +98,40 @@ public class Animal {
         return isOutside;
     }
 
-    public void produce() {
-//        TODO: check if its time to produce new product or not
+    public void setCurrentProduct(AnimalProduct currentProduct) {
+        this.currentProduct = currentProduct;
+    }
+
+    public boolean doesProduce() {
         App app = App.getInstance();
         Game game=app.getCurrentGame();
         if(lastFeedingTime.getSeason() == game.getTime().getSeason()){
             if(lastPetingTime.getDay() - game.getTime().getDay()==-1){
-
+                return true;
             }
+        }
+        else if(lastPetingTime.getSeason().getNext() == game.getTime().getSeason()){
+            if(lastPetingTime.getDay()==28 && game.getTime().getDay()==1){
+                return true;
+            }
+        }
+        else if(!isCollected){
+            return true;
+        }
+        return false;
+    }
+
+    public double productQuality(){
+        if(this.friendship>=100){
+            double x=
         }
     }
 
     public void collect() {}
 
-    public int calSellingPrice() {}
+    public int calSellingPrice() {
+        return (int)(this.type.getCost()*((double)this.friendship/100 + 0.3);
+    }
 
     public String getName() {
         return name;
@@ -104,5 +159,13 @@ public class Animal {
 
     public Time getLastProducingTime() {
         return lastProducingTime;
+    }
+
+    public boolean isCollected() {
+        return isCollected;
+    }
+
+    public void setCollected(boolean collected) {
+        isCollected = collected;
     }
 }

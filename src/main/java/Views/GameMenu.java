@@ -250,6 +250,18 @@ public class GameMenu implements AppMenu {
                 System.out.println(gameController.fishing(matcher.group(1)).message());
                 break;
             }
+            case collectProducts:{
+                Pattern pattern=Pattern.compile("^\\s*collect produce -n (?<name>.+?)\\s*$");
+                Matcher matcher=pattern.matcher(input);
+                System.out.println(gameController.collectProducts(matcher.group(1)).message());
+                break;
+            }
+            case sellAnimal:{
+                Pattern pattern=Pattern.compile("^\\s*sell animal -n (?<name>.+?)\\s*$");
+                Matcher matcher=pattern.matcher(input);
+                System.out.println(gameController.sellAnimal(matcher.group(1)).message());
+                break;
+            }
         }
     }
 
@@ -395,6 +407,12 @@ public class GameMenu implements AppMenu {
         }
         else if(input.matches("fishing -p (?<fishingPole>.+?)")){
             runCommand(GameCommand.fishing, input);
+        }
+        else if(input.matches("^\\s*collect produce -n (?<name>.+?)\\s*$")){
+            runCommand(GameCommand.collectProducts,input);
+        }
+        else if(input.matches("^\\s*sell animal -n (?<name>.+?)\\s*$")){
+            runCommand(GameCommand.sellAnimal, input);
         }
     }
 }
