@@ -7,16 +7,28 @@ public class Energy {
     public boolean isUnlimited = false;
 
     public void addEnergy(int amount) {
-
+        if(this.amount + amount <= maxAmount) {
+            this.amount += amount;
+        }
     }
 
     public void decreaseEnergy(int amount) {
-
+        if(this.amount - amount >=0){
+            this.amount -= amount;
+        }
+        else{
+            this.amount = 0;
+            this.isFainted=true;
+        }
     }
 
-    public void increaseMaxAmount(int amount) {}
+    public void increaseMaxAmount(int amount) {
+        this.maxAmount += amount;
+    }
 
-    public void decreaseMaxAmount(int amount) {}
+    public void decreaseMaxAmount(int amount) {
+        this.maxAmount -= amount;
+    }
 
     public int getAmount() {
         return amount;

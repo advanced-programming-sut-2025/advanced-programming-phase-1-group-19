@@ -70,9 +70,13 @@ public class Player {
         this.position = position;
     }
 
-    public void addEnergy(int amount) {}
+    public void addEnergy(int amount) {
+            this.energy.addEnergy(amount);
+    }
 
-    public void decreaseEnergy(int amount) {}
+    public void decreaseEnergy(int amount) {
+        this.energy.decreaseEnergy(amount);
+    }
 
     public void setFainted(boolean fainted) {
         isFainted = fainted;

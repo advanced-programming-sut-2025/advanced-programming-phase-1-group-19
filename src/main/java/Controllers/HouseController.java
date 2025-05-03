@@ -46,10 +46,17 @@ public class HouseController extends Controller {
             return new GameMessage(null,"You don't have this item in your refrigerator");
         }
         if(put){
+            player.decreaseEnergy(3);
+            player.getBackPack().getItems().put(item,player.getBackPack().getItems().get(item)-1);
             player.getFarm().getHouse().getRefrigerator().putItem(item,amount);
             return new GameMessage(null,"You successfully put the "+item.getName()+" into the refrigerator");
         }
+        if(!put && player.getBackPack().getCapacity()<= 0){
+            return new GameMessage(null,"You don't have enough space in your backpack");
+        }
+        player.decreaseEnergy(3);
         player.getFarm().getHouse().getRefrigerator().pickItem(item,amount);
+        player.getBackPack().getItems().put(item,amount);
         return new GameMessage(null,"You successfully put the "+item.getName()+" into your backpack");
     }
 
@@ -125,9 +132,15 @@ public class HouseController extends Controller {
                 player.getBackPack().getItems().put(item,player.getBackPack().getItems().get(item)-1);
                 Food food=(Food) item;
                 //TODO:apply Buff
+                player.addEnergy(food.getRecipe().getEnergy());
+                if(food.getRecipe().getBuff()!=null){
+
+                }
+                player.getBackPack().getItems().remove(item);
+
             }
         }
-
+        return new GameMessage(null,"There is no food with that name");
     }
 
     public GameMessage buildBarn(String type,int x,int y) {

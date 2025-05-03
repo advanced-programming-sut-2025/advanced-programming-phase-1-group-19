@@ -1,10 +1,7 @@
 package Controllers;
 
 import Modules.*;
-import Modules.Animal.Animal;
-import Modules.Animal.AnimalType;
-import Modules.Animal.Fish;
-import Modules.Animal.FishType;
+import Modules.Animal.*;
 import Modules.Enums.*;
 import Modules.Interactions.Messages.*;
 import Modules.Map.*;
@@ -476,6 +473,8 @@ public class GameController extends Controller {
             } else {
                 animal.setPosition(player.getFarm().getBarn().getPlacedTile().getPosition());
                 animal.setOutside(true);
+                animal.setLastFeedingTime(game.getTime());
+                animal.increaseFriendship(8);
                 return new GameMessage(null, "The animal entered the barn");
             }
 
@@ -540,15 +539,18 @@ public class GameController extends Controller {
         if(animal.getCurrentProduct() != null){
             if(animal.getName().equals("cow") || animal.getName().equals("goat")){
 //               TODO:check if there is watering can in inventory
+                player.decreaseEnergy(4);
                 if(player.getBackPack().getCapacity()==0){
                     return new GameMessage(null,"There is no space in your backpack");
                 }
+
                 player.getBackPack().addItem(animal.getCurrentProduct(),1);
                 animal.setCurrentProduct(null);
                 return new GameMessage(null,animal.getCurrentProduct().getName()+" collected");
             }
             else if(animal.getName().equals("sheep")){
 //               TODO:check if there is gheuchi in inventory
+                player.decreaseEnergy(4);
                 if(player.getBackPack().getCapacity()==0){
                     return new GameMessage(null,"There is no space in your backpack");
                 }
@@ -595,31 +597,207 @@ public class GameController extends Controller {
 
 
 
-    private Fish generateRandomFish(Season season) {
+    private FishType generateRandomFish(Season season,boolean legendary) {
         Random rand = new Random();
-        int fishCount = rand.nextInt(4) + 1;
-        if(season==Season.spring){
-            switch (fishCount) {
-                case 1:{
-                    return new Fish();
-                    break;
+        if(!legendary){
+            int fishCount = rand.nextInt(4) + 1;
+            if(season==Season.spring){
+                switch (fishCount) {
+                    case 1:{
+                        return FishType.flounder;
+                        break;
+                    }
+                    case 2:{
+                        return FishType.lionFish;
+                        break;
+                    }
+                    case 3:{
+                        return FishType.herring;
+                        break;
+                    }
+                    case 4:{
+                        return FishType.ghostFish;
+                        break;
+                    }
+                }
+            }
+            else if(season==Season.winter){
+                switch (fishCount) {
+                    case 1:{
+                        return FishType.midnightCarp;
+                        break;
+                    }
+                    case 2:{
+                        return FishType.squid;
+                        break;
+                    }
+                    case 3:{
+                        return FishType.tuna;
+                        break;
+                    }
+                    case 4:{
+                        return FishType.perch;
+                        break;
+                    }
+                }
+            }
+            else if(season==Season.fall){
+                switch (fishCount) {
+                    case 1:{
+                        return FishType.salmon;
+                        break;
+                    }
+                    case 2:{
+                        return FishType.sardine;
+                        break;
+                    }
+                    case 3:{
+                        return FishType.shad;
+                        break;
+                    }
+                    case 4:{
+                        return FishType.blueDiscus;
+                        break;
+                    }
+                }
+            }
+            else if(season==Season.summer){
+                switch (fishCount) {
+                    case 1:{
+                        return FishType.tilapia;
+                        break;
+                    }
+                    case 2:{
+                        return FishType.dorado;
+                        break;
+                    }
+                    case 3:{
+                        return FishType.sunFish;
+                        break;
+                    }
+                    case 4:{
+                        return FishType.rainbowTrout;
+                        break;
+                    }
                 }
             }
         }
-
+        else{
+            int fishCount = rand.nextInt(5) + 1;
+            if(season==Season.spring){
+                switch (fishCount) {
+                    case 1:{
+                        return FishType.flounder;
+                        break;
+                    }
+                    case 2:{
+                        return FishType.lionFish;
+                        break;
+                    }
+                    case 3:{
+                        return FishType.herring;
+                        break;
+                    }
+                    case 4:{
+                        return FishType.ghostFish;
+                        break;
+                    }
+                    case 5:{
+                        return FishType.legend;
+                        break;
+                    }
+                }
+            }
+            else if(season==Season.winter){
+                switch (fishCount) {
+                    case 1:{
+                        return FishType.midnightCarp;
+                        break;
+                    }
+                    case 2:{
+                        return FishType.squid;
+                        break;
+                    }
+                    case 3:{
+                        return FishType.tuna;
+                        break;
+                    }
+                    case 4:{
+                        return FishType.perch;
+                        break;
+                    }
+                    case 5:{
+                        return FishType.glacierFish;
+                        break;
+                    }
+                }
+            }
+            else if(season==Season.fall){
+                switch (fishCount) {
+                    case 1:{
+                        return FishType.salmon;
+                        break;
+                    }
+                    case 2:{
+                        return FishType.sardine;
+                        break;
+                    }
+                    case 3:{
+                        return FishType.shad;
+                        break;
+                    }
+                    case 4:{
+                        return FishType.blueDiscus;
+                        break;
+                    }
+                    case 5:{
+                        return FishType.angler;
+                        break;
+                    }
+                }
+            }
+            else if(season==Season.summer){
+                switch (fishCount) {
+                    case 1:{
+                        return FishType.tilapia;
+                        break;
+                    }
+                    case 2:{
+                        return FishType.dorado;
+                        break;
+                    }
+                    case 3:{
+                        return FishType.sunFish;
+                        break;
+                    }
+                    case 4:{
+                        return FishType.rainbowTrout;
+                        break;
+                    }
+                    case 5:{
+                        return FishType.crimsonFish;
+                        break;
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     public GameMessage fishing(String fishingPole){
         App app = App.getInstance();
         Game game = app.getCurrentGame();
         Player player = app.getCurrentGame().getCurrentPlayer();
+        player.decreaseEnergy(8);
         switch (fishingPole) {
             case "Training":{
                 for (Item item : player.getBackPack().getItems().keySet()) {
                     if(item.getName().equals("Fishing Pole")){
                         Tool tool = (Tool) item;
                         if(tool.getLevel() == 0){
-
+                            player.decreaseEnergy(8);
+                            Fish fish=new Fish("fish",1,generateRandomFish(game.getTime().getSeason(),false),new Quality(Fish.getFishingQuality(game.getTodayWeather(),player.getSkill(SkillType.fishing).getLevel(),tool.getLevelInfo())));
+                            return new GameMessage(null,"You successfully got "+fish.getFishingCount(game.getTodayWeather(),player.getSkill(SkillType.fishing).getLevel())+" of "+fish.getName());
                         }
                     }
                 }
@@ -630,7 +808,9 @@ public class GameController extends Controller {
                     if(item.getName().equals("Fishing Pole")){
                         Tool tool = (Tool) item;
                         if(tool.getLevel() == 1){
-
+                            player.decreaseEnergy(8);
+                            Fish fish=new Fish("fish",1,generateRandomFish(game.getTime().getSeason(),false),new Quality(Fish.getFishingQuality(game.getTodayWeather(),player.getSkill(SkillType.fishing).getLevel(),tool.getLevelInfo())));
+                            return new GameMessage(null,"You successfully got "+fish.getFishingCount(game.getTodayWeather(),player.getSkill(SkillType.fishing).getLevel())+" of "+fish.getName());
                         }
                     }
                 }
@@ -641,7 +821,9 @@ public class GameController extends Controller {
                     if(item.getName().equals("Fishing Pole")){
                         Tool tool = (Tool) item;
                         if(tool.getLevel() == 2){
-
+                            player.decreaseEnergy(6);
+                            Fish fish=new Fish("fish",1,generateRandomFish(game.getTime().getSeason(),false),new Quality(Fish.getFishingQuality(game.getTodayWeather(),player.getSkill(SkillType.fishing).getLevel(),tool.getLevelInfo())));
+                            return new GameMessage(null,"You successfully got "+fish.getFishingCount(game.getTodayWeather(),player.getSkill(SkillType.fishing).getLevel())+" of "+fish.getName());
                         }
                     }
                 }
@@ -652,13 +834,16 @@ public class GameController extends Controller {
                     if(item.getName().equals("Fishing Pole")){
                         Tool tool = (Tool) item;
                         if(tool.getLevel() == 3){
-
+                            player.decreaseEnergy(4);
+                            Fish fish=new Fish("fish",1,generateRandomFish(game.getTime().getSeason(),true),new Quality(Fish.getFishingQuality(game.getTodayWeather(),player.getSkill(SkillType.fishing).getLevel(),tool.getLevelInfo())));
+                            return new GameMessage(null,"You successfully got "+fish.getFishingCount(game.getTodayWeather(),player.getSkill(SkillType.fishing).getLevel())+" of "+fish.getName());
                         }
                     }
                 }
                 break;
             }
         }
+        return null;
     }
 
 
