@@ -5,15 +5,27 @@ import Modules.Farming.SeedType;
 import Modules.Item;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class BackPack {
-    private HashMap<Item, Integer> items;
+    private HashMap<Item, Integer> items = new HashMap<>();
+    private static ArrayList<Integer> capacity = new ArrayList<>();
+    private static final ArrayList<String> name = new ArrayList<>();
     private int level;
     private int maxCapacity;
     private int amount;
-
+    static {
+        capacity.add(12);
+        capacity.add(24);
+        capacity.add(1000000000);
+        name.add("initial");
+        name.add("big");
+        name.add("deluxe");
+    }
     public BackPack() {
-        this.level = 0;
+        level = 0;
+        maxCapacity = 12;
+        amount = 0;
     }
 
     public HashMap<Item, Integer> getItems() {
@@ -21,10 +33,15 @@ public class BackPack {
     }
 
     public void upgradeLevel() {
+        if(level < 3){
+            maxCapacity = capacity.get(level+1);
+            level++;
+        }
     }
 
     public void addItem(Item item, int count) {
         items.put(item, items.getOrDefault(item, 0) + count);
+        amount = getCapacity();
     }
 
     public boolean removeItem(Item item, int count) {
@@ -33,6 +50,7 @@ public class BackPack {
             if (items.get(item) == 0) {
                 items.remove(item);
             }
+            amount = getCapacity();
             return true;
         }
         return false;
@@ -43,6 +61,15 @@ public class BackPack {
             return false;
         }
         return items.get(item) >= count;
+    }
+    public Tool getToolByType(String name) {
+        for (Map.Entry<Item, Integer> entry : items.entrySet()) {
+            Item item = entry.getKey();
+            if(item.getName().equals(name) && item instanceof Tool) {
+                return (Tool) item;
+            }
+        }
+        return null;
     }
 
     public Seed getSeedInBachPack(SeedType type) {
@@ -57,9 +84,14 @@ public class BackPack {
         return null;
     }
 
+
     public int getCapacity() {
-        int capacity = maxCapacity-items.size();
-        return capacity;
-//        TODO: calculate free space
+        int totalCapacity = 0;
+        for (Map.Entry<Item, Integer> entry : items.entrySet()) {
+            Item item = entry.getKey();
+            Integer count = entry.getValue();
+            totalCapacity += count * item.getTakenSpace();
+        }
+        return totalCapacity;
     }
 }

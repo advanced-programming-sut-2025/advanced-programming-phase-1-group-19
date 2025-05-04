@@ -13,10 +13,14 @@ import Modules.Interactions.Messages.Message;
 import Modules.Map.*;
 import Modules.Tools.Tool;
 import Modules.Tools.ToolType;
+import Modules.Tools.BackPack;
+import Modules.Tools.Tool;
+import Modules.Tools.WateringCan;
 import Views.*;
 import Modules.Tools.BackPack;
 import Views.GameMenu;
 
+import java.util.Map;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -260,7 +264,7 @@ public class GameController extends Controller {
         StringBuilder stringBuilder = new StringBuilder();
         App app = App.getInstance();
         Player player = app.getCurrentGame().getCurrentPlayer();
-        for (java.util.Map.Entry<Item, Integer> entry : player.getBackPack().getItems().entrySet()) {
+        for (Map.Entry<Item, Integer> entry : player.getBackPack().getItems().entrySet()) {
             Item item = entry.getKey();
             Integer value = entry.getValue();
             stringBuilder.append("Item: ").append(item.getName())
@@ -276,6 +280,7 @@ public class GameController extends Controller {
         if (delete) {
             for (Item item : player.getBackPack().getItems().keySet()) {
                 if (item.getName().equals(itemName)) {
+                    //TODO: add refund!
                     player.getBackPack().getItems().remove(item);
                     break;
                 }
@@ -284,6 +289,7 @@ public class GameController extends Controller {
         }
         for (Item item : player.getBackPack().getItems().keySet()) {
             if (item.getName().equals(itemName)) {
+                //TODO: add refund!
                 int currentQty = player.getBackPack().getItems().get(item);
                 if (currentQty > number) {
                     player.getBackPack().getItems().put(item, currentQty - number);
@@ -315,12 +321,101 @@ public class GameController extends Controller {
 
     }
 
+    public GameMessage equipTool(String toolName) {
+        BackPack backPack = App.getInstance().getCurrentGame().getCurrentPlayer().getBackPack();
+        boolean toolFound = false;
+        for (Map.Entry<Item, Integer> entry : backPack.getItems().entrySet()) {
+            Item item = entry.getKey();
+            // only one tool of each type!
+            if (item.getName().equals(toolName)) {
+                App.getInstance().getCurrentGame().getCurrentPlayer().setCurrentTool((Tool) item);
+                toolFound = true;
+                break;
+            }
+        }
+        if (!toolFound) {
+            return new GameMessage(null, "you don't have that tool!");
+        } else {
+            return new GameMessage(null, "You have equipped " + toolName);
+        }
+    }
+
+    public GameMessage showCurrentTool() {
+        Tool tool = App.getInstance().getCurrentGame().getCurrentPlayer().getCurrentTool();
+        if (tool == null) {
+            return new GameMessage(null, "you don't have equipped tool!");
+        } else {
+            return new GameMessage(null, "You have equipped " + tool.getName());
+        }
+    }
+
+    public GameMessage showAllTools() {
+        BackPack backPack = App.getInstance().getCurrentGame().getCurrentPlayer().getBackPack();
+        StringBuilder stringBuilder = new StringBuilder("All tools: \n");
+        for (Map.Entry<Item, Integer> entry : backPack.getItems().entrySet()) {
+            Item item = entry.getKey();
+            if (item instanceof Tool tool) {
+                stringBuilder.append("Tool: ").append(tool.getName()).append("\n");
+            }
+        }
+        stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+        return new GameMessage(null, stringBuilder.toString());
+    }
+
+    public GameMessage upgradeTool(String toolName) {
+        // TODO:check if in blacksmith!
+        // TODO: check if enough money and energy
+    }
+
+    public GameMessage useTool(String direction) {
+
+        Tool tool = App.getInstance().getCurrentGame().getCurrentPlayer().getCurrentTool();
+        switch (direction) {
+            case "u": {
+
+                break;
+            }
+            case "d": {
+
+                break;
+            }
+            case "l": {
+
+                break;
+            }
+            case "r": {
+                break;
+            }
+            case "ur": {
+                break;
+            }
+            case "ul": {
+                break;
+            }
+            case "dr": {
+                break;
+            }
+            case "dl": {
+                break;
+            }
+            default: {
+
+            }
+        }
+    }
+
+    public GameMessage howMuchWater() {
+        BackPack backPack = App.getInstance().getCurrentGame().getCurrentPlayer().getBackPack();
+        WateringCan wateringCan = (WateringCan) backPack.getToolByType("wateringCan");
+        return new GameMessage(null, "you have " + wateringCan.getCurrentCapacity() + " water in watering can");
+    }
+
     public GameMessage printMap(Position position, int size) {
         if (size > 80) {
             return new GameMessage(null, "please use sizes smaller than 100");
         }
         Game game = App.getInstance().getCurrentGame();
-        Map map = game.getMap();
+        Map map = (Map) game.getMap();
         char[][] all = new char[size][size];
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {

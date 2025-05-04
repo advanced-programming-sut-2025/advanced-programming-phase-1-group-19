@@ -3,35 +3,42 @@ package Modules.Tools;
 import java.util.ArrayList;
 
 public class WateringCan extends Tool {
-
-    private static ArrayList<LevelInfo> levels;
-    private static ArrayList<Integer> maxCapacity;
+    private static ArrayList<Integer> maxCapacity = new ArrayList<>();
     private int amount;
 
     static {
-//        TODO: set level info here
-//        TODO: set maxCapacity here
+        maxCapacity.add(40);
+        maxCapacity.add(55);
+        maxCapacity.add(70);
+        maxCapacity.add(85);
+        maxCapacity.add(100);
     }
 
-    public WateringCan() {
-
+    public WateringCan(String name, int takenSpace) {
+        super(name, takenSpace);
+        this.amount = 0;
     }
 
     public void fill() {
-
+        this.amount = maxCapacity.get(level);
     }
 
     public int getCurrentCapacity() {
-
+        return amount;
     }
 
-    public void decreaseCapacity(int amount) {}
+    public void decreaseCapacity(int amount) {
+        this.amount -= amount;
+    }
 
     @Override
     public LevelInfo getLevelInfo() {
-
+        return super.getLevelInfo();
     }
 
+    public void upgradeLevel() {
+        super.upgradeLevel();
+    }
     @Override
     public void use() {
 
@@ -39,7 +46,7 @@ public class WateringCan extends Tool {
 
     @Override
     public String getName() {
-        return "Watering Can";
+        return "WateringCan";
 //        TODO:add its type
     }
 }
