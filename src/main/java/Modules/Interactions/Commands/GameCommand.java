@@ -40,5 +40,8 @@ public enum GameCommand implements Command {
     fishing,
     collectProducts,
     sellAnimal,
+    craftInfo,
+    plant,
+    showPlant,
     exit;
 }

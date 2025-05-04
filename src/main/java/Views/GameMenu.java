@@ -1,11 +1,14 @@
 package Views;
 
 import Controllers.*;
+import Modules.Farming.Seed;
+import Modules.Farming.SeedType;
 import Modules.App;
 import Modules.Enums.InGameMenu;
 import Modules.Game;
 import Modules.Interactions.Commands.*;
 import Modules.Interactions.Messages.*;
+import Modules.Map.Direction;
 import Modules.Map.Position;
 import Modules.Player;
 
@@ -262,6 +265,33 @@ public class GameMenu implements AppMenu {
                 System.out.println(gameController.sellAnimal(matcher.group(1)).message());
                 break;
             }
+            case craftInfo: {
+                Pattern pattern = Pattern.compile("^craftinfo -n (?<name>.+)$");
+                Matcher matcher = pattern.matcher(input);
+                String name = matcher.group("name");
+                System.out.println(gameController.craftInfo(name).message());
+                break;
+            }
+            case plant: {
+                Pattern pattern = Pattern.compile("^plant -s (?<seed>\\S+) -d (?<direction>\\S+)$");
+                Matcher matcher = pattern.matcher(input);
+                String seedName = matcher.group("seed");
+                String directionName = matcher.group("direction");
+                SeedType seed = SeedType.valueOf(seedName);
+                Direction direction = Direction.getDirection(directionName);
+                System.out.println(gameController.plant(seed, direction));
+                break;
+            }
+            case showPlant: {
+                Pattern pattern = Pattern.compile("^show plant <(?<x>\\d+) , (?<y>\\d+)>$");
+                Matcher matcher = pattern.matcher(input);
+                String xString = matcher.group("x");
+                String yString = matcher.group("y");
+                int x = Integer.parseInt(xString);
+                int y = Integer.parseInt(yString);
+                System.out.println(gameController.showPlant(new Position(x, y)));
+                break;
+            }
         }
     }
 
@@ -413,6 +443,15 @@ public class GameMenu implements AppMenu {
         }
         else if(input.matches("^\\s*sell animal -n (?<name>.+?)\\s*$")){
             runCommand(GameCommand.sellAnimal, input);
+        }
+        else if(input.matches("^craftinfo -n (?<name>.+?)$")) {
+            runCommand(GameCommand.craftInfo, input);
+        }
+        else if(input.matches("^plant -s (?<seed>\\S+) -d (?<direction>\\S+)$")) {
+            runCommand(GameCommand.plant, input);
+        }
+        else if(input.matches("^show plant <(?<x>\\d+) , (?<y>\\d+)>$")) {
+            runCommand(GameCommand.showPlant, input);
         }
     }
 }
