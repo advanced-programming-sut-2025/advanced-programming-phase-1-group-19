@@ -413,6 +413,9 @@ public class GameController extends Controller {
         if (plantType == null) {
             return new GameMessage(null, "oops, check the plantType and seedType files :(");
         }
+        if(!plantType.getSeasonsAvailable().contains(game.getTime().getSeason())) {
+            return new GameMessage(null, "you can't plant that in this season!");
+        }
 
         Position playerPosition = player.getPosition();
         Position targetPosition = new Position(playerPosition.x, playerPosition.y);
