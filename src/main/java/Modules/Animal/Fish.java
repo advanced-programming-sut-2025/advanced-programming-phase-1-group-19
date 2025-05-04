@@ -55,7 +55,7 @@ public class Fish extends Item {
 
 
     public Fish(String name, int takenSpace, FishType type, Quality quality) {
-        super(name, takenSpace);
+        super(name, takenSpace,false);
         this.type = type;
         this.quality = quality;
     }

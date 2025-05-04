@@ -8,7 +8,7 @@ public class AnimalProduct extends Item {
     private Quality quality;
 
     public AnimalProduct(String name, int takenSpace, AnimalProductType type) {
-        super(name, takenSpace);
+        super(name, takenSpace, false);
         this.type = type;
     }
 

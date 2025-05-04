@@ -7,7 +7,7 @@ public class Food extends Item {
     private CookingRecipe recipe;
 
     public Food(String name, int takenSpace, CookingRecipe recipe) {
-        super(name, takenSpace);
+        super(name, takenSpace,true);
         this.recipe = recipe;
     }
 
