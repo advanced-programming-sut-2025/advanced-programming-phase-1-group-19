@@ -53,13 +53,17 @@ public class RegistrationController extends Controller implements UserInfoContro
             passwordChars.add(ALL_CHARS.charAt(random.nextInt(ALL_CHARS.length())));
         }
         Collections.shuffle(passwordChars);
-        return passwordChars.toString();
+        StringBuilder ret = new StringBuilder();
+        for(Character c : passwordChars) {
+            ret.append(c);
+        }
+        return ret.toString();
     }
 
     public RegistrationMessage Register(String username, String password, String passwordConfirm, String nickName, String email, String gender) {
         App app = App.getInstance();
         if (isUsernameTaken(username)) {
-            return new RegistrationMessage(null, "this username is already taken\nthis is a recommended password: " + password + "-9");
+            return new RegistrationMessage(null, "this username is already taken\nthis is a recommended username: " + username + "-9");
         }
 
         if (!isUsernameValid(username)) {
@@ -78,7 +82,7 @@ public class RegistrationController extends Controller implements UserInfoContro
             String codedRandomPassword = sha256(randomPassword);
             User newUser = new User(username, codedRandomPassword, nickName, email, gender);
             app.addUser(newUser);
-            return new RegistrationMessage(RegistrationCommand.askForPassword, "This is a random password: " + password + "\ndo you want to set this as your password?");
+            return new RegistrationMessage(RegistrationCommand.askForPassword, "This is a random password: " + randomPassword + "\ndo you want to set this as your password?");
         }
 
         if (!isPasswordValid(password)) {
@@ -124,7 +128,7 @@ public class RegistrationController extends Controller implements UserInfoContro
     public RegistrationMessage pickQuestion(int id, String answer, String answerConfirm) {
         App app = App.getInstance();
         if (!answer.equals(answerConfirm)) {
-            return new RegistrationMessage(null, "the answer and confirm are not equal");
+            return new RegistrationMessage(RegistrationCommand.askQuestion, "the answer and confirm are not equal");
         }
         Question question = Question.getQuestion(id);
         app.getLastUser().setQuestion(question);
@@ -149,7 +153,8 @@ public class RegistrationController extends Controller implements UserInfoContro
         }
 
         app.setCurrentUser(user);
-        return new RegistrationMessage(null, "You logged in successfully");
+        app.setCurrentMenu(Menu.MainMenu);
+        return new RegistrationMessage(null, "You logged in successfully! you are now in main menu");
     }
 
     public RegistrationMessage forgetPassword(String username) {
@@ -157,7 +162,7 @@ public class RegistrationController extends Controller implements UserInfoContro
             return new RegistrationMessage(null, "Wrong Username");
         }
         App app = App.getInstance();
-        return new RegistrationMessage(RegistrationCommand.answerQuestion, app.getUserByUsername(username).getQuestion().toString());
+        return new RegistrationMessage(RegistrationCommand.answerQuestion, app.getUserByUsername(username).getQuestion().toString().substring(3));
     }
 
     public RegistrationMessage checkAnswer(String username, String answer) {

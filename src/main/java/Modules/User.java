@@ -22,6 +22,8 @@ public class User {
         this.email = email;
         this.gender = gender;
         this.gamesMoney = new ArrayList<>();
+        this.question = Question.first;
+        this.answer = "none";
     }
 
     public String getNickname() {

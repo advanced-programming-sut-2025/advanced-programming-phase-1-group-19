@@ -1,16 +1,11 @@
 package Modules.Enums;
 
 public enum Question {
-    first("What was the name of your first teacher?"),
-    second("What was the name of your childhood pet?"),
-    third("What was the name of your elementary school?"),
-    fourth("In which city were you born?"),
-    fifth("What was the first movie you saw in a cinema?"),
-    sixth("What was the model of your first mobile phone?"),
-    seventh("What was the name of your childhood best friend?"),
-    eighth("What street did you grow up on?"),
-    ninth("What is your paternal grandmother’s name?"),
-    tenth("What was your dream job as a child?");
+    first("1- What was the name of your first teacher?"),
+    second("2- What was the name of your childhood pet?"),
+    third("3- What was the name of your elementary school?"),
+    fourth("4- In which city were you born?"),
+    fifth("5- What was the first movie you saw in a cinema?");
 
     private final String question;
     private final int id;
