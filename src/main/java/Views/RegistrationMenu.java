@@ -33,11 +33,11 @@ public class RegistrationMenu implements AppMenu {
                 break;
             }
             case register: {
-                String regex="^\\s*register -u (?<username>.+?) -p (?<password>.+?) (?<passwordConfirm>.+?) -n " +
+                String regex="^\\s*register -u (?<username>.+?) -p (?<password>.+?) -pc (?<passwordConfirm>.+?) -n " +
                         "(?<nickname>.+?) -e (?<email>.+?) -g (?<gender>.+?)\\s*$";
                 Pattern pattern = Pattern.compile(regex);
                 Matcher matcher = pattern.matcher(input);
-                RegistrationMessage message=controller.Register(matcher.group(1), matcher.group(2), matcher.group(3), matcher.group(4), matcher.group(5), matcher.group(6));
+                RegistrationMessage message=controller.Register(matcher.group("username"), matcher.group("password"), matcher.group("passwordConfirm"), matcher.group("nickname"), matcher.group("email"), matcher.group("gender"));
                 System.out.println(message.message());
 
                 if(message.command().equals(RegistrationCommand.askForPassword)){
@@ -102,8 +102,7 @@ public class RegistrationMenu implements AppMenu {
         if (input.matches("^show current menu$")) {
             runCommand(RegistrationCommand.showCurrentMenu, input);
         }
-        else if(input.matches("^\\s*register -u (?<username>.+?) -p (?<password>.+?) (?<passwordConfirm>.+?) -n " +
-                "(?<nickname>.+?) -e (?<email>.+?) -g (?<gender>.+?)\\s*$")) {
+        else if(input.matches("^register -u (?<username>.+?) -p (?<password>.+?) -pc (?<passwordConfirm>.+?) -n (?<nickname>.+?) -e (?<email>.+?) -g (?<gender>.+?)$")) {
             runCommand(RegistrationCommand.register, input);
         }
         else if(input.matches("^login\\s+-u\\s+(\\S+)\\s+-p\\s+(\\S+)(\\s+--stay-logged-in)?$")){
@@ -111,6 +110,9 @@ public class RegistrationMenu implements AppMenu {
         }
         else if(input.matches("^\\s*forget password -u (?<username>.+?)\\s*$")){
             runCommand(RegistrationCommand.forgetPassword, input);
+        }
+        else {
+            System.out.println("invalid command!");
         }
     }
 }

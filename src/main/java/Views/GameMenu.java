@@ -499,5 +499,8 @@ public class GameMenu implements AppMenu {
         else if(input.matches("^\\s*tools use -d (?<direction>.+)\\s*$")){
             runCommand(GameCommand.toolUse, input);
         }
+        else {
+            System.out.println("invalid command!");
+        }
     }
 }

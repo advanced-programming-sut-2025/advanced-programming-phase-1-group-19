@@ -10,6 +10,9 @@ public class NPCDialogue {
     private NPC npc;
 
     public NPCDialogue(NPC npc) {}
-    public String GetDialogue(Weather weather, Time time,int friendShipLevel) {}
+    public String GetDialogue(Weather weather, Time time,int friendShipLevel) {
+//        TODO: get random dialogue based on parameters
+        return null;
+    }
 
 }

@@ -69,6 +69,10 @@ public class RegistrationController extends Controller implements UserInfoContro
         if (!isEmailValid(email)) {
             return new RegistrationMessage(null, "Email format is invalid");
         }
+
+        if(!gender.equals("male") && !gender.equals("female")) {
+            return new RegistrationMessage(null, "Gender is invalid (male / female)");
+        }
         if (password.equals("random")) {
             String randomPassword = generateRandomPassword();
             String codedRandomPassword = sha256(randomPassword);
@@ -168,5 +172,6 @@ public class RegistrationController extends Controller implements UserInfoContro
     @Override
     public Message exit() {
 //        TODO: exit app
+        return null;
     }
 }

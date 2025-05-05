@@ -92,5 +92,8 @@ public class ProfileMenu implements AppMenu {
         else if(input.matches("^\\s*show current menu\\s*$")){
             runCommand(ProfileCommand.showCurrentMenu, input);
         }
+        else {
+            System.out.println("invalid command!");
+        }
     }
 }

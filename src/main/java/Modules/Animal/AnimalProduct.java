@@ -39,4 +39,9 @@ public class AnimalProduct extends Item {
     public String getName() {
         return type.getName();
     }
+
+    @Override
+    public int getPrice() {
+        return type.getPrice();
+    }
 }

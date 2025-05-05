@@ -114,4 +114,9 @@ public class Fish extends Item {
     public String getName() {
         return type.getName();
     }
+
+    @Override
+    public int getPrice() {
+        return (int) (quality.getPriceRatio() * type.getBasePrice());
+    }
 }

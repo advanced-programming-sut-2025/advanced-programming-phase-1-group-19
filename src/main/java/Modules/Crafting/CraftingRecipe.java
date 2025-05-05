@@ -13,7 +13,10 @@ public enum CraftingRecipe implements Recipe {
 
     CraftingRecipe() {}
 
-    public CraftingRecipe getCraftingRecipeByName(String name) {}
+    public CraftingRecipe getCraftingRecipeByName(String name) {
+//        TODO: fix this
+        return null;
+    }
 
     @Override
     public String getProductName() {

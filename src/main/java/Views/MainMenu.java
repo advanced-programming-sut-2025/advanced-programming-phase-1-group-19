@@ -68,6 +68,9 @@ public class MainMenu implements AppMenu {
         else if(input.matches("^\\s*menu exit\\s*$")){
             runCommand(MainCommand.exit, input);
         }
+        else {
+            System.out.println("invalid command!");
+        }
     }
 
 }

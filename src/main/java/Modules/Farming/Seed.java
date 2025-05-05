@@ -31,6 +31,11 @@ public class Seed extends Item {
         return type.getName();
     }
 
+    @Override
+    public int getPrice() {
+        return 0;
+    }
+
     public SeedType getType() {
         return type;
     }

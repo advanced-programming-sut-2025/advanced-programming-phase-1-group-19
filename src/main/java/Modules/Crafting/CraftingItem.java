@@ -6,7 +6,10 @@ public class CraftingItem extends Item {
 
     private final CraftingRecipe recipe;
 
-    public CraftingItem(CraftingRecipe recipe) {}
+    public CraftingItem(CraftingRecipe recipe) {
+        super(recipe.getProductName(), 1, false);
+        this.recipe = recipe;
+    }
 
     public CraftingRecipe getRecipe() { return recipe; }
 
@@ -28,5 +31,10 @@ public class CraftingItem extends Item {
     @Override
     public String getName() {
         return recipe.getProductName();
+    }
+
+    @Override
+    public int getPrice() {
+        return recipe.getPrice();
     }
 }

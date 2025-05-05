@@ -93,10 +93,6 @@ public class Player {
 
     }
 
-    public ArrayList<Position> findPath(Position start, Position end) {
-//        TODO: find path to walk step by step
-    }
-
     public BackPack getBackPack() {
         return backPack;
     }
@@ -105,7 +101,9 @@ public class Player {
         return trashCan;
     }
 
-    public Skill getSkill(SkillType skillType) {}
+    public Skill getSkill(SkillType skillType) {
+        return skills.get(skillType);
+    }
 
     public boolean knowCraftingRecipe(CraftingRecipe recipe) {
         return knownCraftingRecipes.contains(recipe);
@@ -119,7 +117,10 @@ public class Player {
         return knownCookingRecipes;
     }
 
-    public ArrayList<CraftingRecipe> getKnownCraftingRecipes() {}
+    public ArrayList<CraftingRecipe> getKnownCraftingRecipes() {
+//        TODO: check this
+        return null;
+    }
 
     public boolean knowCookingRecipe(CookingRecipe recipe) {
         return knownCookingRecipes.contains(recipe);
@@ -133,13 +134,17 @@ public class Player {
 
     }
 
-    public boolean isBuffed(SkillType skillType) {}
+    public boolean isBuffed(SkillType skillType) {
+//        TODO: fix this
+        return true;
+    }
 
     public void disableEnergyBuff() {
 //        decrease energy capacity if the buff was over
     }
     public FriendShip getFriendShipByPlayer(Player player) {
-
+//        TODO: fix this
+        return null;
     }
 
     public Tool getCurrentTool() {

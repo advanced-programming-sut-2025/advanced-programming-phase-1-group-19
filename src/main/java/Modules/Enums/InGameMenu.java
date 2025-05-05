@@ -9,5 +9,7 @@ public enum InGameMenu {
         switch (this) {
 
         }
+//        TODO: check this if needed and fill this
+        return this.name();
     }
 }

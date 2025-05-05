@@ -8,6 +8,15 @@ public class Crop extends Item {
 
     private CropType type;
 
+    public Crop(CropType type) {
+        super(type.getName(), 1, true);
+        this.type = type;
+    }
+
+    public CropType getType(){
+        return type;
+    }
+
     @Override
     public void use() {
 
@@ -28,4 +37,8 @@ public class Crop extends Item {
         return type.getName();
     }
 
+    @Override
+    public int getPrice() {
+        return type.getInitialPrice();
+    }
 }

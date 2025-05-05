@@ -6,8 +6,8 @@ public class Food extends Item {
 
     private CookingRecipe recipe;
 
-    public Food(String name, int takenSpace, CookingRecipe recipe) {
-        super(name, takenSpace,true);
+    public Food(CookingRecipe recipe) {
+        super(recipe.getProductName(), 1,true);
         this.recipe = recipe;
     }
 
@@ -33,5 +33,10 @@ public class Food extends Item {
     @Override
     public String getName() {
         return recipe.getProductName();
+    }
+
+    @Override
+    public int getPrice() {
+        return recipe.getPrice();
     }
 }

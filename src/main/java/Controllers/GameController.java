@@ -20,7 +20,6 @@ import Views.*;
 import Modules.Tools.BackPack;
 import Views.GameMenu;
 
-import java.util.Map;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -51,9 +50,13 @@ public class GameController extends Controller {
     }
 
     private boolean isMapIdValid(int mapId) {
+//        TODO: check for usage
+        return true;
     }
 
     private boolean hasEnoughEnergy(int amount) {
+//        TODO: check for usage
+        return true;
     }
 
     public GameMessage startNewGame(String[] usernames) {
@@ -115,6 +118,8 @@ public class GameController extends Controller {
     }
 
     public GameMessage loadGame() {
+//        TODO: fix this
+        return null;
     }
 
     public GameMessage exitGame() {
@@ -264,7 +269,7 @@ public class GameController extends Controller {
         StringBuilder stringBuilder = new StringBuilder();
         App app = App.getInstance();
         Player player = app.getCurrentGame().getCurrentPlayer();
-        for (Map.Entry<Item, Integer> entry : player.getBackPack().getItems().entrySet()) {
+        for (java.util.Map.Entry<Item, Integer> entry : player.getBackPack().getItems().entrySet()) {
             Item item = entry.getKey();
             Integer value = entry.getValue();
             stringBuilder.append("Item: ").append(item.getName())
@@ -318,13 +323,13 @@ public class GameController extends Controller {
 
     public GameMessage buildGreenHouse() {
 //        TODO: check if we have enough coin and wood!
-
+        return null;
     }
 
     public GameMessage equipTool(String toolName) {
         BackPack backPack = App.getInstance().getCurrentGame().getCurrentPlayer().getBackPack();
         boolean toolFound = false;
-        for (Map.Entry<Item, Integer> entry : backPack.getItems().entrySet()) {
+        for (java.util.Map.Entry<Item, Integer> entry : backPack.getItems().entrySet()) {
             Item item = entry.getKey();
             // only one tool of each type!
             if (item.getName().equals(toolName)) {
@@ -352,7 +357,7 @@ public class GameController extends Controller {
     public GameMessage showAllTools() {
         BackPack backPack = App.getInstance().getCurrentGame().getCurrentPlayer().getBackPack();
         StringBuilder stringBuilder = new StringBuilder("All tools: \n");
-        for (Map.Entry<Item, Integer> entry : backPack.getItems().entrySet()) {
+        for (java.util.Map.Entry<Item, Integer> entry : backPack.getItems().entrySet()) {
             Item item = entry.getKey();
             if (item instanceof Tool tool) {
                 stringBuilder.append("Tool: ").append(tool.getName()).append("\n");
@@ -365,10 +370,13 @@ public class GameController extends Controller {
     public GameMessage upgradeTool(String toolName) {
         // TODO:check if in blacksmith!
         // TODO: check if enough money and energy
+        return null;
     }
 
     public GameMessage useTool(String direction) {
 
+
+//        TODO: fix this important!!!!
         Tool tool = App.getInstance().getCurrentGame().getCurrentPlayer().getCurrentTool();
         switch (direction) {
             case "u": {
@@ -402,6 +410,7 @@ public class GameController extends Controller {
 
             }
         }
+        return null;
     }
 
     public GameMessage howMuchWater() {
@@ -703,19 +712,15 @@ public class GameController extends Controller {
                 switch (fishCount) {
                     case 1:{
                         return FishType.flounder;
-                        break;
                     }
                     case 2:{
                         return FishType.lionFish;
-                        break;
                     }
                     case 3:{
                         return FishType.herring;
-                        break;
                     }
                     case 4:{
                         return FishType.ghostFish;
-                        break;
                     }
                 }
             }
@@ -723,19 +728,15 @@ public class GameController extends Controller {
                 switch (fishCount) {
                     case 1:{
                         return FishType.midnightCarp;
-                        break;
                     }
                     case 2:{
                         return FishType.squid;
-                        break;
                     }
                     case 3:{
                         return FishType.tuna;
-                        break;
                     }
                     case 4:{
                         return FishType.perch;
-                        break;
                     }
                 }
             }
@@ -743,19 +744,15 @@ public class GameController extends Controller {
                 switch (fishCount) {
                     case 1:{
                         return FishType.salmon;
-                        break;
                     }
                     case 2:{
                         return FishType.sardine;
-                        break;
                     }
                     case 3:{
                         return FishType.shad;
-                        break;
                     }
                     case 4:{
                         return FishType.blueDiscus;
-                        break;
                     }
                 }
             }
@@ -763,19 +760,15 @@ public class GameController extends Controller {
                 switch (fishCount) {
                     case 1:{
                         return FishType.tilapia;
-                        break;
                     }
                     case 2:{
                         return FishType.dorado;
-                        break;
                     }
                     case 3:{
                         return FishType.sunFish;
-                        break;
                     }
                     case 4:{
                         return FishType.rainbowTrout;
-                        break;
                     }
                 }
             }
@@ -786,23 +779,18 @@ public class GameController extends Controller {
                 switch (fishCount) {
                     case 1:{
                         return FishType.flounder;
-                        break;
                     }
                     case 2:{
                         return FishType.lionFish;
-                        break;
                     }
                     case 3:{
                         return FishType.herring;
-                        break;
                     }
                     case 4:{
                         return FishType.ghostFish;
-                        break;
                     }
                     case 5:{
                         return FishType.legend;
-                        break;
                     }
                 }
             }
@@ -810,23 +798,18 @@ public class GameController extends Controller {
                 switch (fishCount) {
                     case 1:{
                         return FishType.midnightCarp;
-                        break;
                     }
                     case 2:{
                         return FishType.squid;
-                        break;
                     }
                     case 3:{
                         return FishType.tuna;
-                        break;
                     }
                     case 4:{
                         return FishType.perch;
-                        break;
                     }
                     case 5:{
                         return FishType.glacierFish;
-                        break;
                     }
                 }
             }
@@ -834,23 +817,18 @@ public class GameController extends Controller {
                 switch (fishCount) {
                     case 1:{
                         return FishType.salmon;
-                        break;
                     }
                     case 2:{
                         return FishType.sardine;
-                        break;
                     }
                     case 3:{
                         return FishType.shad;
-                        break;
                     }
                     case 4:{
                         return FishType.blueDiscus;
-                        break;
                     }
                     case 5:{
                         return FishType.angler;
-                        break;
                     }
                 }
             }
@@ -858,23 +836,18 @@ public class GameController extends Controller {
                 switch (fishCount) {
                     case 1:{
                         return FishType.tilapia;
-                        break;
                     }
                     case 2:{
                         return FishType.dorado;
-                        break;
                     }
                     case 3:{
                         return FishType.sunFish;
-                        break;
                     }
                     case 4:{
                         return FishType.rainbowTrout;
-                        break;
                     }
                     case 5:{
                         return FishType.crimsonFish;
-                        break;
                     }
                 }
             }
@@ -1150,5 +1123,6 @@ public class GameController extends Controller {
     @Override
     public Message exit() {
 //        TODO: save game and go back to main Menu
+        return null;
     }
 }

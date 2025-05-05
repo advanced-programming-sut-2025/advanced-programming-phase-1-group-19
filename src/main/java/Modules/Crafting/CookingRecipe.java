@@ -5,25 +5,26 @@ import Modules.Item;
 import java.util.HashMap;
 
 public enum CookingRecipe implements Recipe{
-    friedEgg("Fried Egg",new HashMap<>(){{put()}})
+
     ;
 
     private String productName;
     private HashMap<Item, Integer> ingredients;
-    private int Price;
+    private int price;
     private Buff buff;
     private int energy;
 
     CookingRecipe(String productName, HashMap<Item, Integer> ingredients, int price, Buff buff, int energy) {
         this.productName = productName;
         this.ingredients = ingredients;
-        Price = price;
+        this.price = price;
         this.buff = buff;
         this.energy = energy;
     }
 
     public static CookingRecipe getCookingRecipeByName(String name) {
-
+//        TODO: fix this
+        return null;
     }
 
 
@@ -37,7 +38,7 @@ public enum CookingRecipe implements Recipe{
 
     @Override
     public String getProductName() {
-
+        return productName;
     }
 
     @Override
@@ -47,6 +48,6 @@ public enum CookingRecipe implements Recipe{
 
     @Override
     public int getPrice() {
-
+        return price;
     }
 }

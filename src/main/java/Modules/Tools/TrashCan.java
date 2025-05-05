@@ -29,6 +29,7 @@ public class TrashCan{
     }
 
     public int calRefund(Item item){
-
+//        TODO: fix this
+        return 0;
     }
 }

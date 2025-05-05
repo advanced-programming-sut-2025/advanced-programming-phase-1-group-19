@@ -20,6 +20,9 @@ public class Quality {
         else if(amount > 0.9 ){
             return "Iridium";
         }
+        else {
+            return "Unknown";
+        }
     }
 
     public double getPriceRatio() {
@@ -34,6 +37,9 @@ public class Quality {
         }
         else if(amount > 0.9 ){
             return 2;
+        }
+        else {
+            return 1;
         }
     }
 }

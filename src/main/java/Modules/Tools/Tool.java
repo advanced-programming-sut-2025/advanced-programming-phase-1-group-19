@@ -18,10 +18,6 @@ public class Tool extends Item {
         return level;
     }
 
-    public Tool(String name, int takenSpace) {
-        super(name, takenSpace);
-    }
-
     public LevelInfo getLevelInfo() {
 //        TODO: get level info from tool type
         return toolType.getLevel(level);

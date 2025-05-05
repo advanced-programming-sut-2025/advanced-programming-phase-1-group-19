@@ -3,8 +3,7 @@ package Controllers;
 import Modules.Interactions.Messages.Message;
 
 public abstract class Controller {
-    public Message showCurrentMenu() {
-    }
+    public abstract Message showCurrentMenu();
 
-    public Message exit() {}
+    public abstract Message exit();
 }

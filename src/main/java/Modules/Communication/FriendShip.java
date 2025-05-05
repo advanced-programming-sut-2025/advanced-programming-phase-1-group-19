@@ -31,12 +31,19 @@ public class FriendShip {
     public void decreaseXp(int amount) {}
 
     public void addMessage(String message) {}
-    public ArrayList<String> getMessageLog() {}
+    public ArrayList<String> getMessageLog() {
+        return talkLog;
+    }
 
     public void addGift(Gift gift) {}
-    public ArrayList<Gift> getGiftLog() {}
+    public ArrayList<Gift> getGiftLog() {
+        return giftLog;
+    }
 
-    public int getTradeId(Trade trade) {}
+    public int getTradeId(Trade trade) {
+//        TODO: fix this
+        return 0;
+    }
     public void addTrade(Trade trade) {}
     public ArrayList<Trade> getTradeLog() {
         return tradeLog;

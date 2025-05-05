@@ -121,16 +121,10 @@ public class Animal {
         return false;
     }
 
-    public double productQuality(){
-        if(this.friendship>=100){
-            double x=
-        }
-    }
-
     public void collect() {}
 
     public int calSellingPrice() {
-        return (int)(this.type.getCost()*((double)this.friendship/100 + 0.3);
+        return (int)(this.type.getCost()*((double)this.friendship/100 + 0.3));
     }
 
     public String getName() {
