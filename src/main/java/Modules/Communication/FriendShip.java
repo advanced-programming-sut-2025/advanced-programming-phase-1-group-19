@@ -12,6 +12,14 @@ public class FriendShip {
     private ArrayList<Gift> giftLog;
     private ArrayList<Trade> tradeLog;
     public FriendShip(Player player) {
+        this.player = player;
+        this.xp = 0;
+        this.level = 0;
+    }
+
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 
     public Player getPlayer() {
@@ -26,18 +34,56 @@ public class FriendShip {
         return level;
     }
 
-    public void increaseXp(int amount) {}
+    public void increaseXp(int amount) {
+        xp += amount;
+        if( this.level==0&& xp >= 100 && xp <= 200 ) {
+            this.level=1;
+        }
+        else if( this.level==1&&xp >= 200 && xp <= 300 ) {
+            this.level=2;
+        }
+        else if(this.level==2 && xp >= 300 && xp <= 400) {
+            this.level=3;
+        }
+        else if(this.level==3 && xp >= 400 ) {
+            this.level=4;
+        }
+    }
 
-    public void decreaseXp(int amount) {}
+    public void decreaseXp(int amount) {
+        xp -= amount;
+        if(this.level==1 && xp < 100 ) {
+            this.level=0;
+        }
+        else if( this.level==2 && xp >= 100 && xp < 200 ) {
+            this.level=1;
+        }
+        else if( this.level==3 && xp >= 200 && xp < 300 ) {
+            this.level=2;
+        }
+        else if( this.level==4 && xp >= 300 && xp < 400 ) {
+            this.level=3;
+        }
+    }
 
-    public void addMessage(String message) {}
-    public ArrayList<String> getMessageLog() {}
+    public void addMessage(String message) {
+        this.talkLog.add(message);
+    }
+    public ArrayList<String> getMessageLog() {
+        return talkLog;
+    }
 
-    public void addGift(Gift gift) {}
-    public ArrayList<Gift> getGiftLog() {}
+    public void addGift(Gift gift) {
+        this.giftLog.add(gift);
+    }
+    public ArrayList<Gift> getGiftLog() {
+        return giftLog;
+    }
 
     public int getTradeId(Trade trade) {}
-    public void addTrade(Trade trade) {}
+    public void addTrade(Trade trade) {
+        this.tradeLog.add(trade);
+    }
     public ArrayList<Trade> getTradeLog() {
         return tradeLog;
     }

@@ -51,6 +51,11 @@ public class Player {
         }
         buffedEnergy = 0;
         friendShips = new ArrayList<>();
+
+    }
+
+    public ArrayList<FriendShip> getFriendShips() {
+        return friendShips;
     }
 
     public User getUser() {
@@ -87,6 +92,10 @@ public class Player {
 
     public void setFainted(boolean fainted) {
         isFainted = fainted;
+    }
+
+    public void addFriendShip(FriendShip friendShip) {
+        friendShips.add(friendShip);
     }
 
     public void Walk(Position position) {
@@ -139,7 +148,12 @@ public class Player {
 //        decrease energy capacity if the buff was over
     }
     public FriendShip getFriendShipByPlayer(Player player) {
-
+        for (FriendShip friendShip : this.friendShips) {
+            if(friendShip.getPlayer().equals(player)) {
+                return friendShip;
+            }
+        }
+        return null;
     }
 
     public Tool getCurrentTool() {

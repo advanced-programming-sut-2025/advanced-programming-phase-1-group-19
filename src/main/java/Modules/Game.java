@@ -152,4 +152,13 @@ public class Game {
     public void setInGameMenu(InGameMenu inGameMenu) {
         this.inGameMenu = inGameMenu;
     }
+
+    public Player getPlayerByUsername(String username) {
+        for (Player player : players) {
+            if(player.getUser().getUsername().equals(username)) {
+                return player;
+            }
+        }
+        return null;
+    }
 }

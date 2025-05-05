@@ -41,6 +41,9 @@ public class GameMenu implements AppMenu {
             case startNewGame: {
                 Pattern pattern = Pattern.compile("game new -u (?<usernames>.+?)");
                 Matcher matcher = pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
                 String allUsernames = matcher.group("usernames").trim();
                 if (allUsernames.isEmpty()) {
                     System.out.println("You did not enter any usernames!");

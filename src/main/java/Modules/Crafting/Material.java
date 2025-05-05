@@ -3,10 +3,11 @@ package Modules.Crafting;
 import Modules.Item;
 
 public class Material extends Item {
+    private MaterialType type;
 
-
-    public Material(String name, int takenSpace, boolean isEdible) {
-        super(name, takenSpace, isEdible);
+    public Material(MaterialType type) {
+        super(type.getName(), 1, false);
+        this.type = type;
     }
 
     @Override

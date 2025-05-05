@@ -48,5 +48,6 @@ public enum GameCommand implements Command {
     toolShowAvailable,
     toolUpgrade,
     toolUse,
+    askAboutGift,
     exit;
 }

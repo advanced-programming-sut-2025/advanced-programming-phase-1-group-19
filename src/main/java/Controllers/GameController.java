@@ -2,7 +2,12 @@ package Controllers;
 
 import Modules.*;
 import Modules.Animal.*;
+import Modules.Communication.FriendShip;
+import Modules.Communication.Gift;
+import Modules.Crafting.Material;
+import Modules.Crafting.MaterialType;
 import Modules.Enums.*;
+import Modules.Interactions.Commands.GameCommand;
 import Modules.Interactions.Messages.*;
 import Modules.Enums.Menu;
 import Modules.Enums.Season;
@@ -99,6 +104,13 @@ public class GameController extends Controller {
             Player player = new Player(users[i], farm);
             farms.add(farm);
             players.add(player);
+        }
+        for(int i=0 ; i<players.size() ; i++) {
+            for (Player player : players) {
+                if (!players.get(i).equals(player)) {
+                    players.get(i).addFriendShip(new FriendShip(player));
+                }
+            }
         }
         Map map = new Map(farms);
         Game game = new Game(players, map);
@@ -1145,6 +1157,173 @@ public class GameController extends Controller {
         ret += "Planting Time: " + plant.getPlantingTime();
         return new GameMessage(null, ret);
     }
+
+    public GameMessage talk(String username , String message) {
+        App app = App.getInstance();
+        Game game = app.getCurrentGame();
+        Player player = game.getCurrentPlayer();
+        Player player2 = game.getPlayerByUsername(username);
+        if(player2 == null) {
+            return new GameMessage(null, "There is no player with that username!");
+        }
+        if(!(Math.abs(player2.getPosition().x - player.getPosition().x) <= 1 && Math.abs(player2.getPosition().y - player.getPosition().y) <= 1)) {
+            return new GameMessage(null, "You aren't close enough to talk!");
+        }
+        player.getFriendShipByPlayer(player2).addMessage(message);
+        player.getFriendShipByPlayer(player2).increaseXp(20);
+        player2.getFriendShipByPlayer(player).increaseXp(20);
+        return new GameMessage(null,"You successfully talked with " + username + "!");
+    }
+
+    public GameMessage talkHistory(String username){
+        App app = App.getInstance();
+        Game game = app.getCurrentGame();
+        Player player = game.getCurrentPlayer();
+        Player player2 = game.getPlayerByUsername(username);
+        if(player2 == null) {
+            return new GameMessage(null, "There is no player with that username!");
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String s : player.getFriendShipByPlayer(player2).getMessageLog()) {
+            stringBuilder.append(s);
+            stringBuilder.append("\n");
+        }
+        return new GameMessage(null, "Here is your talk history with "+username+" :\n"+stringBuilder.toString());
+    }
+
+
+    public GameMessage gifting(String username ,String itemName,int amount) {
+        App app = App.getInstance();
+        Game game = app.getCurrentGame();
+        Player player = game.getCurrentPlayer();
+        Player player2 = game.getPlayerByUsername(username);
+        if(player2 == null) {
+            return new GameMessage(null, "There is no player with that username!");
+        }
+        if(player.getFriendShipByPlayer(player2).getLevel() < 1){
+            return new GameMessage(null, "You can't gift in this level");
+        }
+        if(!(Math.abs(player2.getPosition().x - player.getPosition().x) <= 1 && Math.abs(player2.getPosition().y - player.getPosition().y) <= 1)) {
+            return new GameMessage(null, "You aren't close enough");
+        }
+        Item item=player.getBackPack().getItemByName(itemName);
+        if(item == null) {
+            return new GameMessage(null, "There is no item with that name in your backpack!");
+        }
+        if(player.getBackPack().getItemCount(item) < amount) {
+            return new GameMessage(null, "You don't have enough of this item in your backpack");
+        }
+        player.getBackPack().removeItem(item, amount);
+        player2.getBackPack().addItem(item, amount);
+        player2.getFriendShipByPlayer(player).addGift(new Gift(item, amount));
+        player2.getFriendShipByPlayer(player).addMessage("__You have received "+amount+" "+itemName+" from "+player.getUser().getUsername()+" as a gift__");
+        return new GameMessage(null,"You successfully gifted "+username);
+    }
+
+    public GameMessage ratingGift(String userName,int number,int rate){
+        App app = App.getInstance();
+        Game game = app.getCurrentGame();
+        Player player = game.getCurrentPlayer();
+        Player player2 = game.getPlayerByUsername(userName);
+        if(player2 == null) {
+            return new GameMessage(null, "There is no player with that username in this game!");
+        }
+        if(player.getFriendShipByPlayer(player2).getGiftLog().size() < number) {
+            return new GameMessage(null, "There is no gift with this number");
+        }
+        Gift gift=player.getFriendShipByPlayer(player2).getGiftLog().get(number-1);
+        if(gift.getRate() != 0) {
+            return new GameMessage(null,"You have already rated this gift");
+        }
+        if(rate >5 || rate < 1) {
+            return new GameMessage(null, "You must enter a number between 1 and 5");
+        }
+        if(rate > 3){
+            gift.setRate(rate);
+            player2.getFriendShipByPlayer(player).increaseXp(((rate-3)*30) + 15);
+            player.getFriendShipByPlayer(player2).increaseXp(((rate-3)*30) + 15);
+        }
+        else{
+            gift.setRate(rate);
+            player2.getFriendShipByPlayer(player).decreaseXp(((3-rate)*30) + 15);
+            player.getFriendShipByPlayer(player2).decreaseXp(((3-rate)*30) + 15);
+        }
+        return new GameMessage(null,"You successfully rated "+rate);
+    }
+
+    public GameMessage listingGift(){
+        App app = App.getInstance();
+        Game game = app.getCurrentGame();
+        Player player = game.getCurrentPlayer();
+        StringBuilder stringBuilder = new StringBuilder();
+        for (FriendShip friendShip : player.getFriendShips()) {
+            for (Gift gift : friendShip.getGiftLog()) {
+                stringBuilder.append(friendShip.getPlayer().getUser().getUsername()+" :\n");
+                stringBuilder.append(gift.getItem().getName()+"\n");
+            }
+        }
+        return new GameMessage(null,"You have received :"+stringBuilder.toString());
+    }
+
+    public GameMessage giftHistory(String username){
+        App app = App.getInstance();
+        Game game = app.getCurrentGame();
+        Player player = game.getCurrentPlayer();
+        Player player2 = game.getPlayerByUsername(username);
+        if(player2 == null) {
+            return new GameMessage(null, "There is no player with that username in this game!");
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Gift gift : player.getFriendShipByPlayer(player2).getGiftLog()) {
+            stringBuilder.append(gift.getItem().getName()+"\n");
+        }
+        return new GameMessage(null,"You have received :"+stringBuilder.toString());
+    }
+
+    public GameMessage hugging(String username){
+        App app = App.getInstance();
+        Game game = app.getCurrentGame();
+        Player player = game.getCurrentPlayer();
+        Player player2 = game.getPlayerByUsername(username);
+        if(player2 == null) {
+            return new GameMessage(null, "There is no player with that username in this game!");
+        }
+        if(player.getFriendShipByPlayer(player2).getLevel() < 2) {
+            return new GameMessage(null, "You can't hug in this level");
+        }
+        if(!(Math.abs(player2.getPosition().x - player.getPosition().x) <= 1 && Math.abs(player2.getPosition().y - player.getPosition().y) <= 1)) {
+            return new GameMessage(null, "You aren't close enough");
+        }
+        player2.getFriendShipByPlayer(player).increaseXp(60);
+        player.getFriendShipByPlayer(player2).increaseXp(60);
+        return new GameMessage(null,"You successfully hugged "+username);
+    }
+
+    public GameMessage givingFlower(String username){
+        App app = App.getInstance();
+        Game game = app.getCurrentGame();
+        Player player = game.getCurrentPlayer();
+        Player player2 = game.getPlayerByUsername(username);
+        if(player2 == null) {
+            return new GameMessage(null, "There is no player with that username in this game!");
+        }
+        if(player.getFriendShipByPlayer(player2).getLevel() < 2) {
+            return new GameMessage(null, "You can't gift flower in this level");
+        }
+        Item item =new Material(MaterialType.bouquet);
+        if(!player.getBackPack().checkItem(item,1)){
+            return new GameMessage(null, "You don't have a bouquet");
+        }
+        player.getBackPack().removeItem(item,1);
+        player2.getBackPack().addItem(item,1);
+        player.getFriendShipByPlayer(player2).setLevel(3);
+        player2.getFriendShipByPlayer(player).setLevel(3);
+        return new GameMessage(null,"You successfully gifted "+username+" a flower");
+    }
+
+
+
+
 
 
     @Override
