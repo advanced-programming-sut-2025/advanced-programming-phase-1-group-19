@@ -12,9 +12,22 @@ public class Trade {
     private Item targetItem;
     private int targetAmount;
 
-    public Trade(Player player, boolean type, Item item, int amount, int price) {}
+    public Trade(Player player, boolean type, Item item, int amount, int price) {
+        this.player = player;
+        this.type = type;
+        this.item = item;
+        this.amount = amount;
+        this.price = price;
+    }
 
-    public Trade(Player player, boolean type, Item item, Item targetItem, int targetAmount, int amount) {}
+    public Trade(Player player, boolean type, Item item, Item targetItem, int targetAmount, int amount) {
+        this.player = player;
+        this.type = type;
+        this.item = item;
+        this.targetItem = targetItem;
+        this.targetAmount = targetAmount;
+        this.amount = amount;
+    }
 
     public Player getPlayer() {
         return player;

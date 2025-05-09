@@ -326,6 +326,53 @@ public class GameMenu implements AppMenu {
                 System.out.println(gameController.showPlant(new Position(x, y)));
                 break;
             }
+            case talk:{
+                Pattern pattern = Pattern.compile("^\\s*talk -u (?<username>.+?) -m (?<message>.+?)\\s*$");
+                Matcher matcher = pattern.matcher(input);
+                String username = matcher.group("username");
+                String message = matcher.group("message");
+                System.out.println(gameController.talk(username, message).message());
+                break;
+            }
+            case talkHistory:{
+                Pattern pattern = Pattern.compile("^\\s*talk history -u (?<username>.+?)\\s*$");
+                Matcher matcher = pattern.matcher(input);
+                String username = matcher.group("username");
+                System.out.println(gameController.talkHistory(username).message());
+                break;
+            }
+            case gifting:{
+                Pattern pattern = Pattern.compile("^\\s*gift -u (?<username>.+?) -i (?<item>.+?) -a (?<amount>.+?)\\s*$");
+                Matcher matcher = pattern.matcher(input);
+                String username = matcher.group("username");
+                String item = matcher.group("item");
+                int amount = Integer.parseInt(matcher.group("amount"));
+                System.out.println(gameController.gifting(username, item, amount).message());
+                break;
+            }
+            case giftList:{
+                Pattern pattern = Pattern.compile("^\\s*gift list -u (?<username>.+?)\\s*$");
+                Matcher matcher = pattern.matcher(input);
+                String username = matcher.group("username");
+                System.out.println(gameController.giftHistory(username).message());
+                break;
+            }
+            case ratingGift:{
+                Pattern pattern = Pattern.compile("^\\s*gift rate -u (?<username>.+?) -i (?<giftNumber>.+?) -r (?<rate>.+?)\\s*$");
+                Matcher matcher = pattern.matcher(input);
+                String username = matcher.group("username");
+                int giftNumber = Integer.parseInt(matcher.group("giftNumber"));
+                int rate = Integer.parseInt(matcher.group("rate"));
+                System.out.println(gameController.ratingGift(username,giftNumber,rate).message());
+                break;
+            }
+            case giftHistory:{
+                Pattern pattern = Pattern.compile("^\\s*gift history -u (?<username>.+?)\\s*$");
+                Matcher matcher = pattern.matcher(input);
+                String username = matcher.group("username");
+                System.out.println(gameController.giftHistory(username).message());
+                break;
+            }
         }
     }
 
@@ -502,5 +549,24 @@ public class GameMenu implements AppMenu {
         else if(input.matches("^\\s*tools use -d (?<direction>.+)\\s*$")){
             runCommand(GameCommand.toolUse, input);
         }
+        else if(input.matches("^\\s*talk -u (?<username>.+?) -m (?<message>.+?)\\s*$")){
+            runCommand(GameCommand.talk,input);
+        }
+        else if(input.matches("^\\s*talk history -u (?<username>.+?)\\s*$")){
+            runCommand(GameCommand.talkHistory,input);
+        }
+        else if(input.matches("^\\s*gift -u (?<username>.+?) -i (?<item>.+?) -a (?<amount>.+?)\\s*$")){
+            runCommand(GameCommand.gifting,input);
+        }
+        else if(input.matches("^\\s*gift list -u (?<username>.+?)\\s*$")) {
+            runCommand(GameCommand.giftList, input);
+        }
+        else if(input.matches("^\\s*gift rate -u (?<username>.+?) -i (?<giftNumber>.+?) -r (?<rate>.+?)\\s*$")){
+            runCommand(GameCommand.ratingGift,input);
+        }
+        else if(input.matches("^\\s*gift history -u (?<username>.+?)\\s*$")){
+            runCommand(GameCommand.giftHistory,input);
+        }
+
     }
 }

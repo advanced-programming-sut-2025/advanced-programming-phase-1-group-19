@@ -3,6 +3,7 @@ package Modules.Communication;
 import Modules.Player;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class FriendShip {
     private Player player;
@@ -11,15 +12,41 @@ public class FriendShip {
     private ArrayList<String> talkLog;
     private ArrayList<Gift> giftLog;
     private ArrayList<Trade> tradeLog;
+    private ArrayList<Trade> tradeOffers;
     public FriendShip(Player player) {
         this.player = player;
         this.xp = 0;
         this.level = 0;
+        this.talkLog = new ArrayList<>();
+        this.giftLog = new ArrayList<>();
+        this.tradeLog = new ArrayList<>();
+        this.tradeOffers = new ArrayList<>();
     }
 
 
     public void setLevel(int level) {
         this.level = level;
+        switch (level){
+            case 0:
+                this.xp = 0;
+                break;
+            case 1:
+                this.xp = 100;
+                break;
+            case 2:
+                this.xp = 200;
+                break;
+            case 3:
+                this.xp = 300;
+                break;
+            case 4:
+                this.xp = 400;
+                break;
+        }
+    }
+
+    public void tradeOffer(Trade trade) {
+        this.tradeOffers.add(trade);
     }
 
     public Player getPlayer() {
