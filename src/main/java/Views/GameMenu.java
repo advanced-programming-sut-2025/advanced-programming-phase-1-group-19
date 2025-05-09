@@ -326,31 +326,31 @@ public class GameMenu implements AppMenu {
             case showAllProduct:{
                 Pattern pattern = Pattern.compile("^\\s*show all products\\s*$");
                 Matcher matcher = pattern.matcher(input);
-                System.out.println(storeController.showAllProduct());
+                System.out.println(storeController.showAllProduct().message());
                 break;
             }
             case showAvailableProduct:{
                 Pattern pattern = Pattern.compile("^\\s*show available products\\s*$");
                 Matcher matcher = pattern.matcher(input);
-                System.out.println(storeController.showAvailableProduct());
+                System.out.println(storeController.showAvailableProduct().message());
                 break;
             }
             case purchaseItem:{
                 Pattern pattern = Pattern.compile("^\\s*purchase (?<productName>.*) -n (?<count>.*)\\s*$");
                 Matcher matcher = pattern.matcher(input);
-                System.out.println(storeController.purchaseItem(matcher.group("productName").trim(),Integer.parseInt(matcher.group("count").trim())));
+                System.out.println(storeController.purchaseItem(matcher.group("productName").trim(),Integer.parseInt(matcher.group("count").trim())).message());
                 break;
             }
             case cheatAddMoney:{
                 Pattern pattern = Pattern.compile("^\\s*cheat add (?<count>.*) dollars\\s*$");
                 Matcher matcher = pattern.matcher(input);
-                System.out.println(storeController.cheatAddMoney(Integer.parseInt(matcher.group("count").trim())));
+                System.out.println(storeController.cheatAddMoney(Integer.parseInt(matcher.group("count").trim())).message());
                 break;
             }
             case sellItem:{
                 Pattern pattern = Pattern.compile("^\\s*sell (?<productName>.*) -n (?<count>.*)\\s*$");
                 Matcher matcher = pattern.matcher(input);
-                System.out.println(storeController.sellItem(matcher.group("productName").trim(),Integer.parseInt(matcher.group("count").trim())));
+                System.out.println(storeController.sellItem(matcher.group("productName").trim(),Integer.parseInt(matcher.group("count").trim())).message());
                 break;
             }
         }
