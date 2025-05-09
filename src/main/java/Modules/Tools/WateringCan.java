@@ -14,8 +14,8 @@ public class WateringCan extends Tool {
         maxCapacity.add(100);
     }
 
-    public WateringCan(String name, int takenSpace) {
-        super(name, takenSpace);
+    public WateringCan(ToolType toolType) {
+        super(toolType);
         this.amount = 0;
     }
 

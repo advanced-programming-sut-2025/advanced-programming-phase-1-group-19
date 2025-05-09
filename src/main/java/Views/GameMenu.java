@@ -168,10 +168,10 @@ public class GameMenu implements AppMenu {
                 Pattern pattern1 = Pattern.compile(pattern);
                 Matcher matcher1 = pattern1.matcher(input);
                 if(input.contains("-n")) {
-                    System.out.println(gameController.inventoryTrash(matcher1.group(1),Integer.parseInt(matcher1.group(2)) ,false).message());
+                    System.out.println(gameController.inventoryTrash(matcher1.group("itemName"),Integer.parseInt(matcher1.group("number")) ,false).message());
                 }
                 else {
-                    System.out.println(gameController.inventoryTrash(matcher1.group(1), 0,true).message());
+                    System.out.println(gameController.inventoryTrash(matcher1.group("itemName"), 0,true).message());
 
                 }
                 break;
@@ -323,6 +323,36 @@ public class GameMenu implements AppMenu {
                 System.out.println(gameController.showPlant(new Position(x, y)));
                 break;
             }
+            case showAllProduct:{
+                Pattern pattern = Pattern.compile("^\\s*show all products\\s*$");
+                Matcher matcher = pattern.matcher(input);
+                System.out.println(storeController.showAllProduct());
+                break;
+            }
+            case showAvailableProduct:{
+                Pattern pattern = Pattern.compile("^\\s*show available products\\s*$");
+                Matcher matcher = pattern.matcher(input);
+                System.out.println(storeController.showAvailableProduct());
+                break;
+            }
+            case purchaseItem:{
+                Pattern pattern = Pattern.compile("^\\s*purchase (?<productName>.*) -n (?<count>.*)\\s*$");
+                Matcher matcher = pattern.matcher(input);
+                System.out.println(storeController.purchaseItem(matcher.group("productName").trim(),Integer.parseInt(matcher.group("count").trim())));
+                break;
+            }
+            case cheatAddMoney:{
+                Pattern pattern = Pattern.compile("^\\s*cheat add (?<count>.*) dollars\\s*$");
+                Matcher matcher = pattern.matcher(input);
+                System.out.println(storeController.cheatAddMoney(Integer.parseInt(matcher.group("count").trim())));
+                break;
+            }
+            case sellItem:{
+                Pattern pattern = Pattern.compile("^\\s*sell (?<productName>.*) -n (?<count>.*)\\s*$");
+                Matcher matcher = pattern.matcher(input);
+                System.out.println(storeController.sellItem(matcher.group("productName").trim(),Integer.parseInt(matcher.group("count").trim())));
+                break;
+            }
         }
     }
 
@@ -330,6 +360,7 @@ public class GameMenu implements AppMenu {
     private final AppView appView = AppView.getInstance();
     private final Scanner scanner = appView.getScanner();
     private final GameController gameController = GameController.getInstance();
+    private final StoreController storeController = StoreController.getInstance();
     private  HouseController houseController = new HouseController();
 
     @Override
@@ -498,6 +529,21 @@ public class GameMenu implements AppMenu {
         }
         else if(input.matches("^\\s*tools use -d (?<direction>.+)\\s*$")){
             runCommand(GameCommand.toolUse, input);
+        }
+        else if(input.matches("^\\s*show all products\\s*$")){
+            runCommand(GameCommand.showAllProduct, input);
+        }
+        else if(input.matches("^\\s*show all available products\\s*$")){
+            runCommand(GameCommand.showAvailableProduct, input);
+        }
+        else if(input.matches("^\\s*purchase (?<productName>.*) -n (?<count>.*)\\s*$")){
+            runCommand(GameCommand.purchaseItem, input);
+        }
+        else if(input.matches("^\\s*cheat add (?<count>.*) dollars\\s*$")){
+            runCommand(GameCommand.cheatAddMoney, input);
+        }
+        else if(input.matches("^\\s*sell (?<productName>.*) -n (?<count>.*)\\s*$")){
+            runCommand(GameCommand.sellItem, input);
         }
     }
 }

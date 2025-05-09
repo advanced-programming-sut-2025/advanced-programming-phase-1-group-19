@@ -104,7 +104,7 @@ public class HouseController extends Controller {
                         return new GameMessage(null,"You successfully cooked");
                     }
                 }
-                player.getBackPack().addItem(new Food(null,0,recipe),1);
+                player.getBackPack().addItem(new Food(recipe),1);
                 //TODO:look for the food to add it to your inventory
                 if(player.getEnergy().getAmount()<3){
                     player.setFainted(true);
@@ -113,7 +113,7 @@ public class HouseController extends Controller {
                     player.decreaseEnergy(3);
                 }
                 if(player.getBackPack().getCapacity()>0){
-                    player.getBackPack().addItem(new Food(recipe.getProductName(),1,recipe),1);
+                    player.getBackPack().addItem(new Food(recipe),1);
                 }
                 else {
                     return new GameMessage(null,"You don't have any space in your backpack");

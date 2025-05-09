@@ -10,7 +10,6 @@ public enum CraftingRecipe implements Recipe {
     private String productName;
     private HashMap<Item, Integer> ingredients;
     private int Price;
-
     CraftingRecipe() {}
 
     public CraftingRecipe getCraftingRecipeByName(String name) {}

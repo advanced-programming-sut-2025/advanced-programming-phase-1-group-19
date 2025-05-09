@@ -54,10 +54,10 @@ public class Fish extends Item {
     private Quality quality;
 
 
-    public Fish(String name, int takenSpace, FishType type, Quality quality) {
-        super(name, takenSpace,false);
+    public Fish(FishType type) {
+        super(type.getName(), 1,true);
         this.type = type;
-        this.quality = quality;
+//        this.quality = quality;
     }
 
     public  int getFishingCount(Weather weather, int skillLevel) {

@@ -28,6 +28,9 @@ public class TrashCan{
         }
     }
 
+    public double calcRatio(){
+        return ratios.get(level);
+    }
     public int calRefund(Item item){
 
     }

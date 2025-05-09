@@ -48,5 +48,10 @@ public enum GameCommand implements Command {
     toolShowAvailable,
     toolUpgrade,
     toolUse,
+    showAllProduct,
+    showAvailableProduct,
+    purchaseItem,
+    cheatAddMoney,
+    sellItem,
     exit;
 }
