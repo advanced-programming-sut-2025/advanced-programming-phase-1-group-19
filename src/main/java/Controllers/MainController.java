@@ -45,6 +45,7 @@ public class MainController extends Controller {
     @Override
     public MainMessage exit() {
         App app = App.getInstance();
+        app.setCurrentUser(null);
         app.setCurrentMenu(Menu.RegistrationMenu);
         return new MainMessage(null, "You are now in registration menu");
     }

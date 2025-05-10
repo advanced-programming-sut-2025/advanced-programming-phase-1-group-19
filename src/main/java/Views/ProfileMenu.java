@@ -31,13 +31,19 @@ public class ProfileMenu implements AppMenu {
                 String regex = "^\\s*change username -u (?<username>.+?)\\s*$";
                 Pattern pattern = Pattern.compile(regex);
                 Matcher matcher = pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
                 System.out.println(controller.changeUsername(matcher.group(1)).message());
                 break;
             }
             case changeNickname: {
-                String regex = "^\\s*change username -u (?<username>.+?)\\s*$";
+                String regex = "^\\s*change nickname -n (?<username>.+?)\\s*$";
                 Pattern pattern = Pattern.compile(regex);
                 Matcher matcher = pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
                 System.out.println(controller.changeNickname(matcher.group(1)).message());
                 break;
             }
@@ -45,13 +51,19 @@ public class ProfileMenu implements AppMenu {
                 String regex = "^\\s*change email -e (?<email>.+?)\\s*$";
                 Pattern pattern = Pattern.compile(regex);
                 Matcher matcher = pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
                 System.out.println(controller.changeEmail(matcher.group(1)).message());
                 break;
             }
             case changePassword: {
-                String regex = "^\\s*change password -p (?<newpassword>.+?) -o (?<oldpassword>.+?)\n\\s*$";
+                String regex = "^\\s*change password -p (?<newpassword>.+?) -o (?<oldpassword>.+?)\\s*$";
                 Pattern pattern = Pattern.compile(regex);
                 Matcher matcher = pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
                 System.out.println(controller.changePassword(matcher.group(1), matcher.group(2)).message());
                 break;
             }
@@ -77,20 +89,23 @@ public class ProfileMenu implements AppMenu {
         if(input.matches("^\\s*change username -u (?<username>.+?)\\s*$")){
             runCommand(ProfileCommand.changeUsername, input);
         }
-        else if(input.matches("^\\s*change nickname -u (?<nickname>.+?)\\s*$")){
+        else if(input.matches("^\\s*change nickname -n (?<nickname>.+?)\\s*$")){
             runCommand(ProfileCommand.changeNickname, input);
         }
         else if(input.matches("^\\s*change email -e (?<email>.+?)\\s*$")){
             runCommand(ProfileCommand.changeEmail, input);
         }
-        else if(input.matches("^\\s*change password -p (?<newpassword>.+?) -o (?<oldpassword>.+?)\n\\s*$")){
+        else if(input.matches("^\\s*change password -p (?<newpassword>.+?) -o (?<oldpassword>.+?)\\s*$")){
             runCommand(ProfileCommand.changePassword, input);
         }
-        else if(input.matches("^\\s*uesr info\\s*$")){
+        else if(input.matches("^\\s*user info\\s*$")){
             runCommand(ProfileCommand.userInfo, input);
         }
         else if(input.matches("^\\s*show current menu\\s*$")){
             runCommand(ProfileCommand.showCurrentMenu, input);
+        }
+        else if(input.matches("^\\s*exit\\s*$")){
+            runCommand(ProfileCommand.exit, input);
         }
         else {
             System.out.println("invalid command!");

@@ -112,12 +112,17 @@ public class GameController extends Controller {
 
     public GameMessage exitGame() {
         App app = App.getInstance();
+        if(app.getCurrentGame() == null) {
+            app.setCurrentMenu(Menu.MainMenu);
+            return new GameMessage(null, "you have not started a game yet! you are now in main menu!");
+        }
         if (!app.getCurrentGameStarter().equals(app.getCurrentUser())) {
             return new GameMessage(null, "you can't exit game!");
         }
         // TODO: save game
         app.setCurrentGame(null);
-        return new GameMessage(null, "exited game successfully!");
+        app.setCurrentMenu(Menu.MainMenu);
+        return new GameMessage(null, "exited game successfully! you are now in main menu!");
     }
 
     public GameMessage forceTerminate() {

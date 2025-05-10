@@ -31,7 +31,7 @@ public interface UserInfoController {
     }
 
     public default boolean isPasswordValid(String password) {
-        String regex = "^\\s*[a-zA-Z0-9!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?`~]+\\s*$";
+        String regex = "^[a-zA-Z0-9!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?`~]+$";
         if (password.matches(regex)) {
             return true;
         }

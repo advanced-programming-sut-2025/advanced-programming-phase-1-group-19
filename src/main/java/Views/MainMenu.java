@@ -35,7 +35,7 @@ public class MainMenu implements AppMenu {
                 if(!matcher1.matches()) {
                     System.out.println("invalid command!");
                 }
-                System.out.println(controller.goToMenu(matcher1.group(1)));
+                System.out.println(controller.goToMenu(matcher1.group(1)).message());
                 break;
             }
             case showCurrentMenu:{

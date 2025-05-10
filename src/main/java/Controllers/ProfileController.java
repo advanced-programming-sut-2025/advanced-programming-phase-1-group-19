@@ -5,6 +5,7 @@ import Modules.Enums.Menu;
 import Modules.Interactions.Messages.MainMessage;
 import Modules.Interactions.Messages.Message;
 import Modules.Interactions.Messages.ProfileMessage;
+import Modules.Interactions.Messages.RegistrationMessage;
 import Modules.User;
 
 public class ProfileController extends Controller implements UserInfoController{
@@ -60,16 +61,32 @@ public class ProfileController extends Controller implements UserInfoController{
 
     public ProfileMessage changePassword(String newPassword, String oldPassword) {
         App app = App.getInstance();
-        if(!isPasswordValid(newPassword)) {
-            return new ProfileMessage(null,"Password format is invalid");
+        if (!isPasswordValid(newPassword)) {
+            return new ProfileMessage(null, "Password format is invalid");
         }
-        if(newPassword.equals(oldPassword)) {
-            return new ProfileMessage(null,"Your password must be different");
+
+        if (!doesPasswordHaveUpperCase(newPassword)) {
+            return new ProfileMessage(null, "Password doesn't have uppercase letters'");
+        }
+
+        if (!doesPasswordHaveLowerCase(newPassword)) {
+            return new ProfileMessage(null, "Password doesn't have lowercase letters'");
+        }
+
+        if (!doesPasswordHaveNumber(newPassword)) {
+            return new ProfileMessage(null, "Password doesn't have digits");
+        }
+
+        if (!doesPasswordHaveSpecialChar(newPassword)) {
+            return new ProfileMessage(null, "Password doesn't have special characters");
         }
         String codedOldPassword = sha256(oldPassword);
         String codedNewPassword = sha256(newPassword);
         if(!app.getCurrentUser().getPassword().equals(codedOldPassword)) {
             return new ProfileMessage(null,"Password is invalid");
+        }
+        if(newPassword.equals(oldPassword)) {
+            return new ProfileMessage(null,"Your password must be different");
         }
         app.getCurrentUser().setPassword(codedNewPassword);
         return new ProfileMessage(null,"Password successfully changed");
@@ -78,8 +95,12 @@ public class ProfileController extends Controller implements UserInfoController{
     public ProfileMessage showUserInfo() {
         App app = App.getInstance();
         User currentUser = app.getCurrentUser();
-        return new ProfileMessage(null,currentUser.getUsername()+"\n"+currentUser.getNickname()+"\n"
-                +currentUser.getMaxMoney()+"\n"+currentUser.getGamesCount());
+        String ret = "";
+        ret += "Username: " + currentUser.getUsername() + "\n";
+        ret += "Nickname: " + currentUser.getNickname() + "\n";
+        ret += "Max Money: " + currentUser.getMaxMoney() + "\n";
+        ret += "Games Count: " + currentUser.getGamesCount();
+        return new ProfileMessage(null, ret);
     }
 
     @Override
