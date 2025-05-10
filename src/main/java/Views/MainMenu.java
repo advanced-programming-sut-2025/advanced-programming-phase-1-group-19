@@ -32,6 +32,9 @@ public class MainMenu implements AppMenu {
                 String regex="^\\s*menu enter (?<menuname>.+?)\\s*$";
                 Pattern pattern = Pattern.compile(regex);
                 Matcher matcher1 = pattern.matcher(input);
+                if(!matcher1.matches()) {
+                    System.out.println("invalid command!");
+                }
                 System.out.println(controller.goToMenu(matcher1.group(1)));
                 break;
             }

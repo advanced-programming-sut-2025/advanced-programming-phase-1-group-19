@@ -1,15 +1,17 @@
 package Modules.Enums;
 
 public enum InGameMenu {
-    houseMenu,
-    craftingMenu;
+    houseMenu("house"),
+    craftingMenu("crafting");
+
+    private final String name;
+
+    InGameMenu(String name) {
+        this.name = name;
+    }
 
     @Override
     public String toString() {
-        switch (this) {
-
-        }
-//        TODO: check this if needed and fill this
-        return this.name();
+        return this.name + " menu";
     }
 }

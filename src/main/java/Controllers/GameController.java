@@ -3,22 +3,12 @@ package Controllers;
 import Modules.*;
 import Modules.Animal.*;
 import Modules.Enums.*;
-import Modules.Interactions.Messages.*;
-import Modules.Enums.Menu;
-import Modules.Enums.Season;
-import Modules.Enums.Weather;
 import Modules.Farming.*;
 import Modules.Interactions.Messages.GameMessage;
 import Modules.Interactions.Messages.Message;
 import Modules.Map.*;
-import Modules.Tools.Tool;
-import Modules.Tools.ToolType;
-import Modules.Tools.BackPack;
-import Modules.Tools.Tool;
-import Modules.Tools.WateringCan;
+import Modules.Tools.*;
 import Views.*;
-import Modules.Tools.BackPack;
-import Views.GameMenu;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -38,9 +28,7 @@ public class GameController extends Controller {
 
     @Override
     public GameMessage showCurrentMenu() {
-        App app = App.getInstance();
-        app.setCurrentMenu(Menu.MainMenu);
-        return new GameMessage(null, "You are now in main menu");
+        return new GameMessage(null, Menu.GameMenu.toString());
     }
 
     private final App app = App.getInstance();

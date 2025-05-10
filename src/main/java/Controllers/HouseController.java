@@ -10,6 +10,7 @@ import Modules.Crafting.Food;
 import Modules.Enums.InGameMenu;
 import Modules.Game;
 import Modules.Interactions.Messages.GameMessage;
+import Modules.Interactions.Messages.MainMessage;
 import Modules.Interactions.Messages.Message;
 import Modules.Item;
 import Modules.Map.Map;
@@ -31,8 +32,7 @@ public class HouseController extends Controller {
 
     @Override
     public Message showCurrentMenu() {
-//        TODO: fix this
-        return null;
+        return new GameMessage(null, InGameMenu.houseMenu.toString());
     }
 
     @Override
