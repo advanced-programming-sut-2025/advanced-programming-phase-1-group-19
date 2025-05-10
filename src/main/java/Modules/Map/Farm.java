@@ -48,18 +48,26 @@ public class Farm {
         ArrayList<Tile> lakeTiles = new ArrayList<>();
         Position lakeTopLeft = new Position(farmMap.getLakePosition().x, farmMap.getLakePosition().y);
         Position lakeBottomRight = new Position(lakeTopLeft.x + farmMap.getLakeSize().height, lakeTopLeft.y + farmMap.getLakeSize().width);
+        lakeTopLeft.move(topLeft);
+        lakeBottomRight.move(topLeft);
 
         ArrayList<Tile> greenHouseTiles = new ArrayList<>();
         Position greenHouseTopLeft = new Position(farmMap.getGreenHousePosition().x, farmMap.getGreenHousePosition().y);
         Position greenHouseBottomRight = new Position(greenHouseTopLeft.x + farmMap.getGreenHouseSize().height, greenHouseTopLeft.y + farmMap.getGreenHouseSize().width);
+        greenHouseTopLeft.move(topLeft);
+        greenHouseBottomRight.move(topLeft);
 
         ArrayList<Tile> houseTiles = new ArrayList<>();
         Position houseTopLeft = new Position(farmMap.getHousePosition().x, farmMap.getHousePosition().y);
         Position houseBottomRight = new Position(houseTopLeft.x + farmMap.getHouseSize().height, houseTopLeft.y + farmMap.getHouseSize().width);
+        houseTopLeft.move(topLeft);
+        houseBottomRight.move(topLeft);
 
         ArrayList<Tile> quarryTiles = new ArrayList<>();
         Position quarryTopLeft = new Position(farmMap.getQuarryPosition().x, farmMap.getQuarryPosition().y);
         Position quarryBottomRight = new Position(quarryTopLeft.x + farmMap.getQuarrySize().height, quarryTopLeft.y + farmMap.getQuarrySize().width);
+        quarryTopLeft.move(topLeft);
+        quarryBottomRight.move(topLeft);
 
         for(int i = topLeft.x; i < topLeft.x + size.height; i++) {
             for(int j = topLeft.y; j < topLeft.y + size.width; j++) {

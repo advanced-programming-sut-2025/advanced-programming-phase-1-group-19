@@ -69,6 +69,10 @@ public class GameController extends Controller {
             mapsPreview += farmMap.name() + " map:\n";
             mapsPreview += farmMap.printMap() + "\n";
         }
+        mapsPreview = mapsPreview.replace("H", "\u001B[35mH\u001B[0m");
+        mapsPreview = mapsPreview.replace("G", "\u001B[32mG\u001B[0m");
+        mapsPreview = mapsPreview.replace("L", "\u001B[34mL\u001B[0m");
+        mapsPreview = mapsPreview.replace("Q", "\u001B[33mQ\u001B[0m");
         mapsPreview += "Press ENTER to continue...";
         menu.getSingleLine(mapsPreview);
         int[] mapIDs = new int[users.length];
@@ -101,7 +105,6 @@ public class GameController extends Controller {
         for (User user : users) {
             user.setCurrentGame(game);
         }
-
         return new GameMessage(null, error + "New game created successfully!!!");
     }
 
@@ -413,11 +416,12 @@ public class GameController extends Controller {
     }
 
     public GameMessage printMap(Position position, int size) {
-        if (size > 80) {
-            return new GameMessage(null, "please use sizes smaller than 100");
-        }
+//        if (size > 100) {
+//            return new GameMessage(null, "please use sizes smaller than 100");
+//        }
         Game game = App.getInstance().getCurrentGame();
-        Map map = (Map) game.getMap();
+        Map map = game.getMap();
+        Tile tile22 = map.getTile(new Position(10, 10));
         char[][] all = new char[size][size];
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {

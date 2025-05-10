@@ -31,7 +31,7 @@ public enum FarmMap {
                 housePosition = new Position(12, 10);
                 houseSize = new Size(4, 4);
 
-                greenHousePosition = new Position(8, 22);
+                greenHousePosition = new Position(8, 62);
                 greenHouseSize = new Size(5, 6);
 
                 lakePosition = new Position(54, 9);

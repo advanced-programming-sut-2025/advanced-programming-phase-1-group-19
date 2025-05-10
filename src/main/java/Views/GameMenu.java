@@ -41,6 +41,9 @@ public class GameMenu implements AppMenu {
             case startNewGame: {
                 Pattern pattern = Pattern.compile("game new -u (?<usernames>.+?)");
                 Matcher matcher = pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
                 String allUsernames = matcher.group("usernames").trim();
                 if (allUsernames.isEmpty()) {
                     System.out.println("You did not enter any usernames!");
@@ -69,12 +72,19 @@ public class GameMenu implements AppMenu {
             case cheatAdvanceTime: {
                 Pattern pattern = Pattern.compile("^\\s*cheat advance time (?<X>\\d+)h\\s*$");
                 Matcher matcher = pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
                 System.out.println(gameController.cheatAdvanceTime(Integer.parseInt(matcher.group("X"))).message());
                 break;
             }
             case cheatAdvanceDate: {
                 Pattern pattern = Pattern.compile("^\\s*cheat advance date (?<X>\\d+)d\\s*$");
                 Matcher matcher = pattern.matcher(input);
+
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
                 System.out.println(gameController.cheatAdvanceDate(Integer.parseInt(matcher.group("X"))).message());
                 break;
             }
@@ -97,6 +107,10 @@ public class GameMenu implements AppMenu {
             case walk: {
                 Pattern pattern = Pattern.compile("^walk -l (?<x>\\d+) (?<y>\\d+)");
                 Matcher matcher = pattern.matcher(input);
+
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
                 int x = Integer.parseInt(matcher.group("x"));
                 int y = Integer.parseInt(matcher.group("y"));
                 System.out.println(gameController.walk(new Position(x, y)).message());
@@ -105,6 +119,9 @@ public class GameMenu implements AppMenu {
             case printMap: {
                 Pattern pattern = Pattern.compile("^print map -l (?<x>\\d+) (?<y>\\d+) -s (?<size>\\d+)$");
                 Matcher matcher = pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
                 int x = Integer.parseInt(matcher.group("x"));
                 int y = Integer.parseInt(matcher.group("y"));
                 int size = Integer.parseInt(matcher.group("size"));
@@ -132,6 +149,9 @@ public class GameMenu implements AppMenu {
             case cheatWeatherForecast:{
                 Pattern pattern = Pattern.compile("^cheat weather set (?<type>.*)$");
                 Matcher matcher = pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
                 System.out.println(gameController.cheatForecast(matcher.group("type")).message());
                 break;
             }
@@ -142,6 +162,9 @@ public class GameMenu implements AppMenu {
             case cheatThor:{
                 Pattern pattern = Pattern.compile("^cheat Thor -l <(?<x>\\d+) , (?<y>\\d+)>$");
                 Matcher matcher = pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
                 System.out.println(gameController.cheatThor(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))).message());
             }
             case showEnergy: {
@@ -152,6 +175,9 @@ public class GameMenu implements AppMenu {
                 String pattern="^\\s*energy set -v (?<value>.+?)\\s*$";
                 Pattern pattern1 = Pattern.compile(pattern);
                 Matcher matcher1 = pattern1.matcher(input);
+                if(!matcher1.matches()) {
+                    System.out.println("invalid command!");
+                }
                 System.out.println(gameController.cheatEnergySet(Integer.parseInt(matcher1.group(1))).message());
                 break;
             }
@@ -167,6 +193,9 @@ public class GameMenu implements AppMenu {
                 String pattern="^\\s*inventory trash -i (?<itemName>.+?)(?: -n (?<number>\\d+))?\\s*$";
                 Pattern pattern1 = Pattern.compile(pattern);
                 Matcher matcher1 = pattern1.matcher(input);
+                if(!matcher1.matches()) {
+                    System.out.println("invalid command!");
+                }
                 if(input.contains("-n")) {
                     System.out.println(gameController.inventoryTrash(matcher1.group(1),Integer.parseInt(matcher1.group(2)) ,false).message());
                 }
@@ -179,30 +208,37 @@ public class GameMenu implements AppMenu {
             case toolEquip:{
                 Pattern pattern  = Pattern.compile("^\\s*tools equip (?<toolName>.+)\\s*$");
                 Matcher matcher = pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
                 System.out.println(gameController.equipTool(matcher.group("toolName")).message());
                 break;
             }
             case toolCurrentShow:{
                 Pattern pattern = Pattern.compile("^\\s*tools show current\\s*$");
-                Matcher matcher = pattern.matcher(input);
                 System.out.println(gameController.showCurrentTool().message());
                 break;
             }
             case toolShowAvailable:{
                 Pattern pattern = Pattern.compile("^\\s*tools show available\\s*$");
-                Matcher matcher = pattern.matcher(input);
                 System.out.println(gameController.showAllTools().message());
                 break;
             }
             case toolUpgrade:{
                 Pattern pattern = Pattern.compile("^\\s*tools upgrade (?<toolName>.+)\\s*$");
                 Matcher matcher = pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
                 System.out.println(gameController.upgradeTool(matcher.group("toolName")).message());
                 break;
             }
             case toolUse:{
                 Pattern pattern = Pattern.compile("^\\s*tools use -d (?<direction>.+)\\s*$");
                 Matcher matcher = pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
                 System.out.println(gameController.useTool(matcher.group("direction")).message());
                 break;
             }
@@ -214,6 +250,9 @@ public class GameMenu implements AppMenu {
             case cookingRefrigerator:{
                 Pattern pattern = Pattern.compile("^\\s*cooking refrigerator (?<putOrPick>.+?) (?<item>.+?)\\s*$");
                 Matcher matcher = pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
                 if(matcher.group(1).equals("Put")) {
                     System.out.println(houseController.refrigerator(matcher.group(2),1,true).message());
                 }
@@ -229,36 +268,54 @@ public class GameMenu implements AppMenu {
             case cooking:{
                 Pattern pattern = Pattern.compile("^\\s*cooking prepare (?<recipeName>.+?)\\s*$");
                 Matcher matcher = pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
                 System.out.println(houseController.cookingPrepare(matcher.group(1)).message());
                 break;
             }
             case eatFood:{
                 Pattern pattern=Pattern.compile("^\\s*eat (?<foodName>.+?)\\s*$");
                 Matcher matcher=pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
                 System.out.println(houseController.eatFood(matcher.group(1)).message());
                 break;
             }
             case buildBarn:{
                 Pattern pattern=Pattern.compile("^\\s*build -a (?<buildingName>.+?) -l (?<x>\\d+) (?<y>\\d+)\\s*$");
                 Matcher matcher=pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
                 System.out.println(houseController.buildBarn(matcher.group(1),Integer.parseInt(matcher.group(2)), Integer.parseInt(matcher.group(3)) ).message());
                 break;
             }
             case buyAnimal:{
                 Pattern pattern=Pattern.compile("^\\s*buy animal -a (?<animal>.+?) -n (?<name>.+?)\\s*$");
                 Matcher matcher=pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
                 System.out.println(houseController.buyAnimal(matcher.group(1),matcher.group(2)).message());
                 break;
             }
             case petting:{
                 Pattern pattern=Pattern.compile("^\\s*pet -n (?<name>.+?)\\s*$");
                 Matcher matcher=pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
                 System.out.println(gameController.petAnimal(matcher.group(1)).message());
                 break;
             }
             case cheatAnimalFriendship:{
                 Pattern pattern=Pattern.compile("cheat set friendship -n (?<animalName>.+?) -c (?<amount>.+?)");
                 Matcher matcher=pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
                 System.out.println(gameController.cheatFriendship(matcher.group(1),Integer.parseInt(matcher.group(2)) ).message());
                 break;
             }
@@ -269,12 +326,18 @@ public class GameMenu implements AppMenu {
             case shepherdAnimals:{
                 Pattern pattern=Pattern.compile("^\\s*shepherd animals -n (?<animalName>.+?) -l (?<x>\\d+) (?<y>\\d+)\n\\s*$");
                 Matcher matcher=pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
                 System.out.println(gameController.shepherdAnimals(matcher.group(1),Integer.parseInt(matcher.group(2)),Integer.parseInt(matcher.group(3)) ).message());
                 break;
             }
             case feedHay:{
                 Pattern pattern=Pattern.compile("^\\s*feed hay -n (?<animalName>.+?)\\s*$");
                 Matcher matcher=pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
                 System.out.println(gameController.feedingHay(matcher.group(1)).message());
                 break;
             }
@@ -287,18 +350,27 @@ public class GameMenu implements AppMenu {
             case collectProducts:{
                 Pattern pattern=Pattern.compile("^\\s*collect produce -n (?<name>.+?)\\s*$");
                 Matcher matcher=pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
                 System.out.println(gameController.collectProducts(matcher.group(1)).message());
                 break;
             }
             case sellAnimal:{
                 Pattern pattern=Pattern.compile("^\\s*sell animal -n (?<name>.+?)\\s*$");
                 Matcher matcher=pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
                 System.out.println(gameController.sellAnimal(matcher.group(1)).message());
                 break;
             }
             case craftInfo: {
                 Pattern pattern = Pattern.compile("^craftinfo -n (?<name>.+)$");
                 Matcher matcher = pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
                 String name = matcher.group("name");
                 System.out.println(gameController.craftInfo(name).message());
                 break;
@@ -306,6 +378,9 @@ public class GameMenu implements AppMenu {
             case plant: {
                 Pattern pattern = Pattern.compile("^plant -s (?<seed>\\S+) -d (?<direction>\\S+)$");
                 Matcher matcher = pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
                 String seedName = matcher.group("seed");
                 String directionName = matcher.group("direction");
                 SeedType seed = SeedType.valueOf(seedName);
@@ -316,6 +391,9 @@ public class GameMenu implements AppMenu {
             case showPlant: {
                 Pattern pattern = Pattern.compile("^show plant <(?<x>\\d+) , (?<y>\\d+)>$");
                 Matcher matcher = pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
                 String xString = matcher.group("x");
                 String yString = matcher.group("y");
                 int x = Integer.parseInt(xString);

@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 
 public class Map {
-    private ArrayList<Farm> farms = new ArrayList<>();
+    private ArrayList<Farm> farms;
     private NPCVillage npcVillage;
 
     public Map(ArrayList<Farm> farms) {
