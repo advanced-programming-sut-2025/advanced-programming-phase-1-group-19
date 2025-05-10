@@ -1,5 +1,7 @@
 package Modules.Crafting;
 
+import Modules.Animal.AnimalProduct;
+import Modules.Animal.AnimalProductType;
 import Modules.Animal.Fish;
 import Modules.Animal.FishType;
 import Modules.Farming.Crop;
@@ -10,11 +12,11 @@ import java.util.HashMap;
 
 public enum CookingRecipe implements Recipe{
     friedEgg("Fried Egg",new HashMap<>() {{
-        put(new Material(MaterialType.egg), 1);
+        put(new AnimalProduct(AnimalProductType.egg), 1);
     }}, 35, null, 50),
     omelet("omelet", new HashMap<>() {{
-        put(new Material(MaterialType.egg), 1);
-        put(new Material(MaterialType.milk), 1);
+        put(new AnimalProduct(AnimalProductType.egg), 1);
+        put(new AnimalProduct(AnimalProductType.milk), 1);
     }}, 125, null, 100),
     bakedFish("baked Fish", new HashMap<>(){{
         put(new Fish(FishType.sardine), 1);
@@ -24,7 +26,7 @@ public enum CookingRecipe implements Recipe{
     pumpkinPie("pumpkin Pie", new HashMap<>(){{
         put(new Crop(CropType.pumpkin), 1);
         put(new Material(MaterialType.wheatFlour), 1);
-        put(new Material(MaterialType.milk), 1);
+        put(new AnimalProduct(AnimalProductType.milk), 1);
         put(new Material(MaterialType.sugar), 1);
     }}, 385, null, 225),
     spaghetti("spaghetti", new HashMap<>(){{
@@ -45,14 +47,14 @@ public enum CookingRecipe implements Recipe{
     cookie("Cookie", new HashMap<>(){{
         put(new Material(MaterialType.wheatFlour), 1);
         put(new Material(MaterialType.sugar), 1);
-        put(new Material(MaterialType.egg), 1);
+        put(new , 1);
     }}, 140, null, 90),
     hashBrowns("hash Browns", new HashMap<>(){{
         put(new Material(MaterialType.oil), 1);
         put(new Crop(CropType.potato), 1);
     }}, 120, null, 90),
     pancakes("pancakes", new HashMap<>(){{
-        put(new Material(MaterialType.egg), 1);
+        put(new AnimalProduct(AnimalProductType.egg), 1);
         put(new Material(MaterialType.wheatFlour), 1);
     }}, 80, null, 90),
     fruitSalad("fruit salad", new HashMap<>(){{

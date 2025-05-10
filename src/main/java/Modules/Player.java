@@ -1,6 +1,7 @@
 package Modules;
 
 import Modules.Communication.FriendShip;
+import Modules.Communication.NPC;
 import Modules.Crafting.Buff;
 import Modules.Crafting.CookingRecipe;
 import Modules.Crafting.CraftingRecipe;
@@ -30,6 +31,7 @@ public class Player {
     private int buffedEnergy;
     private ArrayList<FriendShip> friendShips;
     private Tool currentTool = null;
+    private ArrayList<NPC> npcs;
     public Player(User user, Farm farm) {
         this.money = 0;
         this.user = user;
@@ -51,6 +53,13 @@ public class Player {
         }
         buffedEnergy = 0;
         friendShips = new ArrayList<>();
+        npcs = new ArrayList<>();
+        npcs.add(new NPC("Sebastian"));
+        npcs.add(new NPC("Abigail"));
+        npcs.add(new NPC("Harvey"));
+        npcs.add(new NPC("Lia"));
+        npcs.add(new NPC("Robin"));
+
     }
 
     public User getUser() {
@@ -164,5 +173,9 @@ public class Player {
 
     public void setFeatureMoney(int featureMoney) {
         this.featureMoney += featureMoney;
+    }
+
+    public ArrayList<NPC> getNpcs() {
+        return npcs;
     }
 }

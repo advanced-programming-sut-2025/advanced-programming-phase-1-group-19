@@ -2,6 +2,7 @@ package Controllers;
 
 import Modules.*;
 import Modules.Animal.*;
+import Modules.Communication.NPC;
 import Modules.Enums.*;
 import Modules.Interactions.Messages.*;
 import Modules.Enums.Menu;
@@ -709,6 +710,24 @@ public class GameController extends Controller {
         }
     }
 
+    public GameMessage meetNpc(String npcName) {
+        // TODO: check if it's near!
+        NPC npc = NPC.getNPCByName(npcName);
+        if(npc == null) {
+            return new GameMessage(null, "There is no such npc");
+        }
+        return new GameMessage(null, npc.getDialogue());
+    }
+
+    public GameMessage questNpc(){
+        ArrayList<NPC> npcs = App.getInstance().getCurrentGame().getCurrentPlayer().getNpcs();
+        StringBuilder stringBuilder = new StringBuilder("");
+        for(NPC npc : npcs) {
+            int activeQuest = npc.getQuest().getActiveQuest();
+            stringBuilder.append(npc.getQuest().getRequests().get(activeQuest) + "\n");
+        }
+        return new GameMessage(null, stringBuilder.toString());
+    }
     @Override
     public Message exit() {
 //        TODO: save game and go back to main Menu

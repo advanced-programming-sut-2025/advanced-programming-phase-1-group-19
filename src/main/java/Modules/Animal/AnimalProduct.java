@@ -7,8 +7,8 @@ public class AnimalProduct extends Item {
     private AnimalProductType type;
     private Quality quality;
 
-    public AnimalProduct(String name, int takenSpace, AnimalProductType type) {
-        super(name, takenSpace, false);
+    public AnimalProduct(AnimalProductType type) {
+        super(type.getName(), 1, type.isEdible());
         this.type = type;
     }
 
