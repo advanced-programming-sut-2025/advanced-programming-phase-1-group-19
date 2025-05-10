@@ -476,7 +476,7 @@ public class GameController extends Controller {
     public GameMessage openHouseMenu() {
         App app = App.getInstance();
         Player player = app.getCurrentGame().getCurrentPlayer();
-//        TODO:check if the player is near to the house or not
+//        TODO:check if the player is near the house
         Game game = app.getCurrentGame();
         game.setInGameMenu(InGameMenu.houseMenu);
         return new GameMessage(null, "You opened house menu");
@@ -1159,6 +1159,17 @@ public class GameController extends Controller {
         return new GameMessage(null, ret);
     }
 
+    public GameMessage showFriendships(){
+        App app = App.getInstance();
+        Game game = app.getCurrentGame();
+        Player player = game.getCurrentPlayer();
+        StringBuilder stringBuilder = new StringBuilder();
+        for (FriendShip friendShip : player.getFriendShips()) {
+            stringBuilder.append("Your friendship with: "+friendShip.getPlayer().getUser().getUsername()+"   "+"xp: "+friendShip.getXp()+"\n");
+        }
+        return new GameMessage(null, stringBuilder.toString());
+    }
+
     public GameMessage talk(String username , String message) {
         App app = App.getInstance();
         Game game = app.getCurrentGame();
@@ -1171,6 +1182,7 @@ public class GameController extends Controller {
             return new GameMessage(null, "You aren't close enough to talk!");
         }
         player.getFriendShipByPlayer(player2).addMessage(message);
+        player2.getFriendShipByPlayer(player).addMessage(message);
         player.getFriendShipByPlayer(player2).increaseXp(20);
         player2.getFriendShipByPlayer(player).increaseXp(20);
         return new GameMessage(null,"You successfully talked with " + username + "!");
@@ -1359,64 +1371,7 @@ public class GameController extends Controller {
         return new GameMessage(null,"You are accepted by "+player2.getUser().getUsername())
     }
 
-    public GameMessage startTrade(){
-        App app = App.getInstance();
-        Game game = app.getCurrentGame();
-        Player player = game.getCurrentPlayer();
-        StringBuilder stringBuilder = new StringBuilder();
-        for (Player gamePlayer : game.getPlayers()) {
-            stringBuilder.append(gamePlayer.getUser().getUsername()+"\n");
-        }
-        return new GameMessage(null,stringBuilder.toString());
-    }
 
-    public GameMessage trading(String username,String type,String itemName,int amount,int price,String targetItemName,int targetItemAmount){
-        App app = App.getInstance();
-        Game game = app.getCurrentGame();
-        Player player = game.getCurrentPlayer();
-        Player player2 = game.getPlayerByUsername(username);
-        if(player2 == null) {
-            return new GameMessage(null, "There is no player with that username in this game!");
-        }
-        Item item = player.getBackPack().getItemByName(itemName);
-        if(amount <= 0 ){
-            return new GameMessage(null, "Invalid amount");
-        }
-        int backpackAmount = player.getBackPack().getItemCount(item);
-        if(item == null) {
-            return new GameMessage(null, "You do not have this item in your backpack os this item doesn't exist!");
-        }
-        if(amount > backpackAmount){
-            return new GameMessage(null, "You do not have enough backpack amount!");
-        }
-        if(price !=0 && targetItemName!=null){
-            return new GameMessage(null, "You can just choose one ways of trading");
-        }
-        Trade trade=null;
-        if(type.equals("offer")){
-            if(price != 0){
-                trade = new Trade(player,false,item,amount,price);
-            }
-            else {
-//                TODO:find the target item
-                trade = new Trade(player,true,item,);
-            }
-            player2.getFriendShipByPlayer(player).tradeOffer(trade);
-        }
-        else if(type.equals("request")){
-            if(price != 0){
-                trade = new Trade(player,false,item,amount,price);
-            }
-            else {
-//                TODO:find the target item
-            }
-            player2.getFriendShipByPlayer(player).tradeOffer(trade);
-        }
-        else {
-            return new GameMessage(null, "Invalid type");
-        }
-        return new GameMessage(null,"Your offer was sent to "+player2.getUser().getUsername());
-    }
 
 
 

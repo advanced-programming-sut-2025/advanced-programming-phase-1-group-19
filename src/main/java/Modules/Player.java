@@ -31,6 +31,7 @@ public class Player {
     private int buffedEnergy;
     private ArrayList<FriendShip> friendShips;
     private Tool currentTool = null;
+    private int money=0;
     public Player(User user, Farm farm) {
         this.user = user;
         this.farm = farm;
@@ -162,5 +163,17 @@ public class Player {
 
     public void setCurrentTool(Tool currentTool) {
         this.currentTool = currentTool;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+    public void increaseMoney(int amount) {
+        this.money += amount;
+    }
+
+    public void decreaseMoney(int amount) {
+        this.money -= amount;
     }
 }

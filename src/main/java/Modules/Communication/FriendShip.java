@@ -3,7 +3,6 @@ package Modules.Communication;
 import Modules.Player;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class FriendShip {
     private Player player;
@@ -45,7 +44,7 @@ public class FriendShip {
         }
     }
 
-    public void tradeOffer(Trade trade) {
+    public void addTradeOffer(Trade trade) {
         this.tradeOffers.add(trade);
     }
 
@@ -107,11 +106,29 @@ public class FriendShip {
         return giftLog;
     }
 
-    public int getTradeId(Trade trade) {}
+    public Trade getById(int id) {
+        return this.tradeOffers.get(id-1);
+    }
     public void addTrade(Trade trade) {
         this.tradeLog.add(trade);
     }
     public ArrayList<Trade> getTradeLog() {
         return tradeLog;
+    }
+
+    public ArrayList<String> getTalkLog() {
+        return talkLog;
+    }
+
+    public ArrayList<Trade> getTradeOffers() {
+        return tradeOffers;
+    }
+
+    public void removeTradeOffer(Trade trade) {
+        this.tradeOffers.remove(trade);
+    }
+
+    public int getTradeId(Trade trade) {
+        return (this.tradeOffers.indexOf(trade)+1);
     }
 }

@@ -1,6 +1,7 @@
 package Modules.Enums;
 
 public enum InGameMenu {
+    tradeMenu,
     houseMenu,
     craftingMenu;
 
