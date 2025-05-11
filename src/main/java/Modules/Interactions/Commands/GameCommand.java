@@ -59,5 +59,10 @@ public enum GameCommand implements Command {
     tradeList,
     tradeResponse,
     tradeHistory,
+    showAllProduct,
+    showAvailableProduct,
+    purchaseItem,
+    cheatAddMoney,
+    sellItem,
     exit;
 }

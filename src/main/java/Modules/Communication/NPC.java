@@ -1,14 +1,107 @@
 package Modules.Communication;
 
+import Modules.Animal.AnimalProduct;
+import Modules.Animal.AnimalProductType;
+import Modules.App;
+import Modules.Crafting.CookingRecipe;
+import Modules.Crafting.Food;
+import Modules.Crafting.Material;
+import Modules.Crafting.MaterialType;
+import Modules.Farming.Crop;
+import Modules.Farming.CropType;
+import Modules.Game;
 import Modules.Item;
 import Modules.Map.TileObject;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class NPC extends TileObject {
     private String name;
     private String job;
-    private ArrayList<Item> favoriteItems;
+    private ArrayList<Item> favoriteItems = new ArrayList<>();
+    private NPCDialogue dialogue;
+    private NPCFriendship friendship;
+    private NPCQuest quest;
+    public NPC(String name) {
+        switch (name){
+            case "Sebastian":{
+                this.name = "Sebastian";
+                this.job = "Merchant";
+                favoriteItems.add(new AnimalProduct(AnimalProductType.wool));
+                favoriteItems.add(new Food(CookingRecipe.pumpkinPie));
+                favoriteItems.add(new Food(CookingRecipe.pizza));
+                break;
+            }
+            case "Abigail":{
+                this.name = "Abigail";
+                this.job = "Miner";
+                favoriteItems.add(new Material(MaterialType.stone));
+                favoriteItems.add(new Material(MaterialType.ironOre));
+                favoriteItems.add(new Material(MaterialType.coffee));
+                break;
+            }
+            case "Harvey":{
+                this.name = "Harvey";
+                this.job = "GarbageSeller";
+                favoriteItems.add(new Material(MaterialType.coffee));
+                favoriteItems.add(new Material(MaterialType.pickle));
+                favoriteItems.add(new Material(MaterialType.wine));
+                break;
+            }
+            case "Lia":{
+                this.name = "Lia";
+                this.job = "Chef";
+                favoriteItems.add(new Crop(CropType.grape));
+                favoriteItems.add(new Material(MaterialType.wine));
+                break;
+            }
+            case "Robin":{
+                this.name = "Robin";
+                this.job = "RandomSeller";
+                favoriteItems.add(new Food(CookingRecipe.pizza));
+                favoriteItems.add(new Material(MaterialType.wood));
+                favoriteItems.add(new Material(MaterialType.ironBar));
+                break;
+            }
+        }
+        this.dialogue = new NPCDialogue(this);
+        this.quest = new NPCQuest(this);
+    }
 
-    public NPC(String name) {}
+    public static NPC getNPCByName(String name){
+        ArrayList<NPC> npcs = App.getInstance().getCurrentGame().getCurrentPlayer().getNpcs();
+        return switch (name) {
+            case "Sebastian" -> npcs.get(0);
+            case "Abigail" -> npcs.get(1);
+            case "Harvey" -> npcs.get(2);
+            case "Lia" -> npcs.get(3);
+            case "Robin" -> npcs.get(4);
+            default -> null;
+        };
+    }
+    public String getName() {
+        return name;
+    }
+
+    public String getJob() {
+        return job;
+    }
+
+    public ArrayList<Item> getFavoriteItems() {
+        return favoriteItems;
+    }
+
+    public String getDialogue() {
+        Game game = App.getInstance().getCurrentGame();
+        return dialogue.GetDialogue(game.getTodayWeather(), game.getTime(), friendship.getLevel());
+    }
+
+    public NPCFriendship getFriendship() {
+        return friendship;
+    }
+
+    public NPCQuest getQuest() {
+        return quest;
+    }
 }

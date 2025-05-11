@@ -4,7 +4,7 @@ public enum Season {
     spring,
     summer,
     fall,
-    winter
+    winter,
     ;
     private int id;
     Season() {

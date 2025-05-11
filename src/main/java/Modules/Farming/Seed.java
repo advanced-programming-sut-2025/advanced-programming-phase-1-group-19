@@ -39,4 +39,9 @@ public class Seed extends Item {
     public SeedType getType() {
         return type;
     }
+
+    @Override
+    public String toString() {
+        return type.getName() + " seeds";
+    }
 }

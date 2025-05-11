@@ -1,22 +1,22 @@
 package Modules;
 
 import Modules.Communication.FriendShip;
+import Modules.Communication.NPC;
 import Modules.Crafting.Buff;
 import Modules.Crafting.CookingRecipe;
 import Modules.Crafting.CraftingRecipe;
 import Modules.Enums.SkillType;
 import Modules.Map.Farm;
 import Modules.Map.Position;
-import Modules.Tools.BackPack;
-import Modules.Tools.Tool;
-import Modules.Tools.TrashCan;
-import Modules.Tools.WateringCan;
+import Modules.Tools.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.function.ToLongBiFunction;
 
 public class Player {
+    private int money;
+    private int featureMoney;
     private User user;
     private Farm farm;
     private Position position;
@@ -31,14 +31,16 @@ public class Player {
     private int buffedEnergy;
     private ArrayList<FriendShip> friendShips;
     private Tool currentTool = null;
+    private ArrayList<NPC> npcs;
     public Player(User user, Farm farm) {
+        this.money = 0;
         this.user = user;
         this.farm = farm;
         this.position = new Position(farm.getTopLeft().x + 50, farm.getTopLeft().y + 50);
         this.energy = new Energy();
         backPack = new BackPack();
-        Tool scythe = new Tool("scythe", 0);
-        WateringCan wateringCan = new WateringCan("wateringCan", 0);
+        Tool scythe = new Tool(ToolType.scythe);
+        WateringCan wateringCan = new WateringCan(ToolType.wateringCan);
         backPack.addItem(scythe, 1);
         backPack.addItem(wateringCan, 1);
         trashCan = new TrashCan();
@@ -51,6 +53,13 @@ public class Player {
         }
         buffedEnergy = 0;
         friendShips = new ArrayList<>();
+        npcs = new ArrayList<>();
+        npcs.add(new NPC("Sebastian"));
+        npcs.add(new NPC("Abigail"));
+        npcs.add(new NPC("Harvey"));
+        npcs.add(new NPC("Lia"));
+        npcs.add(new NPC("Robin"));
+
     }
 
     public User getUser() {
@@ -165,5 +174,25 @@ public class Player {
 
     public ArrayList<FriendShip> getFriendShips() {
         return friendShips;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+    public void addMoney(int money) {
+        this.money += money;
+    }
+
+    public int getFeatureMoney() {
+        return featureMoney;
+    }
+
+    public void setFeatureMoney(int featureMoney) {
+        this.featureMoney += featureMoney;
+    }
+
+    public ArrayList<NPC> getNpcs() {
+        return npcs;
     }
 }

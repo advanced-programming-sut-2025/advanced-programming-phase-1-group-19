@@ -41,4 +41,8 @@ public class Crop extends Item {
     public int getPrice() {
         return type.getInitialPrice();
     }
+    @Override
+    public String toString() {
+        return type.getName();
+    }
 }

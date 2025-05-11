@@ -8,9 +8,9 @@ public class Tool extends Item {
     private ToolType toolType;
     protected int level = 0;
 
-    public Tool(String name, int takenSpace) {
-        super(name, takenSpace, false);
-        this.toolType = ToolType.getToolTypeByName(name);
+    public Tool(ToolType toolType) {
+        super(toolType.getName(), 0, false);
+        this.toolType = toolType;
         this.level = 0;
     }
 
@@ -29,6 +29,9 @@ public class Tool extends Item {
         }
     }
 
+    public void setLevel(int level) {
+        this.level = level;
+    }
     @Override
     public int getPrice() {
         return 0;
@@ -57,5 +60,10 @@ public class Tool extends Item {
 
     public ToolType getToolType() {
         return toolType;
+    }
+
+    @Override
+    public String toString() {
+        return getLevelInfo().levelName() + " " + getName();
     }
 }

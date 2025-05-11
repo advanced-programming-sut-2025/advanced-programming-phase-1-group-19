@@ -16,6 +16,11 @@ public class Food extends Item {
     }
 
     @Override
+    public int getPrice() {
+        return 0;
+    }
+
+    @Override
     public void use() {
 
     }
