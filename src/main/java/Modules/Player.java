@@ -6,6 +6,8 @@ import Modules.Crafting.Buff;
 import Modules.Crafting.CookingRecipe;
 import Modules.Crafting.CraftingRecipe;
 import Modules.Enums.SkillType;
+import Modules.Farming.Seed;
+import Modules.Farming.SeedType;
 import Modules.Map.Farm;
 import Modules.Map.Position;
 import Modules.Tools.*;
@@ -43,8 +45,14 @@ public class Player {
         WateringCan wateringCan = new WateringCan(ToolType.wateringCan);
         backPack.addItem(scythe, 1);
         backPack.addItem(wateringCan, 1);
+        // add this bullshit to backpack
+        backPack.addItem(new Seed(SeedType.pineCone), 10);
         trashCan = new TrashCan();
         skills = new HashMap<>();
+        skills.put(SkillType.mining, new Skill(SkillType.mining));
+        skills.put(SkillType.farming, new Skill(SkillType.farming));
+        skills.put(SkillType.fishing, new Skill(SkillType.fishing));
+        skills.put(SkillType.foraging, new Skill(SkillType.foraging));
         knownCraftingRecipes = new ArrayList<>();
         knownCookingRecipes = new ArrayList<>();
         lastBuffTime = new Time[5];

@@ -109,6 +109,13 @@ public enum SeedType {
         return name;
     }
 
+    public static SeedType getSeedTypeOrNull(String seedName) {
+        try {
+            return SeedType.valueOf(seedName);
+        } catch (IllegalArgumentException | NullPointerException e) {
+            return null;
+        }
+    }
     public static SeedType getSeedTypeByName(String name) {
         for(SeedType seedType : SeedType.values()) {
             if(seedType.getName().equals(name)) {

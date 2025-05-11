@@ -63,11 +63,14 @@ public class BackPack {
         }
         return items.get(item) >= count;
     }
-    public Tool getToolByType(String name) {
+    public Tool getToolByType(ToolType type) {
         for (Map.Entry<Item, Integer> entry : items.entrySet()) {
             Item item = entry.getKey();
-            if(item.getName().equals(name) && item instanceof Tool) {
-                return (Tool) item;
+            if(item instanceof Tool) {
+                Tool tool = (Tool) item;
+                if(tool.getToolType() == type) {
+                    return tool;
+                }
             }
         }
         return null;

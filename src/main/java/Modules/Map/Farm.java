@@ -131,6 +131,15 @@ public class Farm {
         return null;
     }
 
+    public void setTile(Position position, Tile newTile) {
+        for (int i = 0; i < tiles.size(); i++) {
+            if (position.equals(tiles.get(i).getPosition())) {
+                tiles.set(i, newTile); // Actually updates the list
+                break; // Optional: stop after finding the match
+            }
+        }
+    }
+
     public ArrayList<Tile> getTiles() {
         return tiles;
     }
@@ -166,4 +175,6 @@ public class Farm {
     public void setCoop(Coop coop) {
         this.coop = coop;
     }
+
+
 }

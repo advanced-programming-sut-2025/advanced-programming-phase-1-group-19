@@ -41,12 +41,11 @@ public class WateringCan extends Tool {
     }
     @Override
     public void use() {
-
+        super.use();
     }
 
     @Override
     public String getName() {
         return "WateringCan";
-//        TODO:add its type
     }
 }

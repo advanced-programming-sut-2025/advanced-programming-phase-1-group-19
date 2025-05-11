@@ -240,6 +240,9 @@ public class GameController extends Controller {
         if (start.equals(end)) {
             return new GameMessage(null, "Dude you are already there :/");
         }
+        if(map.getTile(end).getBuilding() instanceof Lake || map.getTile(end).getBuilding() instanceof Quarry){
+            return new GameMessage(null, "You are already there :/");
+        }
         ArrayList<Tile> path = map.getPath(start, end);
         if (path == null) {
             return new GameMessage(null, "Ops, sorry you cant go there");
@@ -386,56 +389,29 @@ public class GameController extends Controller {
         return null;
     }
 
-    public GameMessage useTool(String direction) {
-
-
+    public GameMessage useTool(Direction direction) {
 //        TODO: fix this important!!!!
         Tool tool = App.getInstance().getCurrentGame().getCurrentPlayer().getCurrentTool();
-        switch (direction) {
-            case "u": {
-
-                break;
-            }
-            case "d": {
-
-                break;
-            }
-            case "l": {
-
-                break;
-            }
-            case "r": {
-                break;
-            }
-            case "ur": {
-                break;
-            }
-            case "ul": {
-                break;
-            }
-            case "dr": {
-                break;
-            }
-            case "dl": {
-                break;
-            }
-            default: {
-
-            }
+        if(tool == null){
+            return new GameMessage(null, "You don't have a current tool!");
         }
-        return null;
+        Player player = app.getCurrentGame().getCurrentPlayer();
+        Position playerPosition = player.getPosition();
+        Position targetPosition = new Position(playerPosition.x, playerPosition.y);
+        targetPosition.move(direction);
+        return tool.use(targetPosition);
     }
 
     public GameMessage howMuchWater() {
         BackPack backPack = App.getInstance().getCurrentGame().getCurrentPlayer().getBackPack();
-        WateringCan wateringCan = (WateringCan) backPack.getToolByType("wateringCan");
+        WateringCan wateringCan = (WateringCan) backPack.getToolByType(ToolType.wateringCan);
         return new GameMessage(null, "you have " + wateringCan.getCurrentCapacity() + " water in watering can");
     }
 
     public GameMessage printMap(Position position, int size) {
-//        if (size > 100) {
-//            return new GameMessage(null, "please use sizes smaller than 100");
-//        }
+        if (size > 100) {
+            return new GameMessage(null, "please use sizes smaller than 100");
+        }
         Game game = App.getInstance().getCurrentGame();
         Map map = game.getMap();
         Tile tile22 = map.getTile(new Position(10, 10));
@@ -446,6 +422,7 @@ public class GameController extends Controller {
                 Tile tile = map.getTile(new Position(position.x + i, position.y + j));
                 if (tile != null) {
                     Building building = tile.getBuilding();
+                    TileObject tileObject = tile.getObject();
                     if (building == null) {
                         c = '.';
                     } else if (building instanceof House) {
@@ -456,6 +433,11 @@ public class GameController extends Controller {
                         c = 'L';
                     } else if (building instanceof Quarry) {
                         c = 'Q';
+                    }
+                    if(tileObject != null) {
+                        if(tileObject instanceof Plant){
+                            c = 'P';
+                        }
                     }
                 }
                 all[i][j] = c;
@@ -952,7 +934,7 @@ public class GameController extends Controller {
         ret += "\n";
         ret += "Total Harvest Time: " + plant.getTotalTime() + "\n";
         int x = plant.getReGrowth();
-        ret += "One Time: " + (x == -1);
+        ret += "One Time: " + (x == -1) + "\n";
         ret += "Regrowth Time: " + (x == -1 ? "" : x) + "\n";
         ret += "Base Sell Price: " + crop.getInitialPrice() + "\n";
         ret += "Is Edible: " + crop.isEdible() + "\n";

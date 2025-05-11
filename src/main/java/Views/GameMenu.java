@@ -240,7 +240,8 @@ public class GameMenu implements AppMenu {
                 if(!matcher.matches()) {
                     System.out.println("invalid command!");
                 }
-                System.out.println(gameController.useTool(matcher.group("direction")).message());
+                System.out.println(gameController.useTool(Direction.getDirection(matcher.group("direction"))).message());
+                System.out.println("hello");
                 break;
             }
 
@@ -384,9 +385,9 @@ public class GameMenu implements AppMenu {
                 }
                 String seedName = matcher.group("seed");
                 String directionName = matcher.group("direction");
-                SeedType seed = SeedType.valueOf(seedName);
+                SeedType seed = SeedType.getSeedTypeOrNull(seedName);
                 Direction direction = Direction.getDirection(directionName);
-                System.out.println(gameController.plant(seed, direction));
+                System.out.println(gameController.plant(seed, direction).message());
                 break;
             }
             case showPlant: {
