@@ -95,4 +95,17 @@ public class BackPack {
         }
         return totalCapacity;
     }
+
+    public Item getItemByName(String name) {
+        for (Item item : items.keySet()) {
+            if(item.getName().equals(name)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    public int getItemCount(Item item) {
+        return items.get(item);
+    }
 }

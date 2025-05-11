@@ -48,5 +48,16 @@ public enum GameCommand implements Command {
     toolShowAvailable,
     toolUpgrade,
     toolUse,
+    talk,
+    talkHistory,
+    gifting,
+    ratingGift,
+    giftHistory,
+    showFriendships,
+    startTrade,
+    trade,
+    tradeList,
+    tradeResponse,
+    tradeHistory,
     exit;
 }

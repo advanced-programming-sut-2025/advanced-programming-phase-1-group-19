@@ -143,7 +143,11 @@ public class Player {
 //        decrease energy capacity if the buff was over
     }
     public FriendShip getFriendShipByPlayer(Player player) {
-//        TODO: fix this
+        for (FriendShip friendShip : this.friendShips) {
+            if(friendShip.getPlayer().equals(player)) {
+                return friendShip;
+            }
+        }
         return null;
     }
 
@@ -153,5 +157,13 @@ public class Player {
 
     public void setCurrentTool(Tool currentTool) {
         this.currentTool = currentTool;
+    }
+
+    public void addFriendShip(FriendShip friendship) {
+        friendShips.add(friendship);
+    }
+
+    public ArrayList<FriendShip> getFriendShips() {
+        return friendShips;
     }
 }
