@@ -28,7 +28,7 @@ public enum MaterialType {
 
     ;
 
-    private final String name;
+    private String name;
 
     MaterialType() {
         String enumName = name();

@@ -3,6 +3,7 @@ package Controllers;
 import Modules.App;
 import Modules.Game;
 import Modules.Interactions.Messages.GameMessage;
+import Modules.Interactions.Messages.Message;
 import Modules.Item;
 import Modules.Player;
 import Modules.Store.Store;
@@ -98,5 +99,15 @@ public class StoreController extends Controller {
             }
         }
         return new GameMessage(null, "this product does not exist!");
+    }
+
+    @Override
+    public Message showCurrentMenu() {
+        return null;
+    }
+
+    @Override
+    public Message exit() {
+        return null;
     }
 }

@@ -2,9 +2,10 @@ package Modules;
 
 import Modules.Enums.Menu;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class App {
+public class App implements Serializable {
 
     private static App instance;
     private App() {}

@@ -54,11 +54,11 @@ public class Player {
         buffedEnergy = 0;
         friendShips = new ArrayList<>();
         npcs = new ArrayList<>();
-        npcs.add(new NPC("Sebastian"));
-        npcs.add(new NPC("Abigail"));
-        npcs.add(new NPC("Harvey"));
-        npcs.add(new NPC("Lia"));
-        npcs.add(new NPC("Robin"));
+//        npcs.add(new NPC("Sebastian"));
+//        npcs.add(new NPC("Abigail"));
+//        npcs.add(new NPC("Harvey"));
+//        npcs.add(new NPC("Lia"));
+//        npcs.add(new NPC("Robin"));
 
     }
 

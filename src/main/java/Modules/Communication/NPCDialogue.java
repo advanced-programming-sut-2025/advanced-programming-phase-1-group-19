@@ -129,12 +129,6 @@ public class NPCDialogue {
             if (friendShipLevel == 2) return Dialogues.get(7);
             return Dialogues.get(8);
         }
-
-    public NPCDialogue(NPC npc) {}
-    public String GetDialogue(Weather weather, Time time,int friendShipLevel) {
-//        TODO: get random dialogue based on parameters
-        return null;
-    }
         if ((hour >= 21 || hour < 5) && season == Season.winter && weather == Weather.snow) {
             if (friendShipLevel == 3) return Dialogues.get(9);
             if (friendShipLevel == 2) return Dialogues.get(10);

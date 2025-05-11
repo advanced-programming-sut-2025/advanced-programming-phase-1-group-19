@@ -698,9 +698,6 @@ public class GameMenu implements AppMenu {
         else if(input.matches("trade list")){
             runCommand(GameCommand.tradeList,"");
         }
-        else {
-            System.out.println("invalid command!");
-        }
         else if(input.matches("^\\s*show all products\\s*$")){
             runCommand(GameCommand.showAllProduct, input);
         }

@@ -47,7 +47,6 @@ public enum CookingRecipe implements Recipe{
     cookie("Cookie", new HashMap<>(){{
         put(new Material(MaterialType.wheatFlour), 1);
         put(new Material(MaterialType.sugar), 1);
-        put(new , 1);
     }}, 140, null, 90),
     hashBrowns("hash Browns", new HashMap<>(){{
         put(new Material(MaterialType.oil), 1);
