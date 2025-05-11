@@ -530,6 +530,9 @@ public class GameMenu implements AppMenu {
         else if(input.matches("^\\s*energy unlimited\\s*$")){
             runCommand(GameCommand.energyUnlimited,"");
         }
+        else if(input.matches("^\\s*inventory show\\s*$")){
+            runCommand(GameCommand.inventoryShow, input);
+        }
         else if(input.matches("^\\s*inventory trash -i (?<itemName>.+?) -n (?<number>.+?)\\s*$")){
             runCommand(GameCommand.inventoryTrash,input);
         }

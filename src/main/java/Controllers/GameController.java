@@ -250,7 +250,11 @@ public class GameController extends Controller {
             player.setPosition(tile.getPosition());
             moves++;
             if (moves % 20 == 0) {
-//                TODO: reduce energy by one;
+                player.decreaseEnergy(1);
+                if(player.getEnergy().getAmount() == 0){
+                    player.setFainted(true);
+                    break;
+                }
 //                TODO: go to next person and faint if energy == 0
 //                TODO: set faintMessage to "Oh you have fainted middle way :(\n"
             }
@@ -316,6 +320,9 @@ public class GameController extends Controller {
     public GameMessage cheatEnergySet(int amount) {
         App app = App.getInstance();
         Player player = app.getCurrentGame().getCurrentPlayer();
+        if(player.getEnergy().getMaxAmount() < amount){
+            player.getEnergy().increaseMaxAmount(amount - player.getEnergy().getMaxAmount());
+        }
         player.addEnergy(amount - player.getEnergy().getAmount());
         return new GameMessage(null, "New energy set to " + amount);
     }
