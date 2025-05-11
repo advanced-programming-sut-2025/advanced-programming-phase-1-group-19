@@ -129,7 +129,9 @@ public class Player {
         return knownCookingRecipes;
     }
 
-    public ArrayList<CraftingRecipe> getKnownCraftingRecipes() {}
+    public ArrayList<CraftingRecipe> getKnownCraftingRecipes() {
+        return knownCraftingRecipes;
+    }
 
     public boolean knowCookingRecipe(CookingRecipe recipe) {
         return knownCookingRecipes.contains(recipe);

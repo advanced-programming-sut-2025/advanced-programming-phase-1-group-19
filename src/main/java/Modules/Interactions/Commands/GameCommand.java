@@ -55,5 +55,9 @@ public enum GameCommand implements Command {
     giftList,
     ratingGift,
     giftHistory,
+    showFriendShips,
+    openCraftingMenu,
+    closeHouseMenu,
+    closeCraftingMenu,
     exit;
 }

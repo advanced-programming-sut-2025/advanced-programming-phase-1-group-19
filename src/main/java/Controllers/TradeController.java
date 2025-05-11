@@ -14,6 +14,7 @@ public class TradeController extends Controller {
         Game game = app.getCurrentGame();
         Player player = game.getCurrentPlayer();
         StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("These are all players in this game:\n");
         for (Player gamePlayer : game.getPlayers()) {
             stringBuilder.append(gamePlayer.getUser().getUsername()+"\n");
         }

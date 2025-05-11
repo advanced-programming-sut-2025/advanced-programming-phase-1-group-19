@@ -373,6 +373,22 @@ public class GameMenu implements AppMenu {
                 System.out.println(gameController.giftHistory(username).message());
                 break;
             }
+            case showFriendShips:{
+                System.out.println(gameController.showFriendships().message());
+                break;
+            }
+            case openCraftingMenu:{
+                System.out.println(gameController.openCraftingMenu().message());
+                break;
+            }
+            case closeHouseMenu:{
+                System.out.println(gameController.closeHouseMenu().message());
+                break;
+            }
+            case closeCraftingMenu:{
+                System.out.println(gameController.closeCraftingMenu().message());
+                break;
+            }
         }
     }
 
@@ -567,6 +583,17 @@ public class GameMenu implements AppMenu {
         else if(input.matches("^\\s*gift history -u (?<username>.+?)\\s*$")){
             runCommand(GameCommand.giftHistory,input);
         }
-
+        else if(input.matches("^\\s*friendships\\s*$")){
+            runCommand(GameCommand.showFriendShips,"");
+        }
+        else if(input.matches("^\\s*open crafting menu\\s*$")){
+            runCommand(GameCommand.openCraftingMenu,"");
+        }
+        else if(input.matches("^\\s*close house menu\\s*$")){
+            runCommand(GameCommand.closeHouseMenu,"");
+        }
+        else if(input.matches("^\\s*close crafting house menu\\s*$")){
+            runCommand(GameCommand.closeCraftingMenu,"");
+        }
     }
 }

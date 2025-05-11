@@ -5,6 +5,7 @@ import Modules.Animal.*;
 import Modules.Communication.FriendShip;
 import Modules.Communication.Gift;
 import Modules.Communication.Trade;
+import Modules.Crafting.CraftingRecipe;
 import Modules.Crafting.Material;
 import Modules.Crafting.MaterialType;
 import Modules.Enums.*;
@@ -477,9 +478,65 @@ public class GameController extends Controller {
         App app = App.getInstance();
         Player player = app.getCurrentGame().getCurrentPlayer();
 //        TODO:check if the player is near the house
+        Farm farm = player.getFarm();
+        boolean isNearHouse = false;
+        for(int i=-1;i<=1;i++){
+            for(int j=-1;j<=1;j++){
+                if((i!=0 || j!=0) && farm.getTile(new Position(i,j)).getBuilding() instanceof House){
+                    isNearHouse = true;
+                }
+            }
+        }
+        if(!isNearHouse){
+            return new GameMessage(null, "You are not close to your house!");
+        }
         Game game = app.getCurrentGame();
         game.setInGameMenu(InGameMenu.houseMenu);
         return new GameMessage(null, "You opened house menu");
+    }
+
+    public GameMessage closeHouseMenu() {
+        App app = App.getInstance();
+        Game game = app.getCurrentGame();
+        Player player = app.getCurrentGame().getCurrentPlayer();
+        Farm farm = player.getFarm();
+        if(game.getInGameMenu() != InGameMenu.houseMenu){
+            return new GameMessage(null, "You haven't open house menu!");
+        }
+        game.setInGameMenu(null);
+        return new GameMessage(null, "You closed house menu");
+    }
+
+    public GameMessage openCraftingMenu() {
+        App app = App.getInstance();
+        Game game = app.getCurrentGame();
+        Player player = app.getCurrentGame().getCurrentPlayer();
+        Farm farm = player.getFarm();
+        boolean isNearHouse = false;
+        for(int i=-1;i<=1;i++){
+            for(int j=-1;j<=1;j++){
+                if((i!=0 || j!=0) && farm.getTile(new Position(i,j)).getBuilding() instanceof House){
+                    isNearHouse = true;
+                }
+            }
+        }
+        if(!isNearHouse){
+            return new GameMessage(null, "You are not close to your house!");
+        }
+        game.setInGameMenu(InGameMenu.craftingMenu);
+        return new GameMessage(null, "You opened Crafting menu");
+    }
+
+    public GameMessage closeCraftingMenu() {
+        App app = App.getInstance();
+        Game game = app.getCurrentGame();
+        Player player = app.getCurrentGame().getCurrentPlayer();
+        Farm farm = player.getFarm();
+        if(game.getInGameMenu() != InGameMenu.craftingMenu){
+            return new GameMessage(null, "You haven't open crafting menu!");
+        }
+        game.setInGameMenu(null);
+        return new GameMessage(null, "You closed Crafting menu");
     }
 
     public GameMessage petAnimal(String animalName){
@@ -690,7 +747,7 @@ public class GameController extends Controller {
         Animal animal = player.getFarm().getBarn().getAnimalByName(animalName);
         if (animal != null) {
             int price = animal.calSellingPrice();
-//            TODO:increase player money
+            player.increaseMoney(price);
             player.getFarm().getBarn().getAnimals().remove(animal);
             return new GameMessage(null,animal.getCurrentProduct().getName()+" sold");
         }
@@ -698,7 +755,7 @@ public class GameController extends Controller {
             animal = player.getFarm().getCoop().getAnimalByName(animalName);
             if (animal != null) {
                 int price = animal.calSellingPrice();
-//                TODO:increase player money
+                player.increaseMoney(price);
                 player.getFarm().getCoop().getAnimals().remove(animal);
                 return new GameMessage(null,animal.getCurrentProduct().getName()+" sold");
             }
@@ -716,19 +773,15 @@ public class GameController extends Controller {
                 switch (fishCount) {
                     case 1:{
                         return FishType.flounder;
-                        break;
                     }
                     case 2:{
                         return FishType.lionFish;
-                        break;
                     }
                     case 3:{
                         return FishType.herring;
-                        break;
                     }
                     case 4:{
                         return FishType.ghostFish;
-                        break;
                     }
                 }
             }
@@ -736,19 +789,19 @@ public class GameController extends Controller {
                 switch (fishCount) {
                     case 1:{
                         return FishType.midnightCarp;
-                        break;
+
                     }
                     case 2:{
                         return FishType.squid;
-                        break;
+
                     }
                     case 3:{
                         return FishType.tuna;
-                        break;
+
                     }
                     case 4:{
                         return FishType.perch;
-                        break;
+
                     }
                 }
             }
@@ -756,19 +809,18 @@ public class GameController extends Controller {
                 switch (fishCount) {
                     case 1:{
                         return FishType.salmon;
-                        break;
+
                     }
                     case 2:{
                         return FishType.sardine;
-                        break;
+
                     }
                     case 3:{
                         return FishType.shad;
-                        break;
+
                     }
                     case 4:{
                         return FishType.blueDiscus;
-                        break;
                     }
                 }
             }
@@ -776,19 +828,19 @@ public class GameController extends Controller {
                 switch (fishCount) {
                     case 1:{
                         return FishType.tilapia;
-                        break;
+
                     }
                     case 2:{
                         return FishType.dorado;
-                        break;
+
                     }
                     case 3:{
                         return FishType.sunFish;
-                        break;
+
                     }
                     case 4:{
                         return FishType.rainbowTrout;
-                        break;
+
                     }
                 }
             }
@@ -799,23 +851,23 @@ public class GameController extends Controller {
                 switch (fishCount) {
                     case 1:{
                         return FishType.flounder;
-                        break;
+
                     }
                     case 2:{
                         return FishType.lionFish;
-                        break;
+
                     }
                     case 3:{
                         return FishType.herring;
-                        break;
+
                     }
                     case 4:{
                         return FishType.ghostFish;
-                        break;
+
                     }
                     case 5:{
                         return FishType.legend;
-                        break;
+
                     }
                 }
             }
@@ -823,23 +875,23 @@ public class GameController extends Controller {
                 switch (fishCount) {
                     case 1:{
                         return FishType.midnightCarp;
-                        break;
+
                     }
                     case 2:{
                         return FishType.squid;
-                        break;
+
                     }
                     case 3:{
                         return FishType.tuna;
-                        break;
+
                     }
                     case 4:{
                         return FishType.perch;
-                        break;
+
                     }
                     case 5:{
                         return FishType.glacierFish;
-                        break;
+
                     }
                 }
             }
@@ -847,23 +899,22 @@ public class GameController extends Controller {
                 switch (fishCount) {
                     case 1:{
                         return FishType.salmon;
-                        break;
+
                     }
                     case 2:{
                         return FishType.sardine;
-                        break;
                     }
                     case 3:{
                         return FishType.shad;
-                        break;
+
                     }
                     case 4:{
                         return FishType.blueDiscus;
-                        break;
+
                     }
                     case 5:{
                         return FishType.angler;
-                        break;
+
                     }
                 }
             }
@@ -871,23 +922,23 @@ public class GameController extends Controller {
                 switch (fishCount) {
                     case 1:{
                         return FishType.tilapia;
-                        break;
+
                     }
                     case 2:{
                         return FishType.dorado;
-                        break;
+
                     }
                     case 3:{
                         return FishType.sunFish;
-                        break;
+
                     }
                     case 4:{
                         return FishType.rainbowTrout;
-                        break;
+
                     }
                     case 5:{
                         return FishType.crimsonFish;
-                        break;
+
                     }
                 }
             }
@@ -998,7 +1049,7 @@ public class GameController extends Controller {
             return new GameMessage(null, "select a valid seed!");
         }
         Game game = app.getCurrentGame();
-        Map map = game.getMap();
+        Map map = (Map) game.getMap();
         Player player = game.getCurrentPlayer();
         BackPack inventory = player.getBackPack();
         Seed seed = inventory.getSeedInBachPack(seedType);
@@ -1178,6 +1229,9 @@ public class GameController extends Controller {
         if(player2 == null) {
             return new GameMessage(null, "There is no player with that username!");
         }
+        if(player.getUser().getUsername().equals(username)) {
+            return new GameMessage(null, "You can not talk to your self!");
+        }
         if(!(Math.abs(player2.getPosition().x - player.getPosition().x) <= 1 && Math.abs(player2.getPosition().y - player.getPosition().y) <= 1)) {
             return new GameMessage(null, "You aren't close enough to talk!");
         }
@@ -1343,7 +1397,7 @@ public class GameController extends Controller {
         if(player2 == null) {
             return new GameMessage(null, "There is no player with that username in this game!");
         }
-        if(player.getBackPack().checkItem(new Material(MaterialType.weddingRing),1){
+        if(player.getBackPack().checkItem(new Material(MaterialType.weddingRing),1)){
             return new GameMessage(null, "you must have a wedding ring");
         }
         if(player.getUser().getGender().equals(player2.getUser().getGender())) {
@@ -1362,16 +1416,16 @@ public class GameController extends Controller {
         if(!accepted){
             player.getFriendShipByPlayer(player2).setLevel(0);
             player2.getFriendShipByPlayer(player).setLevel(0);
-            return new GameMessage(null,"You are rejected by "+player2.getUser().getUsername())
+            return new GameMessage(null,"You are rejected by "+player2.getUser().getUsername());
         }
         player.getFriendShipByPlayer(player2).setLevel(4);
         player2.getFriendShipByPlayer(player).setLevel(4);
         player.getBackPack().removeItem(new Material(MaterialType.weddingRing),1);
         player2.getBackPack().addItem(new Material(MaterialType.weddingRing),1);
-        return new GameMessage(null,"You are accepted by "+player2.getUser().getUsername())
+        return new GameMessage(null,"You are accepted by "+player2.getUser().getUsername());
     }
 
-
+    pub
 
 
 
