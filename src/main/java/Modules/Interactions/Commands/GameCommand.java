@@ -64,5 +64,11 @@ public enum GameCommand implements Command {
     purchaseItem,
     cheatAddMoney,
     sellItem,
+    askAboutMarriage,
+    giftList,
+    showFriendShips,
+    openCraftingMenu,
+    closeHouseMenu,
+    closeCraftingMenu,
     exit;
 }

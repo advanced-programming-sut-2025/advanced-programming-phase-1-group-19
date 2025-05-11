@@ -2,12 +2,14 @@ package Modules.Crafting;
 
 import Modules.Item;
 
+import java.util.HashMap;
+
 public class CraftingItem extends Item {
 
-    private final CraftingRecipe recipe;
+    private  CraftingRecipe recipe;
 
     public CraftingItem(CraftingRecipe recipe) {
-        super(recipe.getProductName(), 1, false);
+        super(recipe.getProductName(),1,false);
         this.recipe = recipe;
     }
 
@@ -32,6 +34,8 @@ public class CraftingItem extends Item {
     public String getName() {
         return recipe.getProductName();
     }
+
+
 
     @Override
     public int getPrice() {

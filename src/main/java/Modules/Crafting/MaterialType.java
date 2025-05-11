@@ -1,6 +1,8 @@
 package Modules.Crafting;
 
 public enum MaterialType {
+    egg,
+    milk,
     sugar,
     cheese,
     fiber,
@@ -33,6 +35,14 @@ public enum MaterialType {
     MaterialType() {
         String enumName = name();
         switch (enumName) {
+            case "egg":{
+                this.name = "egg";
+                break;
+            }
+            case "milk":{
+                this.name = "milk";
+                break;
+            }
             case "sugar":{
                 this.name = "sugar";
                 break;
@@ -142,4 +152,5 @@ public enum MaterialType {
         }
         return null;
     }
+
 }

@@ -439,8 +439,47 @@ public class GameMenu implements AppMenu {
                 System.out.println(gameController.gifting(username, item, amount).message());
                 break;
             }
+            case ratingGift:{
+                Pattern pattern = Pattern.compile("^\\s*gift rate -u (?<username>.+?) -i (?<giftNumber>.+?) -r (?<rate>.+?)\\s*$");
+                Matcher matcher = pattern.matcher(input);
+                String username = matcher.group("username");
+                int giftNumber = Integer.parseInt(matcher.group("giftNumber"));
+                int rate = Integer.parseInt(matcher.group("rate"));
+                System.out.println(gameController.ratingGift(username,giftNumber,rate).message());
+                break;
+            }
+            case giftList:{
+                Pattern pattern = Pattern.compile("^\\s*gift list -u (?<username>.+?)\\s*$");
+                Matcher matcher = pattern.matcher(input);
+                String username = matcher.group("username");
+                System.out.println(gameController.giftHistory(username).message());
+                break;
+            }
             case startTrade:{
                 System.out.println(gameController.startTrade().message());
+                break;
+            }
+            case giftHistory:{
+                Pattern pattern = Pattern.compile("^\\s*gift history -u (?<username>.+?)\\s*$");
+                Matcher matcher = pattern.matcher(input);
+                String username = matcher.group("username");
+                System.out.println(gameController.giftHistory(username).message());
+                break;
+            }
+            case showFriendShips:{
+                System.out.println(gameController.showFriendships().message());
+                break;
+            }
+            case openCraftingMenu:{
+                System.out.println(gameController.openCraftingMenu().message());
+                break;
+            }
+            case closeHouseMenu:{
+                System.out.println(gameController.closeHouseMenu().message());
+                break;
+            }
+            case closeCraftingMenu:{
+                System.out.println(gameController.closeCraftingMenu().message());
                 break;
             }
             case trade:{
@@ -712,6 +751,36 @@ public class GameMenu implements AppMenu {
         }
         else if(input.matches("^\\s*sell (?<productName>.*) -n (?<count>.*)\\s*$")){
             runCommand(GameCommand.sellItem, input);
+        }
+        else if(input.matches("^\\s*talk -u (?<username>.+?) -m (?<message>.+?)\\s*$")){
+            runCommand(GameCommand.talk,input);
+        }
+        else if(input.matches("^\\s*talk history -u (?<username>.+?)\\s*$")){
+            runCommand(GameCommand.talkHistory,input);
+        }
+        else if(input.matches("^\\s*gift -u (?<username>.+?) -i (?<item>.+?) -a (?<amount>.+?)\\s*$")){
+            runCommand(GameCommand.gifting,input);
+        }
+        else if(input.matches("^\\s*gift list -u (?<username>.+?)\\s*$")) {
+            runCommand(GameCommand.giftList, input);
+        }
+        else if(input.matches("^\\s*gift rate -u (?<username>.+?) -i (?<giftNumber>.+?) -r (?<rate>.+?)\\s*$")){
+            runCommand(GameCommand.ratingGift,input);
+        }
+        else if(input.matches("^\\s*gift history -u (?<username>.+?)\\s*$")){
+            runCommand(GameCommand.giftHistory,input);
+        }
+        else if(input.matches("^\\s*friendships\\s*$")){
+            runCommand(GameCommand.showFriendShips,"");
+        }
+        else if(input.matches("^\\s*open crafting menu\\s*$")){
+            runCommand(GameCommand.openCraftingMenu,"");
+        }
+        else if(input.matches("^\\s*close house menu\\s*$")){
+            runCommand(GameCommand.closeHouseMenu,"");
+        }
+        else if(input.matches("^\\s*close crafting house menu\\s*$")){
+            runCommand(GameCommand.closeCraftingMenu,"");
         }
     }
 }

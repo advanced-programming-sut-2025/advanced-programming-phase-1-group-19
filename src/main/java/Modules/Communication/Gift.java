@@ -7,7 +7,11 @@ public class Gift {
     private int amount;
     private int rate;
 
-    public Gift(Item item, int amount) {}
+    public Gift(Item item, int amount) {
+        this.item = item;
+        this.amount = amount;
+        this.rate = 0;
+    }
 
     public void setRate(int rate) {
         this.rate = rate;

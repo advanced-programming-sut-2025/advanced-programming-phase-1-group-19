@@ -60,6 +60,11 @@ public class Player {
 //        npcs.add(new NPC("Lia"));
 //        npcs.add(new NPC("Robin"));
 
+
+    }
+
+    public ArrayList<FriendShip> getFriendShips() {
+        return friendShips;
     }
 
     public User getUser() {
@@ -98,6 +103,10 @@ public class Player {
         isFainted = fainted;
     }
 
+    public void addFriendShip(FriendShip friendShip) {
+        friendShips.add(friendShip);
+    }
+
     public void Walk(Position position) {
 
     }
@@ -127,8 +136,7 @@ public class Player {
     }
 
     public ArrayList<CraftingRecipe> getKnownCraftingRecipes() {
-//        TODO: check this
-        return null;
+        return knownCraftingRecipes;
     }
 
     public boolean knowCookingRecipe(CookingRecipe recipe) {
@@ -168,13 +176,6 @@ public class Player {
         this.currentTool = currentTool;
     }
 
-    public void addFriendShip(FriendShip friendship) {
-        friendShips.add(friendship);
-    }
-
-    public ArrayList<FriendShip> getFriendShips() {
-        return friendShips;
-    }
 
     public int getMoney() {
         return money;
@@ -182,6 +183,10 @@ public class Player {
 
     public void addMoney(int money) {
         this.money += money;
+    }
+
+    public void decreaseMoney(int amount) {
+        this.money -= amount;
     }
 
     public int getFeatureMoney() {
