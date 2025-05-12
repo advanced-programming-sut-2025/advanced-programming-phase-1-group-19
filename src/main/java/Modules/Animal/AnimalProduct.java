@@ -1,10 +1,11 @@
 package Modules.Animal;
 
 import Modules.Item;
+import Modules.Map.Tile;
 
 public class AnimalProduct extends Item {
 
-    private AnimalProductType type;
+    private AnimalProductType type ;
     private Quality quality;
 
     public AnimalProduct(AnimalProductType type) {
@@ -26,8 +27,8 @@ public class AnimalProduct extends Item {
     }
 
     @Override
-    public void drop() {
-
+    public void drop(Tile tile) {
+        tile.setObject(AnimalProduct.this);
     }
 
     @Override

@@ -87,7 +87,11 @@ public enum CookingRecipe implements Recipe{
     }
 
     public static CookingRecipe getCookingRecipeByName(String name) {
-//        TODO: fix this
+        for (CookingRecipe value : CookingRecipe.values()) {
+            if(value.productName.equals(name)) {
+                return value;
+            }
+        }
         return null;
     }
 

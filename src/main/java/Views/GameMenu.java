@@ -1,6 +1,10 @@
 package Views;
 
 import Controllers.*;
+import Modules.Animal.Animal;
+import Modules.Animal.AnimalProduct;
+import Modules.Animal.AnimalProductType;
+import Modules.Animal.AnimalType;
 import Modules.Farming.Seed;
 import Modules.Farming.SeedType;
 import Modules.App;
@@ -254,7 +258,7 @@ public class GameMenu implements AppMenu {
                 if(!matcher.matches()) {
                     System.out.println("invalid command!");
                 }
-                if(matcher.group(1).equals("Put")) {
+                if(matcher.group(1).equals("put")) {
                     System.out.println(houseController.refrigerator(matcher.group(2),1,true).message());
                 }
                 else {
@@ -325,12 +329,12 @@ public class GameMenu implements AppMenu {
                 break;
             }
             case shepherdAnimals:{
-                Pattern pattern=Pattern.compile("^\\s*shepherd animals -n (?<animalName>.+?) -l (?<x>\\d+) (?<y>\\d+)\n\\s*$");
+                Pattern pattern=Pattern.compile("^\\s*shepherd animals -n (?<animalName>.+?) -l (?<x>\\d+) (?<y>\\d+)\\s*$");
                 Matcher matcher=pattern.matcher(input);
                 if(!matcher.matches()) {
                     System.out.println("invalid command!");
                 }
-                System.out.println(gameController.shepherdAnimals(matcher.group(1),Integer.parseInt(matcher.group(2)),Integer.parseInt(matcher.group(3)) ).message());
+                System.out.println(gameController.shepherdAnimals(matcher.group("animalName"),Integer.parseInt(matcher.group("x")),Integer.parseInt(matcher.group("y")) ).message());
                 break;
             }
             case feedHay:{
@@ -452,11 +456,11 @@ public class GameMenu implements AppMenu {
                 Pattern pattern = Pattern.compile("^\\s*gift list -u (?<username>.+?)\\s*$");
                 Matcher matcher = pattern.matcher(input);
                 String username = matcher.group("username");
-                System.out.println(gameController.giftHistory(username).message());
+                System.out.println(gameController.listingGift().message());
                 break;
             }
             case startTrade:{
-                System.out.println(gameController.startTrade().message());
+                System.out.println(tradeController.startTrade().message());
                 break;
             }
             case giftHistory:{
@@ -464,10 +468,6 @@ public class GameMenu implements AppMenu {
                 Matcher matcher = pattern.matcher(input);
                 String username = matcher.group("username");
                 System.out.println(gameController.giftHistory(username).message());
-                break;
-            }
-            case showFriendShips:{
-                System.out.println(gameController.showFriendships().message());
                 break;
             }
             case openCraftingMenu:{
@@ -493,17 +493,17 @@ public class GameMenu implements AppMenu {
                 String item = matcher.group("item");
                 int amount = Integer.parseInt(matcher.group("amount"));
                 if(matcher.group("price") != null) {
-                    System.out.println(gameController.trading(username,type,item,amount,Integer.parseInt(matcher.group("price")),null,0).message());
+                    System.out.println(tradeController.trading(username,type,item,amount,Integer.parseInt(matcher.group("price")),null,0).message());
                 }
                 else{
                     String targetItem = matcher.group("targetItem");
                     int targetAmount = Integer.parseInt(matcher.group("targetAmount"));
-                    System.out.println(gameController.trading(username,type,item,amount,0,targetItem,targetAmount).message());
+                    System.out.println(tradeController.trading(username,type,item,amount,0,targetItem,targetAmount).message());
                 }
                 break;
             }
             case tradeList:{
-                System.out.println(gameController.tradeList().message());
+                System.out.println(tradeController.tradeList().message());
                 break;
             }
             case showAllProduct:{
@@ -536,6 +536,85 @@ public class GameMenu implements AppMenu {
                 System.out.println(storeController.sellItem(matcher.group("productName").trim(),Integer.parseInt(matcher.group("count").trim())).message());
                 break;
             }
+            case showCraftingRecipes:{
+                CraftingController craftingController = CraftingController.getInstance();
+                System.out.println(craftingController.showCraftingRecipe().message());
+                break;
+            }
+            case crafting:{
+                Pattern pattern = Pattern.compile("^\\s*crafting craft (?<itemName>.+?)\\s*$");
+                Matcher matcher = pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
+                CraftingController craftingController = CraftingController.getInstance();
+                System.out.println(craftingController.crafting(matcher.group("itemName").trim()).message());
+                break;
+            }
+            case placeItem:{
+                Pattern pattern = Pattern.compile("^\\s*place item -n (?<itemName>.+?) -d (?<direction>.+?)\\s*$");
+                Matcher matcher = pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
+                String itemName = matcher.group("itemName");
+                String direction = matcher.group("direction");
+                System.out.println(gameController.placeItem(itemName,direction).message());
+                break;
+            }
+            case cheatAddItem:{
+                Pattern pattern = Pattern.compile("^\\s*cheat add item -n (?<itemName>.+?) -c (?<count>.+?)\\s*$");
+                Matcher matcher = pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
+                String itemName = matcher.group("itemName");
+                int count = Integer.parseInt(matcher.group("count"));
+                System.out.println(gameController.cheatAddItem(itemName,count).message());
+                break;
+            }
+            case askMarriage:{
+                Pattern pattern = Pattern.compile("^\\s*ask marriage -u (?<username>.+?) -r (?<ring>.+?)\\s*$");
+                Matcher matcher = pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
+                String username = matcher.group("username");
+                System.out.println(gameController.marriage(username).message());
+                break;
+            }
+            case showMarriageRequests:{
+                System.out.println(gameController.marriageRequests().message());
+                break;
+            }
+            case answerMarriage:{
+                Pattern pattern = Pattern.compile("^\\s*respond (?<acceptOrRejec>.+?) -u (?<username>.+?)\\s*$");
+                Matcher matcher = pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
+                String username = matcher.group("username");
+                if(matcher.group("acceptOrRejec").equals("accept")) {
+                    System.out.println(gameController.answeringMarriage(username,true).message());
+                }
+                else if(matcher.group("acceptOrRejec").equals("reject")) {
+                    System.out.println(gameController.answeringMarriage(username,false).message());
+                }
+                else {
+                    System.out.println("invalid answer!");
+                }
+                break;
+            }
+            case hug:{
+                Pattern pattern = Pattern.compile("^\\s*hug -u (?<username>.+?)\\s*$");
+                Matcher matcher = pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
+                String username = matcher.group("username");
+                System.out.println(gameController.hugging(username).message());
+                break;
+            }
         }
     }
 
@@ -544,6 +623,8 @@ public class GameMenu implements AppMenu {
     private final Scanner scanner = appView.getScanner();
     private final GameController gameController = GameController.getInstance();
     private final StoreController storeController = StoreController.getInstance();
+    private final TradeController tradeController = TradeController.getInstance();
+
     private  HouseController houseController = new HouseController();
 
     @Override
@@ -677,7 +758,7 @@ public class GameMenu implements AppMenu {
         else if(input.matches("^\\s*animals\\s*$")){
             runCommand(GameCommand.showAnimals, "");
         }
-        else if(input.matches("^\\s*shepherd animals -n (?<animalName>.+?) -l (?<x>\\d+) (?<y>\\d+)\n\\s*$")){
+        else if(input.matches("^\\s*shepherd animals -n (?<animalName>.+?) -l (?<x>\\d+) (?<y>\\d+)\\s*$")){
             runCommand(GameCommand.shepherdAnimals, input);
         }
         else if(input.matches("^\\s*feed hay -n (?<animalName>.+?)\\s*$")){
@@ -715,18 +796,6 @@ public class GameMenu implements AppMenu {
         }
         else if(input.matches("^\\s*tools use -d (?<direction>.+)\\s*$")){
             runCommand(GameCommand.toolUse, input);
-        }
-        else if(input.matches("^\\s*talk -u (?<username>.+?) -m (?<message>.+?)\\s*$")){
-            runCommand(GameCommand.talk,input);
-        }
-        else if(input.matches("^\\s*friendships\\s*$")){
-            runCommand(GameCommand.showFriendships,"");
-        }
-        else if(input.matches("^\\s*talk history -u (?<username>.+?)\\s*$")){
-            runCommand(GameCommand.talkHistory,input);
-        }
-        else if(input.matches("^\\s*gift -u (?<username>.+?) -i (?<item>.+?) -a (?<amount>.+?)\\s*$")){
-            runCommand(GameCommand.gifting,input);
         }
         else if(input.matches("start trade")){
             runCommand(GameCommand.startTrade,"");
@@ -771,7 +840,7 @@ public class GameMenu implements AppMenu {
             runCommand(GameCommand.giftHistory,input);
         }
         else if(input.matches("^\\s*friendships\\s*$")){
-            runCommand(GameCommand.showFriendShips,"");
+            runCommand(GameCommand.showFriendships,"");
         }
         else if(input.matches("^\\s*open crafting menu\\s*$")){
             runCommand(GameCommand.openCraftingMenu,"");
@@ -781,6 +850,39 @@ public class GameMenu implements AppMenu {
         }
         else if(input.matches("^\\s*close crafting house menu\\s*$")){
             runCommand(GameCommand.closeCraftingMenu,"");
+        }
+        else if(input.matches("^\\s*crafting show recipes\\s*$")){
+            runCommand(GameCommand.showCraftingRecipes,"");
+        }
+        else if(input.matches("^\\s*crafting craft (?<itemName>.+?)\\s*$")){
+            runCommand(GameCommand.crafting,input);
+        }
+        else if(input.matches("^\\s*place item -n (?<itemName>.+?) -d (?<direction>.+?)\\s*$")){
+            runCommand(GameCommand.placeItem,input);
+        }
+        else if(input.matches("^\\s*cheat add item -n (?<itemName>.+?) -c (?<count>.+?)\\s*$")){
+            runCommand(GameCommand.cheatAddItem,input);
+        }
+        else if(input.matches("show position")){
+            App app = App.getInstance();
+            Game game = app.getCurrentGame();
+            Player player = game.getCurrentPlayer();
+            System.out.println(player.getPosition().x + " " + player.getPosition().y);
+        }
+        else if(input.matches("^\\s*ask marriage -u (?<username>.+?) -r (?<ring>.+?)\\s*$")){
+            runCommand(GameCommand.askMarriage,input);
+        }
+        else if(input.matches("^\\s*respond (?<acceptOrRejec>.+?) -u (?<username>.+?)\\s*$")){
+            runCommand(GameCommand.answerMarriage,input);
+        }
+        else if(input.matches("^\\s*show marriage requests\\s*$")){
+            runCommand(GameCommand.showMarriageRequests,input);
+        }
+        else if(input.matches("^\\s*hug -u (?<username>.+?)\\s*$")){
+            runCommand(GameCommand.hug,input);
+        }
+        else{
+            System.out.println("invalid command");
         }
     }
 }

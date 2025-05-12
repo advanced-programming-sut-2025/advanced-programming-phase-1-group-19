@@ -12,6 +12,7 @@ public class FriendShip {
     private ArrayList<Gift> giftLog;
     private ArrayList<Trade> tradeLog;
     private ArrayList<Trade> tradeOffers;
+    private String MarriageRequest;
     public FriendShip(Player player) {
         this.player = player;
         this.xp = 0;
@@ -24,24 +25,28 @@ public class FriendShip {
 
 
     public void setLevel(int level) {
-        this.level = level;
         switch (level){
             case 0:
                 this.xp = 0;
                 break;
             case 1:
-                this.xp = 100;
+                if(this.level != 1)
+                    this.xp = 100;
                 break;
             case 2:
-                this.xp = 200;
+                if(this.level != 2)
+                    this.xp = 200;
                 break;
             case 3:
-                this.xp = 300;
+                if(this.level != 3)
+                    this.xp = 300;
                 break;
             case 4:
-                this.xp = 400;
+                if(this.level != 4)
+                    this.xp = 400;
                 break;
         }
+        this.level = level;
     }
 
     public void addTradeOffer(Trade trade) {
@@ -130,5 +135,13 @@ public class FriendShip {
 
     public int getTradeId(Trade trade) {
         return (this.tradeOffers.indexOf(trade)+1);
+    }
+
+    public void addMarriageRequest(String request) {
+        this.MarriageRequest=(request);
+    }
+
+    public String getMarriageRequest() {
+        return MarriageRequest;
     }
 }

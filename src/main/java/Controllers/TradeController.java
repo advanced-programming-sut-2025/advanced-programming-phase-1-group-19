@@ -5,10 +5,20 @@ import Modules.Communication.FriendShip;
 import Modules.Communication.Trade;
 import Modules.Game;
 import Modules.Interactions.Messages.GameMessage;
+import Modules.Interactions.Messages.Message;
 import Modules.Item;
 import Modules.Player;
 
 public class TradeController extends Controller {
+    private static TradeController instance;
+
+    private TradeController(){}
+    public static TradeController getInstance(){
+        if(instance == null){
+            instance = new TradeController();
+        }
+        return instance;
+    }
     public GameMessage startTrade(){
         App app = App.getInstance();
         Game game = app.getCurrentGame();
@@ -145,4 +155,13 @@ public class TradeController extends Controller {
         return new GameMessage(null,stringBuilder.toString());
     }
 
+    @Override
+    public Message showCurrentMenu() {
+        return null;
+    }
+
+    @Override
+    public Message exit() {
+        return null;
+    }
 }

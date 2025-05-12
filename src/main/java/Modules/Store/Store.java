@@ -1,11 +1,13 @@
 package Modules.Store;
 
 import Modules.Crafting.CookingRecipe;
+import Modules.Crafting.CraftingRecipe;
 import Modules.Crafting.Food;
 import Modules.Enums.Season;
 import Modules.Farming.Crop;
 import Modules.Farming.Seed;
 import Modules.Farming.SeedType;
+import Modules.Map.Building;
 import Modules.Tools.Tool;
 import Modules.Tools.ToolType;
 
@@ -18,12 +20,13 @@ import Modules.Tools.BackPack;
 
 import java.util.ArrayList;
 
-public class Store {
+public class Store extends Building {
     private int openingTime;
     private int closingTime;
     private String ownerName;
     private ArrayList<StoreItem> items = new ArrayList<>();
-
+    private ArrayList<CookingRecipe> cookingRecipes = new ArrayList<>();
+    private ArrayList<CraftingRecipe> craftingRecipes = new ArrayList<>();
     public ArrayList<StoreItem> getItems() {
         return items;
     }

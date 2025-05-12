@@ -1,89 +1,71 @@
 package Modules.Tools;
 
+import Modules.App;
+import Modules.Enums.SkillType;
+import Modules.Player;
+
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public enum ToolType {
-    hoe,
-    pickaxe,
-    axe,
-    fishingPole,
-    scythe,
-    milkPail,
-    shear,
-    wateringCan
-    ;
+    hoe("Hoe", Arrays.asList(
+            new LevelInfo("initial", 5, 5),
+            new LevelInfo("copper", 4, 4),
+            new LevelInfo("iron", 3, 3),
+            new LevelInfo("gold", 2, 2),
+            new LevelInfo("iridium", 1, 1)
+    )),
 
-    private String name;
-    private ArrayList<LevelInfo> levels;
+    pickaxe("Pickaxe", Arrays.asList(
+            new LevelInfo("initial", 5, 4),
+            new LevelInfo("copper", 4, 3),
+            new LevelInfo("iron", 3, 2),
+            new LevelInfo("gold", 2, 1),
+            new LevelInfo("iridium", 1, 0)
+    )),
 
-    ToolType() {
-        levels = new ArrayList<>();
-        switch (this.name()) {
-            case "hoe": {
-                name = "Hoe";
-                levels.add(new LevelInfo("initial", 5, 5));
-                levels.add(new LevelInfo("copper", 4, 4));
-                levels.add(new LevelInfo("iron", 3, 3));
-                levels.add(new LevelInfo("gold", 2, 2));
-                levels.add(new LevelInfo("iridium", 1, 1));
-                break;
-            }
-            case "pickaxe": {
-                name = "Pickaxe";
-                levels.add(new LevelInfo("initial", 5,  4));
-                levels.add(new LevelInfo("copper", 4, 3));
-                levels.add(new LevelInfo("iron", 3, 2));
-                levels.add(new LevelInfo("gold", 2, 1));
-                levels.add(new LevelInfo("iridium", 1, 0));
-                // TODO: if mining max! one less energy!
-                break;
-            }
-            case "axe": {
-                name = "Axe";
-                levels.add(new LevelInfo("initial", 5,  4));
-                levels.add(new LevelInfo("copper", 4, 3));
-                levels.add(new LevelInfo("iron", 3, 2));
-                levels.add(new LevelInfo("gold", 2, 1));
-                levels.add(new LevelInfo("iridium", 1, 0));
-                // TODO: if foraging max! one less energy!
-                break;
-            }
-            case "fishingPole": {
-                name = "FishingPole";
-                levels.add(new LevelInfo("training", 8,  8));
-                levels.add(new LevelInfo("bamboo", 8, 8));
-                levels.add(new LevelInfo("fiberglass", 6, 6));
-                levels.add(new LevelInfo("iridium", 4, 4));
-                // TODO: if fishing max! one less energy!
-                break;
-            }
-            case "scythe": {
-                name = "Scythe";
-                levels.add(new LevelInfo("initial", 2,  2));
-                break;
-            }
-            case "milkPail": {
-                name = "MilkPail";
-                levels.add(new LevelInfo("initial", 4,  4));
-                break;
-            }
-            case "shear": {
-                name = "Shear";
-                levels.add(new LevelInfo("initial", 4,  4));
-                break;
-            }
-            case "wateringCan": {
-                name = "WateringCan";
-                levels.add(new LevelInfo("initial", 5, 5));
-                levels.add(new LevelInfo("copper", 4, 4));
-                levels.add(new LevelInfo("iron", 3, 3));
-                levels.add(new LevelInfo("gold", 2, 2));
-                levels.add(new LevelInfo("iridium", 1, 1));
-                // TODO: if farming max! one less energy!
-                break;
-            }
-//            TODO: do it for others and set names
-        }
+    axe("Axe", Arrays.asList(
+            new LevelInfo("initial", 5, 4),
+            new LevelInfo("copper", 4, 3),
+            new LevelInfo("iron", 3, 2),
+            new LevelInfo("gold", 2, 1),
+            new LevelInfo("iridium", 1, 0)
+    )),
+
+    fishingPole("FishingPole", Arrays.asList(
+            new LevelInfo("training", 8, 8),
+            new LevelInfo("bamboo", 8, 8),
+            new LevelInfo("fiberglass", 6, 6),
+            new LevelInfo("iridium", 4, 4)
+    )),
+
+    scythe("Scythe", List.of(
+            new LevelInfo("initial", 2, 2)
+    )),
+
+    milkPail("MilkPail", List.of(
+            new LevelInfo("initial", 4, 4)
+    )),
+
+    shear("Shear", List.of(
+            new LevelInfo("initial", 4, 4)
+    )),
+
+    wateringCan("WateringCan", Arrays.asList(
+            new LevelInfo("initial", 5, 5),
+            new LevelInfo("copper", 4, 4),
+            new LevelInfo("iron", 3, 3),
+            new LevelInfo("gold", 2, 2),
+            new LevelInfo("iridium", 1, 1)
+    ));
+
+    private final String name;
+    private final ArrayList<LevelInfo> levels;
+
+    ToolType(String name, List<LevelInfo> levels) {
+        this.name = name;
+        this.levels = new ArrayList<>(levels);
     }
 
     public LevelInfo getLevel(int level) {
@@ -96,7 +78,7 @@ public enum ToolType {
 
     public static ToolType getToolTypeByName(String name) {
         for (ToolType toolType : ToolType.values()) {
-            if (toolType.name().equals(name)) {
+            if (toolType.getName().equals(name)) {
                 return toolType;
             }
         }

@@ -1,6 +1,7 @@
 package Modules.Crafting;
 
 import Modules.Item;
+import Modules.Map.Tile;
 
 import java.util.HashMap;
 
@@ -21,8 +22,8 @@ public class CraftingItem extends Item {
     }
 
     @Override
-    public void drop() {
-
+    public void drop(Tile tile) {
+        tile.setObject(CraftingItem.this);
     }
 
     @Override

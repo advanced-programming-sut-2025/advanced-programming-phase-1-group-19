@@ -1,970 +1,105 @@
+
 package Modules.Farming;
 
 import Modules.Enums.Season;
-
 import java.util.ArrayList;
 
 public enum PlantType {
-    blueJazz,
-    carrot,
-    cauliflower,
-    coffeeBean,
-    garlic,
-    greenBean,
-    kale,
-    parsnip,
-    potato,
-    rhubarb,
-    strawberry,
-    tulip,
-    unmilledRice,
-    blueberry,
-    corn,
-    hops,
-    hotPepper,
-    melon,
-    poppy,
-    radish,
-    redCabbage,
-    starfruit,
-    summerSpangle,
-    summerSquash,
-    sunflower,
-    tomato,
-    wheat,
-    amaranth,
-    artichoke,
-    beet,
-    bokChoy,
-    broccoli,
-    cranberries,
-    eggplant,
-    fairyRose,
-    grape,
-    pumpkin,
-    yam,
-    sweetGemBerry,
-    powdermelon,
-    ancientFruit,
-    apricot,
-    cherry,
-    banana,
-    mango,
-    orange,
-    peach,
-    apple,
-    pomegranate,
-    oak,
-    maple,
-    pine,
-    mahogany,
-    mushroom,
-    mystic,
-    ;
+    blueJazz("blue jazz", SeedType.jazz, CropType.blueJazz, new int[]{1, 2, 2, 2}, 7, -1, new Season[]{Season.spring}, false, false),
+    carrot("carrot", SeedType.carrot, CropType.carrot, new int[]{1, 1, 1}, 3, -1, new Season[]{Season.spring}, false, false),
+    cauliflower("cauliflower", SeedType.cauliflower, CropType.cauliflower, new int[]{1, 2, 4, 4, 1}, 12, -1, new Season[]{Season.spring}, true, false),
+    coffeeBean("coffee bean", SeedType.coffeeBean, CropType.coffeeBean, new int[]{1, 2, 2, 3, 2}, 10, 2, new Season[]{Season.spring, Season.summer}, false, false),
+    garlic("garlic", SeedType.garlic, CropType.garlic, new int[]{1, 1, 1, 1}, 4, -1, new Season[]{Season.spring}, false, false),
+    greenBean("green bean", SeedType.beanStarter, CropType.greenBean, new int[]{1, 1, 1, 3, 4}, 10, 3, new Season[]{Season.spring}, false, false),
+    kale("kale", SeedType.kale, CropType.kale, new int[]{1, 2, 2, 1}, 6, -1, new Season[]{Season.spring}, false, false),
+    parsnip("parsnip", SeedType.parsnip, CropType.parsnip, new int[]{1, 1, 1, 1}, 4, -1, new Season[]{Season.spring}, false, false),
+    potato("potato", SeedType.potato, CropType.potato, new int[]{1, 1, 1, 2, 1}, 6, -1, new Season[]{Season.spring}, false, false),
+    rhubarb("rhubarb", SeedType.rhubarb, CropType.rhubarb, new int[]{2, 2, 2, 3, 4}, 13, -1, new Season[]{Season.spring}, false, false),
+    strawberry("strawberry", SeedType.strawberry, CropType.strawberry, new int[]{1, 1, 2, 2, 2}, 8, 4, new Season[]{Season.spring}, false, false),
+    tulip("tulip", SeedType.tulipBulb, CropType.tulip, new int[]{1, 1, 2, 2}, 6, -1, new Season[]{Season.spring}, false, false),
+    unmilledRice("unmilled rice", SeedType.riceShoot, CropType.unmilledRice, new int[]{1, 2, 2, 3}, 8, -1, new Season[]{Season.spring}, false, false),
+    blueberry("blueberry", SeedType.blueberry, CropType.blueberry, new int[]{1, 3, 3, 4, 2}, 13, 4, new Season[]{Season.summer}, false, false),
+    corn("corn", SeedType.corn, CropType.corn, new int[]{2, 3, 3, 3, 3}, 14, 4, new Season[]{Season.summer, Season.fall}, false, false),
+    hops("hops", SeedType.hopsStarter, CropType.hops, new int[]{1, 1, 2, 3, 4}, 11, 1, new Season[]{Season.summer}, false, false),
+    hotPepper("hot pepper", SeedType.pepper, CropType.hotPepper, new int[]{1, 1, 1, 1, 1}, 5, 3, new Season[]{Season.summer}, false, false),
+    melon("melon", SeedType.melon, CropType.melon, new int[]{1, 2, 3, 3, 3}, 12, -1, new Season[]{Season.summer}, true, false),
+    poppy("poppy", SeedType.poppy, CropType.poppy, new int[]{1, 2, 2, 2}, 7, -1, new Season[]{Season.summer}, false, false),
+    radish("radish", SeedType.radish, CropType.radish, new int[]{2, 1, 2, 1}, 6, -1, new Season[]{Season.summer}, false, false),
+    redCabbage("red cabbage", SeedType.redCabbage, CropType.redCabbage, new int[]{2, 1, 2, 2, 2}, 9, -1, new Season[]{Season.summer}, false, false),
+    starfruit("starfruit", SeedType.starfruit, CropType.starfruit, new int[]{2, 3, 2, 3, 3}, 13, -1, new Season[]{Season.summer}, false, false),
+    summerSpangle("summer spangle", SeedType.spangle, CropType.summerSpangle, new int[]{1, 2, 3, 1}, 8, -1, new Season[]{Season.summer}, false, false),
+    summerSquash("summer squash", SeedType.summerSquash, CropType.summerSquash, new int[]{1, 1, 1, 2, 1}, 6, 3, new Season[]{Season.summer}, false, false),
+    sunflower("sunflower", SeedType.sunflower, CropType.sunflower, new int[]{1, 2, 3, 2}, 8, -1, new Season[]{Season.summer, Season.fall}, false, false),
+    tomato("tomato", SeedType.tomato, CropType.tomato, new int[]{2, 2, 2, 2, 3}, 11, 4, new Season[]{Season.summer}, false, false),
+    wheat("wheat", SeedType.wheat, CropType.wheat, new int[]{1, 1, 1, 1}, 4, -1, new Season[]{Season.summer, Season.fall}, false, false),
+    amaranth("amaranth", SeedType.amaranth, CropType.amaranth, new int[]{1, 2, 2, 2}, 7, -1, new Season[]{Season.fall}, false, false),
+    artichoke("artichoke", SeedType.artichoke, CropType.artichoke, new int[]{2, 2, 1, 2, 1}, 8, -1, new Season[]{Season.fall}, false, false),
+    beet("beet", SeedType.beet, CropType.beet, new int[]{1, 1, 2, 2}, 6, -1, new Season[]{Season.fall}, false, false),
+    bokChoy("bok choy", SeedType.bokChoy, CropType.bokChoy, new int[]{1, 1, 1, 1}, 4, -1, new Season[]{Season.fall}, false, false),
+    broccoli("broccoli", SeedType.broccoli, CropType.broccoli, new int[]{2, 2, 2, 2}, 8, 4, new Season[]{Season.fall}, false, false),
+    cranberries("cranberries", SeedType.cranberry, CropType.cranberries, new int[]{1, 2, 1, 1, 2}, 7, 5, new Season[]{Season.fall}, false, false),
+    eggplant("eggplant", SeedType.eggplant, CropType.eggplant, new int[]{1, 1, 1, 1}, 5, 5, new Season[]{Season.fall}, false, false),
+    fairyRose("fairy rose", SeedType.fairy, CropType.fairyRose, new int[]{1, 4, 4, 3}, 12, -1, new Season[]{Season.fall}, false, false),
+    grape("grape", SeedType.grapeStarter, CropType.grape, new int[]{1, 1, 2, 3, 3}, 10, 3, new Season[]{Season.fall}, false, false),
+    pumpkin("pumpkin", SeedType.pumpkin, CropType.pumpkin, new int[]{1, 2, 3, 4, 3}, 13, -1, new Season[]{Season.fall}, true, false),
+    yam("yam", SeedType.yam, CropType.yam, new int[]{1, 3, 3, 3}, 10, -1, new Season[]{Season.fall}, false, false),
+    sweetGemBerry("sweet gem berry", SeedType.rare, CropType.sweetGemBerry, new int[]{4, 4, 4}, 28, -1, new Season[]{Season.spring, Season.summer, Season.fall, Season.winter}, true, false),
+    powdermelon("powdermelon", SeedType.powdermelon, CropType.powdermelon, new int[]{1, 2, 1, 2, 1}, 7, -1, new Season[]{Season.winter}, true, false),
+    ancientFruit("ancient fruit", SeedType.ancient, CropType.ancientFruit, new int[]{2, 7, 7, 7, 5}, 28, 7, new Season[]{Season.spring, Season.summer, Season.fall}, false, false),
+    apricotTree("apricot tree", SeedType.apricot, CropType.apricot, new int[]{7, 7, 7, 7}, 28, 1, new Season[]{Season.spring}, false, true),
+    cherryTree("cherry tree", SeedType.cherry, CropType.cherry, new int[]{7, 7, 7, 7}, 28, 1, new Season[]{Season.spring}, false, true),
+    bananaTree("banana tree", SeedType.banana, CropType.banana, new int[]{7, 7, 7, 7}, 28, 1, new Season[]{Season.summer}, false, true),
+    mangoTree("mango tree", SeedType.mango, CropType.mango, new int[]{7, 7, 7, 7}, 28, 1, new Season[]{Season.summer}, false, true),
+    orangeTree("orange tree", SeedType.orange, CropType.orange, new int[]{7, 7, 7, 7}, 28, 1, new Season[]{Season.summer}, false, true),
+    peachTree("peach tree", SeedType.peach, CropType.peach, new int[]{7, 7, 7, 7}, 28, 1, new Season[]{Season.summer}, false, true),
+    appleTree("apple tree", SeedType.apple, CropType.apple, new int[]{7, 7, 7, 7}, 28, 1, new Season[]{Season.fall}, false, true),
+    pomegranateTree("pomegranate tree", SeedType.pomegranate, CropType.pomegranate, new int[]{7, 7, 7, 7}, 28, 1, new Season[]{Season.fall}, false, true),
+    oakTree("oak tree", SeedType.acorn, CropType.oak, new int[]{7, 7, 7, 7}, 28, 7, new Season[]{Season.spring, Season.summer, Season.fall}, false, true),
+    mapleTree("maple tree", SeedType.maple, CropType.maple, new int[]{7, 7, 7, 7}, 28, 9, new Season[]{Season.spring, Season.summer, Season.fall}, false, true),
+    pineTree("pine tree", SeedType.pineCone, CropType.pine, new int[]{7, 7, 7, 7}, 28, 5, new Season[]{Season.spring, Season.summer, Season.fall}, false, true),
+    mahoganyTree("mahogany tree", SeedType.mahogany, CropType.mahogany, new int[]{7, 7, 7, 7}, 28, 1, new Season[]{Season.spring, Season.summer, Season.fall}, false, true),
+    mushroomTree("mushroom tree", SeedType.mushroomTree, CropType.mushroom, new int[]{7, 7, 7, 7}, 28, 1, new Season[]{Season.spring, Season.summer, Season.fall}, false, true),
+    mysticTree("mystic tree", SeedType.mysticTree, CropType.mystic, new int[]{7, 7, 7, 7}, 28, 7, new Season[]{Season.spring, Season.summer, Season.fall}, false, true);
+    private String name;
+    private SeedType seed;
+    private CropType crop;
+    private ArrayList<Integer> stages;
+    private int totalTime;
+    private int reGrowth;
+    private ArrayList<Season> seasonsAvailable;
+    private boolean canBeComeGiant;
+    private boolean isTree;
 
-    private final String name;
-    private final SeedType seed;
-    private final CropType crop;
-    private final ArrayList<Integer> stages;
-    private final int totalTime;
-    private final int reGrowth;
-    private final ArrayList<Season> seasonsAvailable;
-    private final boolean canBeComeGiant;
-    private final boolean isTree;
-
-    PlantType() {
-        stages = new ArrayList<>();
-        seasonsAvailable = new ArrayList<>();
-        switch (this.name()) {
-            case "blueJazz": {
-                name = "blue jazz";
-                seed = SeedType.jazz;
-                crop = CropType.blueJazz;
-                stages.add(1);
-                stages.add(2);
-                stages.add(2);
-                stages.add(2);
-                totalTime = 7;
-                reGrowth = -1;
-                seasonsAvailable.add(Season.spring);
-                canBeComeGiant = false;
-                isTree = false;
-                break;
-            }
-            case "carrot": {
-                name = "carrot";
-                seed = SeedType.carrot;
-                crop = CropType.carrot;
-                stages.add(1);
-                stages.add(1);
-                stages.add(1);
-                totalTime = 3;
-                reGrowth = -1;
-                seasonsAvailable.add(Season.spring);
-                canBeComeGiant = false;
-                isTree = false;
-                break;
-            }
-            case "cauliflower": {
-                name = "cauliflower";
-                seed = SeedType.cauliflower;
-                crop = CropType.cauliflower;
-                stages.add(1);
-                stages.add(2);
-                stages.add(4);
-                stages.add(4);
-                stages.add(1);
-                totalTime = 12;
-                reGrowth = -1;
-                seasonsAvailable.add(Season.spring);
-                canBeComeGiant = true;
-                isTree = false;
-                break;
-            }
-            case "coffeeBean": {
-                name = "coffee bean";
-                seed = SeedType.coffeeBean;
-                crop = CropType.coffeeBean;
-                stages.add(1);
-                stages.add(2);
-                stages.add(2);
-                stages.add(3);
-                stages.add(2);
-                totalTime = 10;
-                reGrowth = 2;
-                seasonsAvailable.add(Season.spring);
-                seasonsAvailable.add(Season.summer);
-                canBeComeGiant = false;
-                isTree = false;
-                break;
-            }
-            case "garlic": {
-                name = "garlic";
-                seed = SeedType.garlic;
-                crop = CropType.garlic;
-                stages.add(1);
-                stages.add(1);
-                stages.add(1);
-                stages.add(1);
-                totalTime = 4;
-                reGrowth = -1;
-                seasonsAvailable.add(Season.spring);
-                canBeComeGiant = false;
-                isTree = false;
-                break;
-            }
-            case "greenBean": {
-                name = "green bean";
-                seed = SeedType.beanStarter;
-                crop = CropType.greenBean;
-                stages.add(1);
-                stages.add(1);
-                stages.add(1);
-                stages.add(3);
-                stages.add(4);
-                totalTime = 10;
-                reGrowth = 3;
-                seasonsAvailable.add(Season.spring);
-                canBeComeGiant = false;
-                isTree = false;
-                break;
-            }
-            case "kale": {
-                name = "kale";
-                seed = SeedType.kale;
-                crop = CropType.kale;
-                stages.add(1);
-                stages.add(2);
-                stages.add(2);
-                stages.add(1);
-                totalTime = 6;
-                reGrowth = -1;
-                seasonsAvailable.add(Season.spring);
-                canBeComeGiant = false;
-                isTree = false;
-                break;
-            }
-            case "parsnip": {
-                name = "parsnip";
-                seed = SeedType.parsnip;
-                crop = CropType.parsnip;
-                stages.add(1);
-                stages.add(1);
-                stages.add(1);
-                stages.add(1);
-                totalTime = 4;
-                reGrowth = -1;
-                seasonsAvailable.add(Season.spring);
-                canBeComeGiant = false;
-                isTree = false;
-                break;
-            }
-            case "potato": {
-                name = "potato";
-                seed = SeedType.potato;
-                crop = CropType.potato;
-                stages.add(1);
-                stages.add(1);
-                stages.add(1);
-                stages.add(2);
-                stages.add(1);
-                totalTime = 6;
-                reGrowth = -1;
-                seasonsAvailable.add(Season.spring);
-                canBeComeGiant = false;
-                isTree = false;
-                break;
-            }
-            case "rhubarb": {
-                name = "rhubarb";
-                seed = SeedType.rhubarb;
-                crop = CropType.rhubarb;
-                stages.add(2);
-                stages.add(2);
-                stages.add(2);
-                stages.add(3);
-                stages.add(4);
-                totalTime = 13;
-                reGrowth = -1;
-                seasonsAvailable.add(Season.spring);
-                canBeComeGiant = false;
-                isTree = false;
-                break;
-            }
-            case "strawberry": {
-                name = "strawberry";
-                seed = SeedType.strawberry;
-                crop = CropType.strawberry;
-                stages.add(1);
-                stages.add(1);
-                stages.add(2);
-                stages.add(2);
-                stages.add(2);
-                totalTime = 8;
-                reGrowth = 4;
-                seasonsAvailable.add(Season.spring);
-                canBeComeGiant = false;
-                isTree = false;
-                break;
-            }
-            case "tulip": {
-                name = "tulip";
-                seed = SeedType.tulipBulb;
-                crop = CropType.tulip;
-                stages.add(1);
-                stages.add(1);
-                stages.add(2);
-                stages.add(2);
-                totalTime = 6;
-                reGrowth = -1;
-                seasonsAvailable.add(Season.spring);
-                canBeComeGiant = false;
-                isTree = false;
-                break;
-            }
-            case "unmilledRice": {
-                name = "unmilled rice";
-                seed = SeedType.riceShoot;
-                crop = CropType.unmilledRice;
-                stages.add(1);
-                stages.add(2);
-                stages.add(2);
-                stages.add(3);
-                totalTime = 8;
-                reGrowth = -1;
-                seasonsAvailable.add(Season.spring);
-                canBeComeGiant = false;
-                isTree = false;
-                break;
-            }
-            case "blueberry": {
-                name = "blueberry";
-                seed = SeedType.blueberry;
-                crop = CropType.blueberry;
-                stages.add(1);
-                stages.add(3);
-                stages.add(3);
-                stages.add(4);
-                stages.add(2);
-                totalTime = 13;
-                reGrowth = 4;
-                seasonsAvailable.add(Season.summer);
-                canBeComeGiant = false;
-                isTree = false;
-                break;
-            }
-            case "corn": {
-                name = "corn";
-                seed = SeedType.corn;
-                crop = CropType.corn;
-                stages.add(2);
-                stages.add(3);
-                stages.add(3);
-                stages.add(3);
-                stages.add(3);
-                totalTime = 14;
-                reGrowth = 4;
-                seasonsAvailable.add(Season.summer);
-                seasonsAvailable.add(Season.fall);
-                canBeComeGiant = false;
-                isTree = false;
-                break;
-            }
-            case "hops": {
-                name = "hops";
-                seed = SeedType.hopsStarter;
-                crop = CropType.hops;
-                stages.add(1);
-                stages.add(1);
-                stages.add(2);
-                stages.add(3);
-                stages.add(4);
-                totalTime = 11;
-                reGrowth = 1;
-                seasonsAvailable.add(Season.summer);
-                canBeComeGiant = false;
-                isTree = false;
-                break;
-            }
-            case "hotPepper": {
-                name = "hot pepper";
-                seed = SeedType.pepper;
-                crop = CropType.hotPepper;
-                stages.add(1);
-                stages.add(1);
-                stages.add(1);
-                stages.add(1);
-                stages.add(1);
-                totalTime = 5;
-                reGrowth = 3;
-                seasonsAvailable.add(Season.summer);
-                canBeComeGiant = false;
-                isTree = false;
-                break;
-            }
-            case "melon": {
-                name = "melon";
-                seed = SeedType.melon;
-                crop = CropType.melon;
-                stages.add(1);
-                stages.add(2);
-                stages.add(3);
-                stages.add(3);
-                stages.add(3);
-                totalTime = 12;
-                reGrowth = -1;
-                seasonsAvailable.add(Season.summer);
-                canBeComeGiant = true;
-                isTree = false;
-                break;
-            }
-            case "poppy": {
-                name = "poppy";
-                seed = SeedType.poppy;
-                crop = CropType.poppy;
-                stages.add(1);
-                stages.add(2);
-                stages.add(2);
-                stages.add(2);
-                totalTime = 7;
-                reGrowth = -1;
-                seasonsAvailable.add(Season.summer);
-                canBeComeGiant = false;
-                isTree = false;
-                break;
-            }
-            case "radish": {
-                name = "radish";
-                seed = SeedType.radish;
-                crop = CropType.radish;
-                stages.add(2);
-                stages.add(1);
-                stages.add(2);
-                stages.add(1);
-                totalTime = 6;
-                reGrowth = -1;
-                seasonsAvailable.add(Season.summer);
-                canBeComeGiant = false;
-                isTree = false;
-                break;
-            }
-            case "redCabbage": {
-                name = "red cabbage";
-                seed = SeedType.redCabbage;
-                crop = CropType.redCabbage;
-                stages.add(2);
-                stages.add(1);
-                stages.add(2);
-                stages.add(2);
-                stages.add(2);
-                totalTime = 9;
-                reGrowth = -1;
-                seasonsAvailable.add(Season.summer);
-                canBeComeGiant = false;
-                isTree = false;
-                break;
-            }
-            case "starfruit": {
-                name = "starfruit";
-                seed = SeedType.starfruit;
-                crop = CropType.starfruit;
-                stages.add(2);
-                stages.add(3);
-                stages.add(2);
-                stages.add(3);
-                stages.add(3);
-                totalTime = 13;
-                reGrowth = -1;
-                seasonsAvailable.add(Season.summer);
-                canBeComeGiant = false;
-                isTree = false;
-                break;
-            }
-            case "summerSpangle": {
-                name = "summer spangle";
-                seed = SeedType.spangle;
-                crop = CropType.summerSpangle;
-                stages.add(1);
-                stages.add(2);
-                stages.add(3);
-                stages.add(1);
-                totalTime = 8;
-                reGrowth = -1;
-                seasonsAvailable.add(Season.summer);
-                canBeComeGiant = false;
-                isTree = false;
-                break;
-            }
-            case "summerSquash": {
-                name = "summer squash";
-                seed = SeedType.summerSquash;
-                crop = CropType.summerSquash;
-                stages.add(1);
-                stages.add(1);
-                stages.add(1);
-                stages.add(2);
-                stages.add(1);
-                totalTime = 6;
-                reGrowth = 3;
-                seasonsAvailable.add(Season.summer);
-                canBeComeGiant = false;
-                isTree = false;
-                break;
-            }
-            case "sunflower": {
-                name = "sunflower";
-                seed = SeedType.sunflower;
-                crop = CropType.sunflower;
-                stages.add(1);
-                stages.add(2);
-                stages.add(3);
-                stages.add(2);
-                totalTime = 8;
-                reGrowth = -1;
-                seasonsAvailable.add(Season.summer);
-                seasonsAvailable.add(Season.fall);
-                canBeComeGiant = false;
-                isTree = false;
-                break;
-            }
-            case "tomato": {
-                name = "tomato";
-                seed = SeedType.tomato;
-                crop = CropType.tomato;
-                stages.add(2);
-                stages.add(2);
-                stages.add(2);
-                stages.add(2);
-                stages.add(3);
-                totalTime = 11;
-                reGrowth = 4;
-                seasonsAvailable.add(Season.summer);
-                canBeComeGiant = false;
-                isTree = false;
-                break;
-            }
-            case "wheat": {
-                name = "wheat";
-                seed = SeedType.wheat;
-                crop = CropType.wheat;
-                stages.add(1);
-                stages.add(1);
-                stages.add(1);
-                stages.add(1);
-                totalTime = 4;
-                reGrowth = -1;
-                seasonsAvailable.add(Season.summer);
-                seasonsAvailable.add(Season.fall);
-                canBeComeGiant = false;
-                isTree = false;
-                break;
-            }
-            case "amaranth": {
-                name = "amaranth";
-                seed = SeedType.amaranth;
-                crop = CropType.amaranth;
-                stages.add(1);
-                stages.add(2);
-                stages.add(2);
-                stages.add(2);
-                totalTime = 7;
-                reGrowth = -1;
-                seasonsAvailable.add(Season.fall);
-                canBeComeGiant = false;
-                isTree = false;
-                break;
-            }
-            case "artichoke": {
-                name = "artichoke";
-                seed = SeedType.artichoke;
-                crop = CropType.artichoke;
-                stages.add(2);
-                stages.add(2);
-                stages.add(1);
-                stages.add(2);
-                stages.add(1);
-                totalTime = 8;
-                reGrowth = -1;
-                seasonsAvailable.add(Season.fall);
-                canBeComeGiant = false;
-                isTree = false;
-                break;
-            }
-            case "beet": {
-                name = "beet";
-                seed = SeedType.beet;
-                crop = CropType.beet;
-                stages.add(1);
-                stages.add(1);
-                stages.add(2);
-                stages.add(2);
-                totalTime = 6;
-                reGrowth = -1;
-                seasonsAvailable.add(Season.fall);
-                canBeComeGiant = false;
-                isTree = false;
-                break;
-            }
-            case "bokChoy": {
-                name = "bok choy";
-                seed = SeedType.bokChoy;
-                crop = CropType.bokChoy;
-                stages.add(1);
-                stages.add(1);
-                stages.add(1);
-                stages.add(1);
-                totalTime = 4;
-                reGrowth = -1;
-                seasonsAvailable.add(Season.fall);
-                canBeComeGiant = false;
-                isTree = false;
-                break;
-            }
-            case "broccoli": {
-                name = "broccoli";
-                seed = SeedType.broccoli;
-                crop = CropType.broccoli;
-                stages.add(2);
-                stages.add(2);
-                stages.add(2);
-                stages.add(2);
-                totalTime = 8;
-                reGrowth = 4;
-                seasonsAvailable.add(Season.fall);
-                canBeComeGiant = false;
-                isTree = false;
-                break;
-            }
-            case "cranberries": {
-                name = "cranberries";
-                seed = SeedType.cranberry;
-                crop = CropType.cranberries;
-                stages.add(1);
-                stages.add(2);
-                stages.add(1);
-                stages.add(1);
-                stages.add(2);
-                totalTime = 7;
-                reGrowth = 5;
-                seasonsAvailable.add(Season.fall);
-                canBeComeGiant = false;
-                isTree = false;
-                break;
-            }
-            case "eggplant": {
-                name = "eggplant";
-                seed = SeedType.eggplant;
-                crop = CropType.eggplant;
-                stages.add(1);
-                stages.add(1);
-                stages.add(1);
-                stages.add(1);
-                totalTime = 5;
-                reGrowth = 5;
-                seasonsAvailable.add(Season.fall);
-                canBeComeGiant = false;
-                isTree = false;
-                break;
-            }
-            case "fairyRose": {
-                name = "fairy rose";
-                seed = SeedType.fairy;
-                crop = CropType.fairyRose;
-                stages.add(1);
-                stages.add(4);
-                stages.add(4);
-                stages.add(3);
-                totalTime = 12;
-                reGrowth = -1;
-                seasonsAvailable.add(Season.fall);
-                canBeComeGiant = false;
-                isTree = false;
-                break;
-            }
-            case "grape": {
-                name = "grape";
-                seed = SeedType.grapeStarter;
-                crop = CropType.grape;
-                stages.add(1);
-                stages.add(1);
-                stages.add(2);
-                stages.add(3);
-                stages.add(3);
-                totalTime = 10;
-                reGrowth = 3;
-                seasonsAvailable.add(Season.fall);
-                canBeComeGiant = false;
-                isTree = false;
-                break;
-            }
-            case "pumpkin": {
-                name = "pumpkin";
-                seed = SeedType.pumpkin;
-                crop = CropType.pumpkin;
-                stages.add(1);
-                stages.add(2);
-                stages.add(3);
-                stages.add(4);
-                stages.add(3);
-                totalTime = 13;
-                reGrowth = -1;
-                seasonsAvailable.add(Season.fall);
-                canBeComeGiant = true;
-                isTree = false;
-                break;
-            }
-            case "yam": {
-                name = "yam";
-                seed = SeedType.yam;
-                crop = CropType.yam;
-                stages.add(1);
-                stages.add(3);
-                stages.add(3);
-                stages.add(3);
-                totalTime = 10;
-                reGrowth = -1;
-                seasonsAvailable.add(Season.fall);
-                canBeComeGiant = false;
-                isTree = false;
-                break;
-            }
-            case "sweetGemBerry": {
-                name = "sweet gem berry";
-                seed = SeedType.rare;
-                crop = CropType.sweetGemBerry;
-                stages.add(2);
-                stages.add(4);
-                stages.add(6);
-                stages.add(6);
-                stages.add(6);
-                totalTime = 24;
-                reGrowth = -1;
-                seasonsAvailable.add(Season.fall);
-                canBeComeGiant = false;
-                isTree = false;
-                break;
-            }
-            case "powdermelon": {
-                name = "powdermelon";
-                seed = SeedType.powdermelon;
-                crop = CropType.powdermelon;
-                stages.add(1);
-                stages.add(2);
-                stages.add(1);
-                stages.add(2);
-                stages.add(1);
-                totalTime = 7;
-                reGrowth = -1;
-                seasonsAvailable.add(Season.winter);
-                canBeComeGiant = true;
-                isTree = false;
-                break;
-            }
-            case "ancientFruit": {
-                name = "ancient fruit";
-                seed = SeedType.ancient;
-                crop = CropType.ancientFruit;
-                stages.add(2);
-                stages.add(7);
-                stages.add(7);
-                stages.add(7);
-                stages.add(5);
-                totalTime = 28;
-                reGrowth = 7;
-                seasonsAvailable.add(Season.spring);
-                seasonsAvailable.add(Season.summer);
-                seasonsAvailable.add(Season.fall);
-                canBeComeGiant = false;
-                isTree = false;
-                break;
-            }
-            case "apricotTree": {
-                name = "apricot tree";
-                seed = SeedType.apricot;
-                crop = CropType.apricot;
-                stages.add(7);
-                stages.add(7);
-                stages.add(7);
-                stages.add(7);
-                totalTime = 28;
-                reGrowth = 1;
-                seasonsAvailable.add(Season.spring);
-                canBeComeGiant = false;
-                isTree = true;
-                break;
-            }
-            case "cherryTree": {
-                name = "cherry tree";
-                seed = SeedType.cherry;
-                crop = CropType.cherry;
-                stages.add(7);
-                stages.add(7);
-                stages.add(7);
-                stages.add(7);
-                totalTime = 28;
-                reGrowth = 1;
-                seasonsAvailable.add(Season.spring);
-                canBeComeGiant = false;
-                isTree = true;
-                break;
-            }
-            case "bananaTree": {
-                name = "banana tree";
-                seed = SeedType.banana;
-                crop = CropType.banana;
-                stages.add(7);
-                stages.add(7);
-                stages.add(7);
-                stages.add(7);
-                totalTime = 28;
-                reGrowth = 1;
-                seasonsAvailable.add(Season.summer);
-                canBeComeGiant = false;
-                isTree = true;
-                break;
-            }
-            case "mangoTree": {
-                name = "mango tree";
-                seed = SeedType.mango;
-                crop = CropType.mango;
-                stages.add(7);
-                stages.add(7);
-                stages.add(7);
-                stages.add(7);
-                totalTime = 28;
-                reGrowth = 1;
-                seasonsAvailable.add(Season.summer);
-                canBeComeGiant = false;
-                isTree = true;
-                break;
-            }
-            case "orangeTree": {
-                name = "orange tree";
-                seed = SeedType.orange;
-                crop = CropType.orange;
-                stages.add(7);
-                stages.add(7);
-                stages.add(7);
-                stages.add(7);
-                totalTime = 28;
-                reGrowth = 1;
-                seasonsAvailable.add(Season.summer);
-                canBeComeGiant = false;
-                isTree = true;
-                break;
-            }
-            case "peachTree": {
-                name = "peach tree";
-                seed = SeedType.peach;
-                crop = CropType.peach;
-                stages.add(7);
-                stages.add(7);
-                stages.add(7);
-                stages.add(7);
-                totalTime = 28;
-                reGrowth = 1;
-                seasonsAvailable.add(Season.summer);
-                canBeComeGiant = false;
-                isTree = true;
-                break;
-            }
-            case "appleTree": {
-                name = "apple tree";
-                seed = SeedType.apple;
-                crop = CropType.apple;
-                stages.add(7);
-                stages.add(7);
-                stages.add(7);
-                stages.add(7);
-                totalTime = 28;
-                reGrowth = 1;
-                seasonsAvailable.add(Season.fall);
-                canBeComeGiant = false;
-                isTree = true;
-                break;
-            }
-            case "pomegranateTree": {
-                name = "pomegranate tree";
-                seed = SeedType.pomegranate;
-                crop = CropType.pomegranate;
-                stages.add(7);
-                stages.add(7);
-                stages.add(7);
-                stages.add(7);
-                totalTime = 28;
-                reGrowth = 1;
-                seasonsAvailable.add(Season.fall);
-                canBeComeGiant = false;
-                isTree = true;
-                break;
-            }
-            case "oakTree": {
-                name = "oak tree";
-                seed = SeedType.acorn;
-                crop = CropType.oak;
-                stages.add(7);
-                stages.add(7);
-                stages.add(7);
-                stages.add(7);
-                totalTime = 28;
-                reGrowth = 7;
-                seasonsAvailable.add(Season.spring);
-                seasonsAvailable.add(Season.summer);
-                seasonsAvailable.add(Season.fall);
-                seasonsAvailable.add(Season.summer);
-                canBeComeGiant = false;
-                isTree = true;
-                break;
-            }
-            case "mapleTree": {
-                name = "maple tree";
-                seed = SeedType.maple;
-                crop = CropType.maple;
-                stages.add(7);
-                stages.add(7);
-                stages.add(7);
-                stages.add(7);
-                totalTime = 28;
-                reGrowth = 9;
-                seasonsAvailable.add(Season.spring);
-                seasonsAvailable.add(Season.summer);
-                seasonsAvailable.add(Season.fall);
-                seasonsAvailable.add(Season.summer);
-                canBeComeGiant = false;
-                isTree = true;
-                break;
-            }
-            case "pineTree": {
-                name = "pine tree";
-                seed = SeedType.pineCone;
-                crop = CropType.pine;
-                stages.add(7);
-                stages.add(7);
-                stages.add(7);
-                stages.add(7);
-                totalTime = 28;
-                reGrowth = 5;
-                seasonsAvailable.add(Season.spring);
-                seasonsAvailable.add(Season.summer);
-                seasonsAvailable.add(Season.fall);
-                seasonsAvailable.add(Season.summer);
-                canBeComeGiant = false;
-                isTree = true;
-                break;
-            }
-            case "mahoganyTree": {
-                name = "mahogany tree";
-                seed = SeedType.mahogany;
-                crop = CropType.mahogany;
-                stages.add(7);
-                stages.add(7);
-                stages.add(7);
-                stages.add(7);
-                totalTime = 28;
-                reGrowth = 1;
-                seasonsAvailable.add(Season.spring);
-                seasonsAvailable.add(Season.summer);
-                seasonsAvailable.add(Season.fall);
-                seasonsAvailable.add(Season.summer);
-                canBeComeGiant = false;
-                isTree = true;
-                break;
-            }
-            case "mushroomTree": {
-                name = "mushroom tree";
-                seed = SeedType.mushroomTree;
-                crop = CropType.mushroom;
-                stages.add(7);
-                stages.add(7);
-                stages.add(7);
-                stages.add(7);
-                totalTime = 28;
-                reGrowth = 1;
-                seasonsAvailable.add(Season.spring);
-                seasonsAvailable.add(Season.summer);
-                seasonsAvailable.add(Season.fall);
-                seasonsAvailable.add(Season.summer);
-                canBeComeGiant = false;
-                isTree = true;
-                break;
-            }
-            case "mysticTree": {
-                name = "mystic tree";
-                seed = SeedType.mysticTree;
-                crop = CropType.mystic;
-                stages.add(7);
-                stages.add(7);
-                stages.add(7);
-                stages.add(7);
-                totalTime = 28;
-                reGrowth = 7;
-                seasonsAvailable.add(Season.spring);
-                seasonsAvailable.add(Season.summer);
-                seasonsAvailable.add(Season.fall);
-                seasonsAvailable.add(Season.summer);
-                canBeComeGiant = false;
-                isTree = true;
-                break;
-            }
-            default: {
-                name = "";
-                seed = null;
-                crop = null;
-                totalTime = 0;
-                reGrowth = -1;
-                canBeComeGiant = false;
-                isTree = false;
-                break;
-            }
+    // Constructor for initializing all values
+    PlantType(String name, SeedType seed, CropType crop, int[] stages, int totalTime, int reGrowth, Season[] seasonsAvailable, boolean canBeComeGiant, boolean isTree) {
+        this.name = name;
+        this.seed = seed;
+        this.crop = crop;
+        this.stages = new ArrayList<>();
+        for (int stage : stages) {
+            this.stages.add(stage);
         }
+        this.totalTime = totalTime;
+        this.reGrowth = reGrowth;
+        this.seasonsAvailable = new ArrayList<>();
+        for (Season season : seasonsAvailable) {
+            this.seasonsAvailable.add(season);
+        }
+        this.canBeComeGiant = canBeComeGiant;
+        this.isTree = isTree;
     }
 
+    // Getters
     public String getName() {
         return name;
     }
 
     public SeedType getSeed() {
         return seed;
+    }
+
+    public CropType getCrop() {
+        return crop;
     }
 
     public ArrayList<Integer> getStages() {
@@ -983,12 +118,8 @@ public enum PlantType {
         return seasonsAvailable;
     }
 
-    public boolean isCanBeComeGiant() {
+    public boolean canBecomeGiant() {
         return canBeComeGiant;
-    }
-
-    public CropType getCrop() {
-        return crop;
     }
 
     public boolean isTree() {
@@ -996,20 +127,24 @@ public enum PlantType {
     }
 
     public static PlantType getPlantTypeByName(String name) {
-        for(PlantType plantType : PlantType.values()) {
-            if(plantType.getName().equals(name)) {
-                return plantType;
+        for (PlantType type : PlantType.values()) {
+            if (type.getName().equals(name)) {
+                return type;
             }
         }
         return null;
     }
 
-    public static PlantType getPlantTypeBySeed(SeedType seed) {
-        for (PlantType plantType : PlantType.values()) {
-            if(plantType.getSeed().equals(seed)) {
-                return plantType;
+    public static PlantType getPlantTypeBySeed(SeedType seedType) {
+        for (PlantType type : PlantType.values()) {
+            if (type.getSeed().equals(seedType)) {
+                return type;
             }
         }
         return null;
+    }
+
+    public boolean isCanBeComeGiant() {
+        return canBeComeGiant;
     }
 }

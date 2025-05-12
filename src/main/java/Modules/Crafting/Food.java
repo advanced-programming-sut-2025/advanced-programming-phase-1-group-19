@@ -1,6 +1,7 @@
 package Modules.Crafting;
 
 import Modules.Item;
+import Modules.Map.Tile;
 
 public class Food extends Item {
 
@@ -21,8 +22,8 @@ public class Food extends Item {
     }
 
     @Override
-    public void drop() {
-
+    public void drop(Tile tile) {
+        tile.setObject(Food.this);
     }
 
     @Override

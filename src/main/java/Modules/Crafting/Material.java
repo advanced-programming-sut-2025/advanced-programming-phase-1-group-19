@@ -1,6 +1,7 @@
 package Modules.Crafting;
 
 import Modules.Item;
+import Modules.Map.Tile;
 
 public class Material extends Item {
     private MaterialType type;
@@ -21,8 +22,8 @@ public class Material extends Item {
     }
 
     @Override
-    public void drop() {
-
+    public void drop(Tile tile) {
+        tile.setObject(Material.this);
     }
 
     @Override

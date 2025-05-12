@@ -6,6 +6,7 @@ import Modules.Enums.SkillType;
 import Modules.Enums.Weather;
 import Modules.Game;
 import Modules.Item;
+import Modules.Map.Tile;
 import Modules.Player;
 import Modules.Tools.LevelInfo;
 import Modules.Tools.Tool;
@@ -101,8 +102,8 @@ public class Fish extends Item {
     }
 
     @Override
-    public void drop() {
-
+    public void drop(Tile tile) {
+        tile.setObject(Fish.this);
     }
 
     @Override

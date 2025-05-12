@@ -25,6 +25,7 @@ import Modules.Tools.*;
 import Views.*;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 
 public class GameController extends Controller {
@@ -457,6 +458,7 @@ public class GameController extends Controller {
                 Tile tile = map.getTile(new Position(position.x + i, position.y + j));
                 if (tile != null) {
                     Building building = tile.getBuilding();
+                    TileObject object = tile.getObject();
                     if (building == null) {
                         c = '.';
                     } else if (building instanceof House) {
@@ -467,6 +469,15 @@ public class GameController extends Controller {
                         c = 'L';
                     } else if (building instanceof Quarry) {
                         c = 'Q';
+                    }
+                    if(object instanceof Item){
+                        c = 'I';
+                    }
+                    if(object instanceof Barn){
+                        c = 'B';
+                    }
+                    if(object instanceof Coop){
+                        c = 'C';
                     }
                 }
                 all[i][j] = c;
@@ -489,6 +500,8 @@ public class GameController extends Controller {
         ret += "\u001B[32mG\u001B[0m ~> green house tiles\n";
         ret += "\u001B[34mL\u001B[0m ~> lake tiles\n";
         ret += "\u001B[33mQ\u001B[0m ~> quarry tiles\n";
+        ret += "I ~> items\n";
+        ret += "B ~> Barn\n";
 
 //        TODO: fix this if needed to show other stuff
         return new GameMessage(null, ret);
@@ -500,16 +513,18 @@ public class GameController extends Controller {
 //        TODO:check if the player is near the house
         Farm farm = player.getFarm();
         boolean isNearHouse = false;
-        for(int i=-1;i<=1;i++){
-            for(int j=-1;j<=1;j++){
-                if((i!=0 || j!=0) && farm.getTile(new Position(i,j)).getBuilding() instanceof House){
-                    isNearHouse = true;
-                }
-            }
-        }
-        if(!isNearHouse){
-            return new GameMessage(null, "You are not close to your house!");
-        }
+        int x = player.getPosition().x;
+        int y = player.getPosition().y;
+//        for(int i=x-1;i<=x+1;i++){
+//            for(int j=y-1;j<=y+1;j++){
+//                if((i!=0 || j!=0) && farm.getTile(new Position(i,j)).getBuilding() instanceof House){
+//                    isNearHouse = true;
+//                }
+//            }
+//        }
+//        if(!isNearHouse){
+//            return new GameMessage(null, "You are not close to your house!");
+//        }
         Game game = app.getCurrentGame();
         game.setInGameMenu(InGameMenu.houseMenu);
         return new GameMessage(null, "You opened house menu");
@@ -532,17 +547,19 @@ public class GameController extends Controller {
         Game game = app.getCurrentGame();
         Player player = app.getCurrentGame().getCurrentPlayer();
         Farm farm = player.getFarm();
+        int x = player.getPosition().x;
+        int y = player.getPosition().y;
         boolean isNearHouse = false;
-        for(int i=-1;i<=1;i++){
-            for(int j=-1;j<=1;j++){
-                if((i!=0 || j!=0) && farm.getTile(new Position(i,j)).getBuilding() instanceof House){
-                    isNearHouse = true;
-                }
-            }
-        }
-        if(!isNearHouse){
-            return new GameMessage(null, "You are not close to your house!");
-        }
+//        for(int i=x-1;i<=x+1;i++){
+//            for(int j=y-1;j<=y+1;j++){
+//                if((i!=0 || j!=0) && farm.getTile(new Position(i,j)).getBuilding() instanceof House){
+//                    isNearHouse = true;
+//                }
+//            }
+//        }
+//        if(!isNearHouse){
+//            return new GameMessage(null, "You are not close to your house!");
+//        }
         game.setInGameMenu(InGameMenu.craftingMenu);
         return new GameMessage(null, "You opened Crafting menu");
     }
@@ -559,23 +576,89 @@ public class GameController extends Controller {
         return new GameMessage(null, "You closed Crafting menu");
     }
 
+    public GameMessage placeItem(String itemName,String direction){
+        App app = App.getInstance();
+        Game game = app.getCurrentGame();
+        Player player = game.getCurrentPlayer();
+        Item item = player.getBackPack().getItemByName(itemName);
+        if(item == null){
+            return new GameMessage(null,"There is no item with this name");
+        }
+        Tile tile = null;
+        if(direction.equals("north")){
+            tile =player.getFarm().getTile(new Position(player.getPosition().x - 1, player.getPosition().y));
+        }
+        else if(direction.equals("south")){
+            tile = player.getFarm().getTile(new Position(player.getPosition().x+1, player.getPosition().y));
+        }
+        else if(direction.equals("east")){
+            tile = player.getFarm().getTile(new Position(player.getPosition().x, player.getPosition().y+1));
+        }
+        else if(direction.equals("west")){
+            tile = player.getFarm().getTile(new Position(player.getPosition().x, player.getPosition().y-1));
+        }
+        else if(direction.equals("northwest")){
+            tile = player.getFarm().getTile(new Position(player.getPosition().x-1, player.getPosition().y-1));
+        }
+        else if(direction.equals("northeast")){
+            tile = player.getFarm().getTile(new Position(player.getPosition().x-1, player.getPosition().y+1));
+        }
+        else if(direction.equals("southeast")){
+            tile = player.getFarm().getTile(new Position(player.getPosition().x+1, player.getPosition().y+1));
+        }
+        else if(direction.equals("southwest")){
+            tile = player.getFarm().getTile(new Position(player.getPosition().x+1, player.getPosition().y-1));
+        }
+        else {
+            return new GameMessage(null,"Wrong direction!");
+        }
+        if(tile.getObject() != null){
+            return new GameMessage(null,"This position is already taken!");
+        }
+        item.drop(tile);
+        player.getBackPack().removeItem(item,1);
+        return new GameMessage(null,"You successfully placed "+itemName+"!");
+    }
+
+    public GameMessage cheatAddItem(String itemName,int amount){
+        App app = App.getInstance();
+        Game game = app.getCurrentGame();
+        Player player = game.getCurrentPlayer();
+        Item item = Item.getItemByName(itemName);
+        if(item == null){
+            return new GameMessage(null,"There is no item with this name");
+        }
+        if(player.getBackPack().getCapacity() >= player.getBackPack().getMaxCapacity() ){
+            return new GameMessage(null,"You have no remain place in your backpack");
+        }
+        player.getBackPack().addItem(item,amount);
+        return new GameMessage(null,"You successfully add "+amount+" "+item.getName());
+    }
+
     public GameMessage petAnimal(String animalName){
         App app = App.getInstance();
         Player player=app.getCurrentGame().getCurrentPlayer();
-        Animal animal1=player.getFarm().getBarn().getAnimalByName(animalName);
-        Animal animal2=player.getFarm().getBarn().getAnimalByName(animalName);
-        if(animal1==null && animal2==null){
-            return new GameMessage(null,"There is no such animal");
-        }
-        if(animal1!=null && Math.abs(player.getPosition().x-animal1.getPosition().x)<=1 && Math.abs(player.getPosition().y-animal1.getPosition().y)<=1){
-            animal1.increaseFriendship(15);
-            animal1.setLastPettingTime(app.getCurrentGame().getTime());
-            return new GameMessage(null,"You successfully pet "+animalName);
+        if (player.getFarm().getBarn() == null && player.getFarm().getCoop() == null) {
+            return new GameMessage(null, "You do not have Barn and Coop");
         }
 
-        if(animal2!=null && Math.abs(player.getPosition().x-animal2.getPosition().x)<=1 && Math.abs(player.getPosition().y-animal2.getPosition().y)<=1){
-            animal2.increaseFriendship(15);
-            animal2.setLastPettingTime(app.getCurrentGame().getTime());
+        Animal animal = null;
+
+        if (player.getFarm().getCoop() != null) {
+            animal = player.getFarm().getCoop().getAnimalByName(animalName);
+        }
+
+        if (animal == null && player.getFarm().getBarn() != null) {
+            animal = player.getFarm().getBarn().getAnimalByName(animalName);
+        }
+
+        if (animal == null) {
+            return new GameMessage(null, "There is no such animal");
+        }
+
+        if( Math.abs(player.getPosition().x-animal.getPosition().x)<=1 && Math.abs(player.getPosition().y-animal.getPosition().y)<=1){
+            animal.increaseFriendship(15);
+            animal.setLastPettingTime(app.getCurrentGame().getTime());
             return new GameMessage(null,"You successfully pet "+animalName);
         }
 
@@ -606,8 +689,13 @@ public class GameController extends Controller {
             stringBuilder.append("Barn Animals:\n");
             for (Animal animal1 : player.getFarm().getBarn().getAnimals()) {
                 stringBuilder.append(animal1.getName()+"\n");
-                hasBeenPetToday=game.getTime().getDay()==animal1.getLastPetingTime().getDay() &&
-                        game.getTime().getSeason()==animal1.getLastPetingTime().getSeason();
+                if(animal1.getLastFeedingTime()==null){
+                    hasBeenFedToday = false;
+                }
+                else if(game.getTime().getDay()==animal1.getLastPetingTime().getDay() &&
+                        game.getTime().getSeason()==animal1.getLastPetingTime().getSeason()){
+                    hasBeenPetToday=true;
+                }
                 if(hasBeenPetToday){
                     stringBuilder.append("Has Your Animal Been Pet Today : true\n\n");
                 }
@@ -618,11 +706,15 @@ public class GameController extends Controller {
         }
         if(player.getFarm().getCoop()!=null){
             stringBuilder.append("Coop Animals:\n");
-            for (Animal animal1 : player.getFarm().getBarn().getAnimals()) {
+            for (Animal animal1 : player.getFarm().getCoop().getAnimals()) {
                 stringBuilder.append(animal1.getName()+"\n");
-                hasBeenFedToday=game.getTime().getDay()==animal1.getLastFeedingTime().getDay() &&
-                        game.getTime().getSeason()==animal1.getLastFeedingTime().getSeason();
-
+                if(animal1.getLastFeedingTime() == null){
+                    hasBeenFedToday = false;
+                }
+                else{
+                    hasBeenFedToday=game.getTime().getDay()==animal1.getLastFeedingTime().getDay() &&
+                            game.getTime().getSeason()==animal1.getLastFeedingTime().getSeason();
+                }
                 if(hasBeenFedToday){
                     stringBuilder.append("Has Your Animal Been Fed Today : true\n\n");
                 }
@@ -660,7 +752,7 @@ public class GameController extends Controller {
                 return new GameMessage(null, "The animal entered the cage");
             } else {
                 animal.setPosition(player.getFarm().getBarn().getPlacedTile().getPosition());
-                animal.setOutside(true);
+                animal.setOutside(false);
                 animal.setLastFeedingTime(game.getTime());
                 animal.increaseFriendship(8);
                 return new GameMessage(null, "The animal entered the barn");
@@ -681,7 +773,7 @@ public class GameController extends Controller {
             return new GameMessage(null, "There is no such animal");
         }
         if (animal.isOutside()) {
-            return new GameMessage(null, "The animal must be in the coop to feed hay");
+            return new GameMessage(null, "The animal must be in the coop or barn to feed hay");
         }
         animal.setLastFeedingTime(game.getTime());
         return new GameMessage(null,"The animal successfully fed");
@@ -728,7 +820,7 @@ public class GameController extends Controller {
             if(animal.getName().equals("cow") || animal.getName().equals("goat")){
 //               TODO:check if there is watering can in inventory
                 player.decreaseEnergy(4);
-                if(player.getBackPack().getCapacity()==0){
+                if(player.getBackPack().getCapacity()>=player.getBackPack().getCapacity()){
                     return new GameMessage(null,"There is no space in your backpack");
                 }
 
@@ -739,7 +831,7 @@ public class GameController extends Controller {
             else if(animal.getName().equals("sheep")){
 //               TODO:check if there is gheuchi in inventory
                 player.decreaseEnergy(4);
-                if(player.getBackPack().getCapacity()==0){
+                if(player.getBackPack().getCapacity()>=player.getBackPack().getMaxCapacity()){
                     return new GameMessage(null,"There is no space in your backpack");
                 }
                 player.getBackPack().addItem(animal.getCurrentProduct(),1);
@@ -748,7 +840,7 @@ public class GameController extends Controller {
             }
             else if(animal.getName().equals("pig")){
                 if(animal.isOutside()){
-                    if(player.getBackPack().getCapacity()==0){
+                    if(player.getBackPack().getCapacity()>=player.getBackPack().getMaxCapacity()){
                         return new GameMessage(null,"There is no space in your backpack");
                     }
                     player.getBackPack().addItem(animal.getCurrentProduct(),1);
@@ -767,17 +859,17 @@ public class GameController extends Controller {
         Animal animal = player.getFarm().getBarn().getAnimalByName(animalName);
         if (animal != null) {
             int price = animal.calSellingPrice();
-            player.increaseMoney(price);
+            player.addMoney(price);
             player.getFarm().getBarn().getAnimals().remove(animal);
-            return new GameMessage(null,animal.getCurrentProduct().getName()+" sold");
+            return new GameMessage(null,animal.getName()+" sold");
         }
         else{
             animal = player.getFarm().getCoop().getAnimalByName(animalName);
             if (animal != null) {
                 int price = animal.calSellingPrice();
-                player.increaseMoney(price);
+                player.addMoney(price);
                 player.getFarm().getCoop().getAnimals().remove(animal);
-                return new GameMessage(null,animal.getCurrentProduct().getName()+" sold");
+                return new GameMessage(null,animal.getName()+" sold");
             }
             return new GameMessage(null, "There is no such animal");
         }
@@ -1255,9 +1347,9 @@ public class GameController extends Controller {
         if(player.getUser().getUsername().equals(username)) {
             return new GameMessage(null, "You can not talk to your self!");
         }
-        if(!(Math.abs(player2.getPosition().x - player.getPosition().x) <= 1 && Math.abs(player2.getPosition().y - player.getPosition().y) <= 1)) {
-            return new GameMessage(null, "You aren't close enough to talk!");
-        }
+//        if(!(Math.abs(player2.getPosition().x - player.getPosition().x) <= 1 && Math.abs(player2.getPosition().y - player.getPosition().y) <= 1)) {
+//            return new GameMessage(null, "You aren't close enough to talk!");
+//        }
         player.getFriendShipByPlayer(player2).addMessage(message);
         player2.getFriendShipByPlayer(player).addMessage(message);
         player.getFriendShipByPlayer(player2).increaseXp(20);
@@ -1293,9 +1385,9 @@ public class GameController extends Controller {
         if(player.getFriendShipByPlayer(player2).getLevel() < 1){
             return new GameMessage(null, "You can't gift in this level");
         }
-        if(!(Math.abs(player2.getPosition().x - player.getPosition().x) <= 1 && Math.abs(player2.getPosition().y - player.getPosition().y) <= 1)) {
-            return new GameMessage(null, "You aren't close enough");
-        }
+//        if(!(Math.abs(player2.getPosition().x - player.getPosition().x) <= 1 && Math.abs(player2.getPosition().y - player.getPosition().y) <= 1)) {
+//            return new GameMessage(null, "You aren't close enough");
+//        }
         Item item=player.getBackPack().getItemByName(itemName);
         if(item == null) {
             return new GameMessage(null, "There is no item with that name in your backpack!");
@@ -1381,9 +1473,9 @@ public class GameController extends Controller {
         if(player.getFriendShipByPlayer(player2).getLevel() < 2) {
             return new GameMessage(null, "You can't hug in this level");
         }
-        if(!(Math.abs(player2.getPosition().x - player.getPosition().x) <= 1 && Math.abs(player2.getPosition().y - player.getPosition().y) <= 1)) {
-            return new GameMessage(null, "You aren't close enough");
-        }
+//        if(!(Math.abs(player2.getPosition().x - player.getPosition().x) <= 1 && Math.abs(player2.getPosition().y - player.getPosition().y) <= 1)) {
+//            return new GameMessage(null, "You aren't close enough");
+//        }
         player2.getFriendShipByPlayer(player).increaseXp(60);
         player.getFriendShipByPlayer(player2).increaseXp(60);
         return new GameMessage(null,"You successfully hugged "+username);
@@ -1420,7 +1512,8 @@ public class GameController extends Controller {
         if(player2 == null) {
             return new GameMessage(null, "There is no player with that username in this game!");
         }
-        if(player.getBackPack().checkItem(new Material(MaterialType.weddingRing),1)){
+        Item item = player.getBackPack().getItemByName(new Material(MaterialType.weddingRing).getName());
+        if(item == null) {
             return new GameMessage(null, "you must have a wedding ring");
         }
         if(player.getUser().getGender().equals(player2.getUser().getGender())) {
@@ -1429,23 +1522,40 @@ public class GameController extends Controller {
         if(player.getFriendShipByPlayer(player2).getLevel() <3){
             return new GameMessage(null, "You can't marriage in this level");
         }
-        return new GameMessage(GameCommand.askAboutMarriage,"Now you should wait for the other player to answer");
+        player2.getFriendShipByPlayer(player).addMarriageRequest(player.getUser().getUsername()+" has asked you for marriage!");
+        return new GameMessage(null,"Now you should wait for the other player to answer");
     }
 
-    public GameMessage answeringMarriage(Player player2,boolean accepted){
+    public GameMessage marriageRequests(){
         App app = App.getInstance();
         Game game = app.getCurrentGame();
         Player player = game.getCurrentPlayer();
-        if(!accepted){
-            player.getFriendShipByPlayer(player2).setLevel(0);
-            player2.getFriendShipByPlayer(player).setLevel(0);
-            return new GameMessage(null,"You are rejected by "+player2.getUser().getUsername());
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("These are marriages requested by the following players:\n");
+        for (FriendShip friendShip : player.getFriendShips()) {
+            if(friendShip.getMarriageRequest() != null) {
+                stringBuilder.append(friendShip.getMarriageRequest()+"\n");
+            }
         }
-        player.getFriendShipByPlayer(player2).setLevel(4);
-        player2.getFriendShipByPlayer(player).setLevel(4);
-        player.getBackPack().removeItem(new Material(MaterialType.weddingRing),1);
-        player2.getBackPack().addItem(new Material(MaterialType.weddingRing),1);
-        return new GameMessage(null,"You are accepted by "+player2.getUser().getUsername());
+        return new GameMessage(null,stringBuilder.toString());
+    }
+
+    public GameMessage answeringMarriage(String username,boolean accepted){
+        App app = App.getInstance();
+        Game game = app.getCurrentGame();
+        Player answer = game.getCurrentPlayer();
+        Player ask = game.getPlayerByUsername(username);
+        answer.getFriendShipByPlayer(ask).addMarriageRequest(null);
+        if(!accepted){
+            ask.getFriendShipByPlayer(answer).setLevel(0);
+            answer.getFriendShipByPlayer(ask).setLevel(0);
+            return new GameMessage(null,"You rejected "+ask.getUser().getUsername());
+        }
+        ask.getFriendShipByPlayer(answer).setLevel(4);
+        answer.getFriendShipByPlayer(ask).setLevel(4);
+        ask.getBackPack().removeItem(new Material(MaterialType.weddingRing),1);
+        answer.getBackPack().addItem(new Material(MaterialType.weddingRing),1);
+        return new GameMessage(null,"You accepted "+ask.getUser().getUsername());
     }
 
 

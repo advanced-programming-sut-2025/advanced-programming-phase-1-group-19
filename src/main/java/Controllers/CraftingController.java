@@ -9,13 +9,29 @@ import Modules.Enums.InGameMenu;
 import Modules.Interactions.Messages.GameMessage;
 import Modules.Interactions.Messages.Message;
 import Modules.Item;
+import Modules.Map.Position;
+import Modules.Map.Tile;
 import Modules.Player;
 
 public class CraftingController extends Controller {
+    private static CraftingController instance;
+
+    private CraftingController() {
+    }
+
+    public static CraftingController getInstance() {
+        if(instance == null) {
+            instance = new CraftingController();
+        }
+        return instance;
+    }
     public GameMessage showCraftingRecipe(){
         App app = App.getInstance();
         Game game = app.getCurrentGame();
         Player player = game.getCurrentPlayer();
+        if(game.getInGameMenu() != InGameMenu.craftingMenu){
+            return new GameMessage(null,"You are not in crafting menu");
+        }
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("These are your known crafting recipes:\n");
         for (CraftingRecipe knownCraftingRecipe : player.getKnownCraftingRecipes()) {
@@ -29,6 +45,9 @@ public class CraftingController extends Controller {
         App app = App.getInstance();
         Game game = app.getCurrentGame();
         Player player = game.getCurrentPlayer();
+        if(game.getInGameMenu() != InGameMenu.craftingMenu){
+            return new GameMessage(null,"You are not in crafting menu");
+        }
         CraftingRecipe recipe = CraftingRecipe.getCraftingRecipeByName(craftName);
         if(recipe == null){
             return new GameMessage(null,"There is no item with this name");
@@ -36,7 +55,7 @@ public class CraftingController extends Controller {
         if(!player.knowCraftingRecipe(recipe)){
             return new GameMessage(null,"You haven't yet learned this crafting recipe");
         }
-        if(player.getBackPack().getCapacity() <= 0 ){
+        if(player.getBackPack().getCapacity() >= player.getBackPack().getMaxCapacity() ){
             return new GameMessage(null,"You have no remain place in your backpack");
         }
         CraftingItem craftingItem = new CraftingItem(recipe);
@@ -46,33 +65,6 @@ public class CraftingController extends Controller {
         return new GameMessage(null,"You successfully craft "+craftName+"!");
     }
 
-    public GameMessage laceItem(String itemName,String direction){
-        App app = App.getInstance();
-        Game game = app.getCurrentGame();
-        Player player = game.getCurrentPlayer();
-        CraftingRecipe recipe = CraftingRecipe.getCraftingRecipeByName(itemName);
-        if(recipe == null){
-            return new GameMessage(null,"There is no item with this name");
-        }
-        if(direction.equals("north")){
-
-        }
-    }
-
-    public GameMessage cheatAddItem(String itemName,int amount){
-        App app = App.getInstance();
-        Game game = app.getCurrentGame();
-        Player player = game.getCurrentPlayer();
-        Item item = Item.getItemByName(itemName);
-        if(item == null){
-            return new GameMessage(null,"There is no item with this name");
-        }
-        if(player.getBackPack().getCapacity() <= 0 ){
-            return new GameMessage(null,"You have no remain place in your backpack");
-        }
-        player.getBackPack().addItem(item,amount);
-        return new GameMessage(null,"You successfully add "+amount+" "+itemName);
-    }
 
     @Override
     public Message showCurrentMenu() {

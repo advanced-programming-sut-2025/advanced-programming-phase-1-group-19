@@ -1,6 +1,7 @@
 package Modules.Tools;
 
 import Modules.Item;
+import Modules.Map.Tile;
 
 import java.util.ArrayList;
 
@@ -44,8 +45,8 @@ public class Tool extends Item {
     }
 
     @Override
-    public void drop() {
-
+    public void drop(Tile tile) {
+        tile.setObject(Tool.this);
     }
 
     @Override
