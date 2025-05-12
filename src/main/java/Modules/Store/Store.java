@@ -6,12 +6,15 @@ import Modules.Enums.Season;
 import Modules.Farming.Crop;
 import Modules.Farming.Seed;
 import Modules.Farming.SeedType;
+import Modules.Map.Building;
+import Modules.Map.Size;
+import Modules.Map.Tile;
 import Modules.Tools.Tool;
 import Modules.Tools.ToolType;
 
 import java.util.ArrayList;
 
-public class Store {
+public class Store extends Building {
     private int openingTime;
     private int closingTime;
     private String ownerName;
@@ -21,7 +24,9 @@ public class Store {
         return items;
     }
 
-    public Store(String ownerName) {
+    public Store(String ownerName, ArrayList<Tile> tiles) {
+        this.tiles = tiles;
+        this.size = new Size(1, 1);
         this.ownerName = ownerName;
         switch (ownerName){
             case "Pierre":{

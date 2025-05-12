@@ -26,7 +26,7 @@ public class StoreController extends Controller {
     }
     public GameMessage showAllProduct(){
         // TODO check if at store by tile!
-        Store currentStore = new Store("Robin");
+        Store currentStore = null;
         ArrayList<StoreItem> items = currentStore.getItems();
         StringBuilder stringBuilder = new StringBuilder();
         for(StoreItem item : items){
@@ -41,7 +41,7 @@ public class StoreController extends Controller {
         return new GameMessage(null, stringBuilder.toString());
     }
     public GameMessage showAvailableProduct(){
-        Store currentStore = new Store("Robin");
+        Store currentStore = null;
         ArrayList<StoreItem> items = currentStore.getItems();
         StringBuilder stringBuilder = new StringBuilder();
         for(StoreItem item : items){
@@ -60,7 +60,7 @@ public class StoreController extends Controller {
     }
 
     public GameMessage purchaseItem(String itemName, int count){
-        Store currentStore = new Store("Robin");// TODO:fix this!
+        Store currentStore = null;// TODO:fix this!
         for(StoreItem item : currentStore.getItems()){
             Item currentItem = item.getItem();
             if(currentItem.toString().equals(itemName)){

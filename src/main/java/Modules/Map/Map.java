@@ -44,6 +44,9 @@ public class Map {
         }
         Tile node = endTile;
         ArrayList<Tile> path = new ArrayList<>();
+        if (!father.containsKey(node)) {
+            return null;
+        }
         while (!father.get(node).equals(node)) {
             path.add(node);
             node = father.get(node);

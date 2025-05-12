@@ -2,6 +2,7 @@ package Modules.Map;
 
 import Modules.Animal.Barn;
 import Modules.Animal.Coop;
+import Modules.Store.Store;
 
 import java.util.ArrayList;
 
@@ -14,6 +15,9 @@ public class Farm {
     private final GreenHouse greenHouse;
     private final House house;
     private final Quarry quarry;
+//    private final Store RobinShop;
+//    private final Store PierreShop;
+//    private final Store MarineShop;
     private Barn barn;
     private Coop coop;
 
@@ -45,6 +49,11 @@ public class Farm {
         }
         size = farmMap.getSize();
         tiles = new ArrayList<>();
+        // shops
+        // TODO all Shops!
+//        ArrayList<Tile> PierreTiles = new ArrayList<>();
+//        ArrayList<Tile> RobinTiles = new ArrayList<>();
+//        ArrayList<Tile> MarineTiles = new ArrayList<>();
         ArrayList<Tile> lakeTiles = new ArrayList<>();
         Position lakeTopLeft = new Position(farmMap.getLakePosition().x, farmMap.getLakePosition().y);
         Position lakeBottomRight = new Position(lakeTopLeft.x + farmMap.getLakeSize().height, lakeTopLeft.y + farmMap.getLakeSize().width);

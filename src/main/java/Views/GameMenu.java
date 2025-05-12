@@ -241,7 +241,6 @@ public class GameMenu implements AppMenu {
                     System.out.println("invalid command!");
                 }
                 System.out.println(gameController.useTool(Direction.getDirection(matcher.group("direction"))).message());
-                System.out.println("hello");
                 break;
             }
 
@@ -514,13 +513,13 @@ public class GameMenu implements AppMenu {
         if(input.matches("game new -u (?<usernames>.+?)")) {
             runCommand(GameCommand.startNewGame, input);
         }
-        else if(input.matches("^\\s*Time\\s*$")){
+        else if(input.matches("^\\s*time\\s*$")){
             runCommand(GameCommand.showTime, "");
         }
-        else if(input.matches("^\\s*Date\\s*$")){
+        else if(input.matches("^\\s*date\\s*$")){
             runCommand(GameCommand.showDate, "");
         }
-        else if(input.matches("^\\s*DateTime\\s*$")){
+        else if(input.matches("^\\s*datetime\\s*$")){
             runCommand(GameCommand.showDateTime, "");
         }
         else if(input.matches("^\\s*day of the week\\s*$")){

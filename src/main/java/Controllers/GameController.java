@@ -240,8 +240,11 @@ public class GameController extends Controller {
         if (start.equals(end)) {
             return new GameMessage(null, "Dude you are already there :/");
         }
+        if(map.getTile(end) == null){
+            return new GameMessage(null, "No transpassing");
+        }
         if(map.getTile(end).getBuilding() instanceof Lake || map.getTile(end).getBuilding() instanceof Quarry){
-            return new GameMessage(null, "You are already there :/");
+            return new GameMessage(null, "What are you thinking? You can't go there!");
         }
         ArrayList<Tile> path = map.getPath(start, end);
         if (path == null) {
