@@ -214,7 +214,7 @@ public class GameController extends Controller {
     }
 
     public GameMessage cheatAdvanceDate(int x) {
-        for (int i = 0; i < 22 * x; i++)
+        for (int i = 0; i < 14*x;  i++)
             App.getInstance().getCurrentGame().nextHour();
         return new GameMessage(null, "time traveled " + x + " days");
     }
@@ -288,7 +288,7 @@ public class GameController extends Controller {
         for (java.util.Map.Entry<Item, Integer> entry : player.getBackPack().getItems().entrySet()) {
             Item item = entry.getKey();
             Integer value = entry.getValue();
-            stringBuilder.append("Item: ").append(item.getName())
+            stringBuilder.append("Item: ").append(item.toString())
                     .append(", Quantity: ").append(value)
                     .append("\n");
         }
@@ -978,8 +978,7 @@ public class GameController extends Controller {
         Position playerPosition = player.getPosition();
         Position targetPosition = new Position(playerPosition.x, playerPosition.y);
         targetPosition.move(direction);
-
-        Plant plant = new Plant(plantType, game.getTime());
+        Plant plant = new Plant(plantType, new Time(game.getTime()));
         Tile tile = map.getTile(targetPosition);
 //        TODO: check for greenHouse
         if (tile == null || tile.getObject() != null || tile.getBuilding() != null) {

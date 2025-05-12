@@ -26,4 +26,16 @@ public abstract class Item extends TileObject {
         return takenSpace;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Item other = (Item) obj;
+        return getName().equalsIgnoreCase(other.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return getName().toLowerCase().hashCode();
+    }
 }

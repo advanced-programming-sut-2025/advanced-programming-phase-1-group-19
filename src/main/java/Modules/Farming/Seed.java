@@ -42,6 +42,6 @@ public class Seed extends Item {
 
     @Override
     public String toString() {
-        return type.getName() + " seeds";
+        return type.getName() + " Seeds";
     }
 }

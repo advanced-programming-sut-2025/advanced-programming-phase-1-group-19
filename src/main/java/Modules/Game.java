@@ -3,9 +3,8 @@ package Modules;
 import Modules.Enums.InGameMenu;
 import Modules.Enums.Season;
 import Modules.Enums.Weather;
-import Modules.Map.Farm;
-import Modules.Map.Map;
-import Modules.Map.Position;
+import Modules.Farming.Plant;
+import Modules.Map.*;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -79,13 +78,13 @@ public class Game {
         setTomorrowWeather();
         switch (tomrrowWeather){
             case rain -> {
-//                TODO:watering plants automatically
+//                watering plants automatically
+                    autoWaterPlant();
 //                TODO:1.5x while using tools
-                break;
             }
             case storm -> {
 //                TODO:has rain affects and also break trees
-                break;
+                autoWaterPlant();
             }
             case snow -> {
 //                TODO:1.5x while using tools
@@ -96,6 +95,24 @@ public class Game {
             time.nextSeason();
         }
         time.nextDay();
+        // check all plants
+        for(int i = 0; i < 250; i++){
+            for(int j = 0; j < 250; j++){
+                Tile tile = map.getTile(new Position(i, j));
+                if(tile != null){
+                    TileObject tileObject = tile.getObject();
+                    if(tileObject instanceof Plant){
+                        if(((Plant) tileObject).isDestroyed()){
+                            Position position = new Position(i, j);
+                            map.setTile(position, new Tile(position));
+                        }
+                        else{
+                            ((Plant) tileObject).grow();
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public void nextHour() {
@@ -160,5 +177,19 @@ public class Game {
             }
         }
         return null;
+    }
+
+    public void autoWaterPlant(){
+        for(int i = 0; i < 250; i++){
+            for(int j = 0; j < 250; j++){
+                Tile tile = map.getTile(new Position(i, j));
+                if(tile != null){
+                    TileObject tileObject = tile.getObject();
+                    if(tileObject instanceof Plant){
+                        ((Plant) tileObject).setLastWateringTime(new Time(time));
+                    }
+                }
+            }
+        }
     }
 }

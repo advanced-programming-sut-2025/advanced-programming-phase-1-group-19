@@ -46,7 +46,7 @@ public class Player {
         backPack.addItem(scythe, 1);
         backPack.addItem(wateringCan, 1);
         // add this bullshit to backpack
-        backPack.addItem(new Seed(SeedType.pineCone), 10);
+        backPack.addItem(new Seed(SeedType.carrot), 10);
         trashCan = new TrashCan();
         skills = new HashMap<>();
         skills.put(SkillType.mining, new Skill(SkillType.mining));

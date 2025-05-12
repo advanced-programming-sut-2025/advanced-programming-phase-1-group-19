@@ -16,7 +16,7 @@ public class WateringCan extends Tool {
 
     public WateringCan(ToolType toolType) {
         super(toolType);
-        this.amount = 0;
+        this.amount = 40;
     }
 
     public void fill() {

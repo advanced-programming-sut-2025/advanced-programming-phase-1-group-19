@@ -43,6 +43,6 @@ public class Crop extends Item {
     }
     @Override
     public String toString() {
-        return type.getName();
+        return type.getName() + " Crop";
     }
 }

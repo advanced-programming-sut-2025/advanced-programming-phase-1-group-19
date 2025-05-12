@@ -13,6 +13,11 @@ public class Time {
         day = 1;
         season = Season.spring;
     }
+    public Time (Time time) {
+        hour = time.hour;
+        day = time.day;
+        season = time.season;
+    }
 
     public int getHour() {
         return hour;
@@ -76,7 +81,11 @@ public class Time {
             hour++;
         }
     }
-
+    public static int getDayDifference(Time time1, Time time2){
+        int seasonDiff = time2.getSeason().ordinal() - time1.getSeason().ordinal();
+        int dayDiff = time2.getDay() - time1.getDay();
+        return seasonDiff * 28 + dayDiff;
+    }
     public int calDaysDifference(Time time){
         Time time1 = Time.minimum(this, time);
         Time time2 = Time.maximum(this, time);

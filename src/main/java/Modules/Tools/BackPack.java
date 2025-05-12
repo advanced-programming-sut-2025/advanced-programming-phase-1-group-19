@@ -40,6 +40,12 @@ public class BackPack {
         }
     }
 
+    public boolean canAddItem(Item item, int count) {
+        if(item.getTakenSpace() * count + getCapacity() > maxCapacity){
+            return false;
+        }
+        return true;
+    }
     public void addItem(Item item, int count) {
         items.put(item, items.getOrDefault(item, 0) + count);
         amount = getCapacity();

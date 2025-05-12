@@ -96,25 +96,25 @@ public class Map {
             if(farms.size() < 1) {
                 return;
             }
-            setTile(position, tile);
+            farms.get(0).setTile(position, tile);
         }
         else if (position.x >= 0 && position.x < 100 && position.y >= 150 && position.y < 250) {
             if(farms.size() < 2) {
                 return;
             }
-            setTile(position, tile);
+            farms.get(1).setTile(position, tile);
         }
         else if(position.x >= 150 && position.x < 250 && position.y >= 0 && position.y < 100) {
             if(farms.size() < 3) {
                 return;
             }
-            setTile(position, tile);
+            farms.get(2).setTile(position, tile);
         }
         else if(position.x >= 150 && position.x < 250 && position.y >= 150 && position.y < 250) {
             if (farms.size() < 4) {
                 return;
             }
-            setTile(position, tile);
+            farms.get(3).setTile(position, tile);
         }
         else if(position.x >= 100 && position.x < 150 && position.y >= 100 && position.y < 150) {
             return ;
