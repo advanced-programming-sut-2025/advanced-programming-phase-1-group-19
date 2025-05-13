@@ -165,12 +165,13 @@ public class GameMenu implements AppMenu {
                 break;
             }
             case cheatThor:{
-                Pattern pattern = Pattern.compile("^cheat Thor -l <(?<x>\\d+) , (?<y>\\d+)>$");
+                Pattern pattern = Pattern.compile("^\\s*cheat Thor -l (?<x>\\d+) (?<y>\\d+)\\s*$");
                 Matcher matcher = pattern.matcher(input);
                 if(!matcher.matches()) {
                     System.out.println("invalid command!");
                 }
                 System.out.println(gameController.cheatThor(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))).message());
+                break;
             }
             case showEnergy: {
                 System.out.println(gameController.showEnergy().message());
@@ -406,6 +407,10 @@ public class GameMenu implements AppMenu {
                 System.out.println(gameController.showPlant(new Position(x, y)));
                 break;
             }
+            case howMuchWater:{
+                System.out.println(gameController.howMuchWater().message());
+                break;
+            }
             case talk:{
                 Pattern pattern = Pattern.compile("^\\s*talk -u (?<username>.+?) -m (?<message>.+?)\\s*$");
                 Matcher matcher = pattern.matcher(input);
@@ -525,9 +530,11 @@ public class GameMenu implements AppMenu {
                 break;
             }
             case cheatAddMoney:{
-                Pattern pattern = Pattern.compile("^\\s*cheat add (?<count>.*) dollars\\s*$");
+                Pattern pattern = Pattern.compile("^\\s*cheat add (?<countMoney>\\d+) dollars\\s*$");
                 Matcher matcher = pattern.matcher(input);
-                System.out.println(storeController.cheatAddMoney(Integer.parseInt(matcher.group("count").trim())).message());
+                if(matcher.matches()) {
+                    System.out.println(storeController.cheatAddMoney(Integer.parseInt(matcher.group("countMoney").trim())).message());
+                }
                 break;
             }
             case sellItem:{
@@ -730,7 +737,7 @@ public class GameMenu implements AppMenu {
         else if(input.matches("^greenhouse build$")){
             runCommand(GameCommand.buildGreenHouse, "");
         }
-        else if(input.matches("^cheat Thor -l <(?<x>\\d+) , (?<y>\\d+)>$")){
+        else if(input.matches("^\\s*cheat Thor -l (?<x>\\d+) (?<y>\\d+)\\s*$")){
             runCommand(GameCommand.cheatThor, input);
         }
         else if(input.matches("^\\s*go to house menu\\s*$")){
@@ -828,6 +835,9 @@ public class GameMenu implements AppMenu {
         else if(input.matches("^\\s*tools use -d (?<direction>.+)\\s*$")){
             runCommand(GameCommand.toolUse, input);
         }
+        else if(input.matches("\\s*how much water\\s*")){
+            runCommand(GameCommand.howMuchWater, input);
+        }
         else if(input.matches("start trade")){
             runCommand(GameCommand.startTrade,"");
         }
@@ -846,7 +856,7 @@ public class GameMenu implements AppMenu {
         else if(input.matches("^\\s*purchase (?<productName>.*) -n (?<count>.*)\\s*$")){
             runCommand(GameCommand.purchaseItem, input);
         }
-        else if(input.matches("^\\s*cheat add (?<count>.*) dollars\\s*$")){
+        else if(input.matches("^\\s*cheat add (?<count>\\d+) dollars\\s*$")){
             runCommand(GameCommand.cheatAddMoney, input);
         }
         else if(input.matches("^\\s*sell (?<productName>.*) -n (?<count>.*)\\s*$")){

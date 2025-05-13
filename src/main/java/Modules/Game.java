@@ -1,5 +1,7 @@
 package Modules;
 
+import Modules.Crafting.Material;
+import Modules.Crafting.MaterialType;
 import Modules.Enums.InGameMenu;
 import Modules.Enums.Season;
 import Modules.Enums.Weather;
@@ -113,6 +115,7 @@ public class Game {
                 }
             }
         }
+        thor();
     }
 
     public void nextHour() {
@@ -126,18 +129,24 @@ public class Game {
     }
 
     public void thor(){
-        Farm farm = currentPlayer.getFarm();
-        int height = farm.getSize().height;
-        int width = farm.getSize().width;
-        int x = farm.getTopLeft().x;
-        int y = farm.getTopLeft().y;
-        for(int i = 0; i < 3; i++){
-//            TODO set newx and newy and then call thor(new Position(newx, newy));
+        for (Player player : players) {
+            for(int i = 0; i < 3; i++){
+                int x = player.getFarm().getTopLeft().x + 2 + (int)(Math.random() * 70);
+                int y = player.getFarm().getTopLeft().y + 2 + (int)(Math.random() * 70);
+                thor(new Position(x, y));
+            }
         }
     }
 
     public void thor(Position position){
-//        TODO: check if tile is tree it burns and gives coal while harvesting!
+        if(map.getTile(position) == null){
+            return;
+        }
+        TileObject tileObject = map.getTile(position).getObject();
+        if(tileObject instanceof Plant){
+            map.setTile(position, new Tile(position));
+            map.getTile(position).setObject(new Material(MaterialType.coal));
+        }
     }
 
     public Weather getTodayWeather() {

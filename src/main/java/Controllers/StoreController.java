@@ -43,6 +43,7 @@ public class StoreController extends Controller {
             else{
                 stringBuilder.append(currentItem.toString() + " " + item.getPrice());
             }
+            stringBuilder.append("\n");
         }
         return new GameMessage(null, stringBuilder.toString());
     }
@@ -64,6 +65,7 @@ public class StoreController extends Controller {
             else{
                 stringBuilder.append(currentItem.toString() + " " + item.getPrice());
             }
+            stringBuilder.append("\n");
         }
         return new GameMessage(null, stringBuilder.toString());
     }

@@ -43,6 +43,7 @@ public enum GameCommand implements Command {
     craftInfo,
     plant,
     showPlant,
+    howMuchWater,
     toolEquip,
     toolCurrentShow,
     toolShowAvailable,

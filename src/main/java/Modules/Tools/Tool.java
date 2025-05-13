@@ -216,6 +216,26 @@ public class Tool extends Item {
                     return new GameMessage(null, "You collected some milk :)");
                 }
             }
+            case pickaxe -> {
+                boolean isSuccess;
+                if (tile.getObject() != null && tile.getObject() instanceof Material) {
+                    isSuccess = true;
+                } else {
+                    isSuccess = false;
+                }
+                int energy = toolType.getEnergy(level, isSuccess);
+                if (energy > game.getCurrentPlayer().getEnergy().getAmount()) {
+                    return new GameMessage(null, "You don't have enough energy to use this tool.");
+                } else if (!isSuccess) {
+                    game.getCurrentPlayer().decreaseEnergy(energy);
+                    return new GameMessage(null, "You couldn't use this tool.");
+                } else {
+                    game.getCurrentPlayer().decreaseEnergy(energy);
+                    Material material = (Material) tile.getObject();
+                    backPack.addItem(material, 10);
+                    return new GameMessage(null, "You collected some material");
+                }
+            }
         }
         return new GameMessage(null, "nothing happened!?");
     }
