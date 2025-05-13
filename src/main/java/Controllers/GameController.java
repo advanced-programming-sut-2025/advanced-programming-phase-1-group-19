@@ -393,7 +393,6 @@ public class GameController extends Controller {
 
     public GameMessage upgradeTool(String toolName) {
 
-        // TODO:check if in blacksmith!
         BackPack backPack = App.getInstance().getCurrentGame().getCurrentPlayer().getBackPack();
         Player player = app.getCurrentGame().getCurrentPlayer();
         for (java.util.Map.Entry<Item, Integer> entry : backPack.getItems().entrySet()) {
@@ -401,6 +400,11 @@ public class GameController extends Controller {
             if (item instanceof Tool && item.toString().equals(toolName)) {
                 if(player.getMoney() >= 20){
                     player.decreaseEnergy(20);
+                    if(((Tool) item).getLevel() + 1 == ((Tool) item).getToolType().getLevels().size()){
+                        return new GameMessage(null, "Your tool is at maximum level!");
+                    }
+                    ((Tool) item).upgradeLevel();
+                    return new GameMessage(null, "Your tool got upgraded " + toolName);
                 }
                 else{
                     return new GameMessage(null, "You don't have enough money!");
@@ -408,7 +412,6 @@ public class GameController extends Controller {
             }
         }
         return new GameMessage(null, "You don't have that tool!");
-        // TODO: check if enough money and energy
     }
 
     public GameMessage useTool(Direction direction) {
