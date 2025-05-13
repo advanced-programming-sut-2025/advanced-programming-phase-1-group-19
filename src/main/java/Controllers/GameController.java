@@ -387,9 +387,23 @@ public class GameController extends Controller {
     }
 
     public GameMessage upgradeTool(String toolName) {
+
         // TODO:check if in blacksmith!
+        BackPack backPack = App.getInstance().getCurrentGame().getCurrentPlayer().getBackPack();
+        Player player = app.getCurrentGame().getCurrentPlayer();
+        for (java.util.Map.Entry<Item, Integer> entry : backPack.getItems().entrySet()) {
+            Item item = entry.getKey();
+            if (item instanceof Tool && item.toString().equals(toolName)) {
+                if(player.getMoney() >= 20){
+                    player.removeMoney(20);
+                }
+                else{
+                    return new GameMessage(null, "You don't have enough money!");
+                }
+            }
+        }
+        return new GameMessage(null, "You don't have that tool!");
         // TODO: check if enough money and energy
-        return null;
     }
 
     public GameMessage useTool(Direction direction) {

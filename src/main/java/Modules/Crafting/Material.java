@@ -6,8 +6,12 @@ public class Material extends Item {
     private MaterialType type;
 
     public Material(MaterialType type) {
-        super(type.getName(), 1, false);
+        super(type.getName(), 0, false);
         this.type = type;
+    }
+
+    public MaterialType getType() {
+        return type;
     }
 
     @Override
@@ -28,5 +32,15 @@ public class Material extends Item {
     @Override
     public void delete() {
 
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String toString() {
+        return type.getName();
     }
 }

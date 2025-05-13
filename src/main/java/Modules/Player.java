@@ -43,8 +43,10 @@ public class Player {
         backPack = new BackPack();
         Tool scythe = new Tool(ToolType.scythe);
         WateringCan wateringCan = new WateringCan(ToolType.wateringCan);
+        Tool axe = new Tool(ToolType.axe);
         backPack.addItem(scythe, 1);
         backPack.addItem(wateringCan, 1);
+        backPack.addItem(axe, 1);
         // add this bullshit to backpack
         backPack.addItem(new Seed(SeedType.carrot), 10);
         trashCan = new TrashCan();
@@ -190,6 +192,10 @@ public class Player {
 
     public void addMoney(int money) {
         this.money += money;
+    }
+
+    public void removeMoney(int money) {
+        this.money -= money;
     }
 
     public int getFeatureMoney() {
