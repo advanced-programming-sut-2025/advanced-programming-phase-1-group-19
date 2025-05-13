@@ -139,7 +139,7 @@ public class Player {
     }
 
     public void addKnownCraftingRecipe(CraftingRecipe recipe) {
-//        TODO: first check if the player can learn the recipe or not
+        this.knownCraftingRecipes.add(recipe);
     }
 
     public ArrayList<CookingRecipe> getKnownCookingRecipes() {
@@ -155,6 +155,7 @@ public class Player {
     }
 
     public void addKnownCookingRecipe(CookingRecipe recipe) {
+        this.knownCookingRecipes.add(recipe);
 //        TODO: first check if the player can learn the recipe or not
     }
 

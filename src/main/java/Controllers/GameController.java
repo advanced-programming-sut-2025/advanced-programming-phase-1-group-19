@@ -400,7 +400,7 @@ public class GameController extends Controller {
             Item item = entry.getKey();
             if (item instanceof Tool && item.toString().equals(toolName)) {
                 if(player.getMoney() >= 20){
-                    player.removeMoney(20);
+                    player.decreaseEnergy(20);
                 }
                 else{
                     return new GameMessage(null, "You don't have enough money!");

@@ -1,6 +1,7 @@
 package Modules.Farming;
 
 import Modules.Item;
+import Modules.Map.Tile;
 
 public class ForagingCrop extends Item {
     private ForagingCropType type;
@@ -20,10 +21,15 @@ public class ForagingCrop extends Item {
 
     }
 
-    @Override
     public void drop() {
 
     }
+
+    @Override
+    public void drop(Tile tile) {
+
+    }
+
     @Override
     public void delete() {
 

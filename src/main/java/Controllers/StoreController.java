@@ -29,7 +29,10 @@ public class StoreController extends Controller {
     }
     public GameMessage showAllProduct(){
         // TODO check if at store by tile!
-        Store currentStore = null;
+        Store currentStore = App.getInstance().getCurrentGame().getCurrentPlayer().getCurrentStore();
+        if(currentStore == null){
+            return new GameMessage(null, "You are not at Store");
+        }
         ArrayList<StoreItem> items = currentStore.getItems();
         StringBuilder stringBuilder = new StringBuilder();
         for(StoreItem item : items){
@@ -44,7 +47,10 @@ public class StoreController extends Controller {
         return new GameMessage(null, stringBuilder.toString());
     }
     public GameMessage showAvailableProduct(){
-        Store currentStore = null;
+        Store currentStore = App.getInstance().getCurrentGame().getCurrentPlayer().getCurrentStore();
+        if(currentStore == null){
+            return new GameMessage(null, "You are not at Store");
+        }
         ArrayList<StoreItem> items = currentStore.getItems();
         StringBuilder stringBuilder = new StringBuilder();
         for(StoreItem item : items){
@@ -93,7 +99,7 @@ public class StoreController extends Controller {
         Player player = game.getCurrentPlayer();
         Store currentStore = player.getCurrentStore();
         if(currentStore == null){
-            return new GameMessage(null, "You are not int any store");
+            return new GameMessage(null, "You are not at Store");
         }
         StoreItem item = currentStore.getItemByName(itemName);
         if(item == null){
