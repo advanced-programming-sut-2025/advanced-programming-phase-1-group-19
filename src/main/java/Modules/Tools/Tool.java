@@ -8,6 +8,7 @@ import Modules.Farming.Plant;
 import Modules.Game;
 import Modules.Interactions.Messages.GameMessage;
 import Modules.Item;
+import Modules.Map.Tile;
 import Modules.Map.*;
 import Modules.Time;
 
@@ -179,8 +180,8 @@ public class Tool extends Item {
         return new GameMessage(null, "nothing happened!?");
     }
     @Override
-    public void drop() {
-
+    public void drop(Tile tile) {
+        tile.setObject(Tool.this);
     }
 
     @Override

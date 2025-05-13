@@ -37,6 +37,14 @@ public enum FishType {
         this.isLegendary = isLegendary;
     }
 
+    public static FishType getFishTypeByName(String name) {
+        for (FishType value : FishType.values()) {
+            if (value.getName().equals(name)) {
+                return value;
+            }
+        }
+        return null;
+    }
 
     public String getName() {
         return name;

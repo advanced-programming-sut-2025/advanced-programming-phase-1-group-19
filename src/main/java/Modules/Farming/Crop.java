@@ -23,8 +23,8 @@ public class Crop extends Item {
     }
 
     @Override
-    public void drop() {
-
+    public void drop(Tile tile) {
+        tile.setObject(Crop.this);
     }
 
     @Override

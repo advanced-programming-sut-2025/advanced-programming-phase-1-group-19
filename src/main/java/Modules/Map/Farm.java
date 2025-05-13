@@ -133,7 +133,7 @@ public class Farm {
 
     public Tile getTile(Position position) {
         for (Tile tile : tiles) {
-            if (position.equals(tile.getPosition())) {
+            if (position.x == tile.getPosition().x && position.y == tile.getPosition().y) {
                 return tile;
             }
         }

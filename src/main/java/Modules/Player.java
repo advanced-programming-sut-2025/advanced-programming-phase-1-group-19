@@ -10,11 +10,11 @@ import Modules.Farming.Seed;
 import Modules.Farming.SeedType;
 import Modules.Map.Farm;
 import Modules.Map.Position;
+import Modules.Store.Store;
 import Modules.Tools.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.function.ToLongBiFunction;
 
 public class Player {
     private int money;
@@ -34,6 +34,7 @@ public class Player {
     private ArrayList<FriendShip> friendShips;
     private Tool currentTool = null;
     private ArrayList<NPC> npcs;
+    private Store currentStore;
     public Player(User user, Farm farm) {
         this.money = 0;
         this.user = user;
@@ -70,6 +71,11 @@ public class Player {
 //        npcs.add(new NPC("Lia"));
 //        npcs.add(new NPC("Robin"));
 
+
+    }
+
+    public ArrayList<FriendShip> getFriendShips() {
+        return friendShips;
     }
 
     public User getUser() {
@@ -108,6 +114,10 @@ public class Player {
         isFainted = fainted;
     }
 
+    public void addFriendShip(FriendShip friendShip) {
+        friendShips.add(friendShip);
+    }
+
     public void Walk(Position position) {
 
     }
@@ -137,8 +147,7 @@ public class Player {
     }
 
     public ArrayList<CraftingRecipe> getKnownCraftingRecipes() {
-//        TODO: check this
-        return null;
+        return knownCraftingRecipes;
     }
 
     public boolean knowCookingRecipe(CookingRecipe recipe) {
@@ -178,14 +187,6 @@ public class Player {
         this.currentTool = currentTool;
     }
 
-    public void addFriendShip(FriendShip friendship) {
-        friendShips.add(friendship);
-    }
-
-    public ArrayList<FriendShip> getFriendShips() {
-        return friendShips;
-    }
-
     public int getMoney() {
         return money;
     }
@@ -194,8 +195,8 @@ public class Player {
         this.money += money;
     }
 
-    public void removeMoney(int money) {
-        this.money -= money;
+    public void decreaseMoney(int amount) {
+        this.money -= amount;
     }
 
     public int getFeatureMoney() {
@@ -208,5 +209,13 @@ public class Player {
 
     public ArrayList<NPC> getNpcs() {
         return npcs;
+    }
+
+    public void setCurrentStore(Store currentStore) {
+        this.currentStore = currentStore;
+    }
+
+    public Store getCurrentStore() {
+        return currentStore;
     }
 }

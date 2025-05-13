@@ -1,11 +1,21 @@
 package Modules.Animal;
 
 import Modules.Map.Position;
+import Modules.Map.Tile;
 import Modules.Map.TileObject;
 
 import java.util.ArrayList;
 
 public class Barn extends TileObject {
+    @Override
+    public Tile getPlacedTile() {
+        return super.getPlacedTile();
+    }
+
+    @Override
+    public void setPlacedTile(Tile placedTile) {
+        super.setPlacedTile(placedTile);
+    }
 
     private ArrayList<Animal> animals;
 
@@ -30,4 +40,6 @@ public class Barn extends TileObject {
     public ArrayList<Animal> getAnimals() {
         return animals;
     }
+
+
 }

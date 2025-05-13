@@ -1,6 +1,8 @@
 package Controllers;
 
 import Modules.App;
+import Modules.Crafting.CookingRecipe;
+import Modules.Crafting.CraftingRecipe;
 import Modules.Game;
 import Modules.Interactions.Messages.GameMessage;
 import Modules.Interactions.Messages.Message;
@@ -8,6 +10,7 @@ import Modules.Item;
 import Modules.Player;
 import Modules.Store.Store;
 import Modules.Store.StoreItem;
+import Modules.Store.StoreRecipes;
 import Modules.Tools.Tool;
 
 import java.util.ArrayList;
@@ -59,23 +62,6 @@ public class StoreController extends Controller {
         return new GameMessage(null, stringBuilder.toString());
     }
 
-    public GameMessage purchaseItem(String itemName, int count){
-        Store currentStore = null;// TODO:fix this!
-        for(StoreItem item : currentStore.getItems()){
-            Item currentItem = item.getItem();
-            if(currentItem.toString().equals(itemName)){
-                if(item.getDailyLimit() < count){
-                    return new GameMessage(null, "not enough product to purchase");
-                }
-                else{
-                    item.removeDailyLimit(count);
-                    App.getInstance().getCurrentGame().getCurrentPlayer().getBackPack().addItem(currentItem, count);
-                    return new GameMessage(null, "product purchased successfully");
-                }
-            }
-        }
-        return new GameMessage(null, "the product does not exist!");
-    }
 
     public GameMessage cheatAddMoney(int amount){
         App.getInstance().getCurrentGame().getCurrentPlayer().addMoney(amount);
@@ -100,6 +86,65 @@ public class StoreController extends Controller {
         }
         return new GameMessage(null, "this product does not exist!");
     }
+
+    public GameMessage purchaseItem(String itemName, int count){
+        App app = App.getInstance();
+        Game game = app.getCurrentGame();
+        Player player = game.getCurrentPlayer();
+        Store currentStore = player.getCurrentStore();
+        if(currentStore == null){
+            return new GameMessage(null, "You are not int any store");
+        }
+        StoreItem item = currentStore.getItemByName(itemName);
+        if(item == null){
+            return new GameMessage(null, "There is no item with this name in this store!");
+        }
+        if(item.getDailyLimit() < count){
+            return new GameMessage(null, "You do not have enough daily limit");
+        }
+        item.removeDailyLimit(count);
+        player.getBackPack().addItem(item.getItem(),count);
+        if(item.getSeason()!=null && game.getTime().getSeason().equals(item.getSeason())){
+            if(player.getMoney() < item.getSeasonPrice()){
+                return new GameMessage(null, "you don't have enough money to buy");
+            }
+            player.decreaseMoney(item.getSeasonPrice());
+        }
+        else{
+            if(player.getMoney() < item.getPrice()){
+                return new GameMessage(null, "you don't have enough money to buy");
+            }
+            player.decreaseMoney(item.getPrice());
+        }
+        return new GameMessage(null, itemName+" has been purchased");
+    }
+
+    public GameMessage buyRecipe(String recipeName, int amount){
+        App app = App.getInstance();
+        Game game = app.getCurrentGame();
+        Player player = game.getCurrentPlayer();
+        Store currentStore = player.getCurrentStore();
+        if(currentStore == null){
+            return new GameMessage(null, "You are not int any store");
+        }
+        StoreRecipes recipes = currentStore.getRecipeByName(recipeName);
+        if(recipes == null){
+            return new GameMessage(null, "There is no recipe with this name in this store");
+        }
+        if(recipes.getDailyLimit() < amount){
+            return new GameMessage(null, "You do not have enough daily limit");
+        }
+        recipes.removeDailyLimit(amount);
+        if(recipes.getRecipe() instanceof CookingRecipe){
+            player.addKnownCookingRecipe((CookingRecipe) recipes.getRecipe());
+        }
+        else if(recipes.getRecipe() instanceof CraftingRecipe){
+            player.addKnownCraftingRecipe((CraftingRecipe) recipes.getRecipe());
+        }
+        return new GameMessage(null, recipeName+" has been purchased");
+    }
+
+
 
     @Override
     public Message showCurrentMenu() {

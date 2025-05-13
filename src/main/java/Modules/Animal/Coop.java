@@ -1,10 +1,21 @@
 package Modules.Animal;
 
+import Modules.Map.Tile;
 import Modules.Map.TileObject;
 
 import java.util.ArrayList;
 
 public class Coop extends TileObject {
+
+    @Override
+    public Tile getPlacedTile() {
+        return super.getPlacedTile();
+    }
+
+    @Override
+    public void setPlacedTile(Tile placedTile) {
+        super.setPlacedTile(placedTile);
+    }
 
     public ArrayList<Animal> animals;
 

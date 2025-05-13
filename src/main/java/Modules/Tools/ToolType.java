@@ -78,7 +78,7 @@ public enum ToolType {
 
     public static ToolType getToolTypeByName(String name) {
         for (ToolType toolType : ToolType.values()) {
-            if (toolType.name().equals(name)) {
+            if (toolType.getName().equals(name)) {
                 return toolType;
             }
         }

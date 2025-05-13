@@ -22,7 +22,7 @@ public enum MaterialType {
     coal("coal"),
     pickle("pickle"),
     wine("wine"),
-    hardWood("hard Wood"),
+    hardWood("hard wood"),
     diamond("diamond"),
     quartz("quartz");
 

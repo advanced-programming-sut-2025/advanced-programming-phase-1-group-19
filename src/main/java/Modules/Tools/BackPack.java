@@ -47,9 +47,13 @@ public class BackPack {
         return true;
     }
     public void addItem(Item item, int count) {
+        if(count <= 0) {
+            return;
+        }
         items.put(item, items.getOrDefault(item, 0) + count);
         amount = getCapacity();
     }
+
 
     public boolean removeItem(Item item, int count) {
         if (checkItem(item, count)) {
@@ -94,17 +98,6 @@ public class BackPack {
         return null;
     }
 
-
-    public int getCapacity() {
-        int totalCapacity = 0;
-        for (Map.Entry<Item, Integer> entry : items.entrySet()) {
-            Item item = entry.getKey();
-            Integer count = entry.getValue();
-            totalCapacity += count * item.getTakenSpace();
-        }
-        return totalCapacity;
-    }
-
     public Item getItemByName(String name) {
         for (Item item : items.keySet()) {
             if(item.getName().equals(name)) {
@@ -116,5 +109,31 @@ public class BackPack {
 
     public int getItemCount(Item item) {
         return items.get(item);
+    }
+
+//    public int getRemainingSpace() {
+//        int totalCapacity = 0;
+//        for (Map.Entry<Item, Integer> entry : items.entrySet()) {
+//            Item item = entry.getKey();
+//            Integer count = entry.getValue();
+//            int takenspace =0;
+//            takenspace = item.getTakenSpace();
+//            totalCapacity += count * takenspace;
+//        }
+//        return (maxCapacity-totalCapacity);
+//    }
+
+    public int getCapacity() {
+        int totalCapacity = 0;
+        for (Map.Entry<Item, Integer> entry : items.entrySet()) {
+            Item item = entry.getKey();
+            Integer count = entry.getValue();
+            totalCapacity += count * item.getTakenSpace();
+        }
+        return (totalCapacity);
+    }
+
+    public int getMaxCapacity() {
+        return maxCapacity;
     }
 }

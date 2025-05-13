@@ -60,26 +60,26 @@ public class Trade {
         return targetAmount;
     }
 
-//    public void doTrade(Player player1, Player player2) {
-//        if(!type){
-//            if(price == 0){
-//                player1.getBackPack().removeItem(item, amount);
-//                player2.getBackPack().addItem(item, amount);
-//                player2.getBackPack().removeItem(targetItem, targetAmount);
-//                player2.getBackPack().addItem(targetItem, targetAmount);
-//            }
-//            else{
-//                player1.getBackPack().removeItem(item, amount);
-//                player2.getBackPack().addItem(item, amount);
-//                player2.increaseMoney(price);
-//            }
-//        }
-//        else{
-//            player2.getBackPack().removeItem(item, amount);
-//            player1.getBackPack().addItem(item, amount);
-//            player1.decreaseMoney(price);
-//        }
-//    }
+    public void doTrade(Player player1, Player player2) {
+        if(!type){
+            if(price == 0){
+                player1.getBackPack().removeItem(item, amount);
+                player2.getBackPack().addItem(item, amount);
+                player2.getBackPack().removeItem(targetItem, targetAmount);
+                player2.getBackPack().addItem(targetItem, targetAmount);
+            }
+            else{
+                player1.getBackPack().removeItem(item, amount);
+                player2.getBackPack().addItem(item, amount);
+                player2.addMoney(price);
+            }
+        }
+        else{
+            player2.getBackPack().removeItem(item, amount);
+            player1.getBackPack().addItem(item, amount);
+            player1.decreaseMoney(price);
+        }
+    }
 
     public boolean getType(){
         return type;

@@ -1,6 +1,7 @@
 package Modules.Farming;
 
 import Modules.Item;
+import Modules.Map.Tile;
 
 public class Seed extends Item {
 
@@ -17,8 +18,8 @@ public class Seed extends Item {
     }
 
     @Override
-    public void drop() {
-
+    public void drop(Tile tile) {
+        tile.setObject(Seed.this);
     }
 
     @Override

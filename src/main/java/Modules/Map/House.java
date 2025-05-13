@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class House extends Building {
 
-    private Refrigerator refrigerator;
+    private Refrigerator refrigerator = new Refrigerator();
 
     public House(ArrayList<Tile> tiles, Size size) {
         this.tiles = tiles;

@@ -20,6 +20,25 @@ public class Refrigerator {
         this.items.remove(item,amount);
     }
 
+    public boolean checkItemByName(String itemName) {
+        for (Item item : items.keySet()) {
+            if(item.getName().equals(itemName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Item getItemByName(String itemName) {
+        for (Item item : items.keySet()) {
+            if(item.getName().equals(itemName)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+
     public void putItem(Item item,int amount) {
         this.items.put(item,amount);
     }
