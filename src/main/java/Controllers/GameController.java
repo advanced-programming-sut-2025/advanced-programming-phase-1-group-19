@@ -4,16 +4,9 @@ import Modules.*;
 import Modules.Animal.*;
 import Modules.Communication.FriendShip;
 import Modules.Communication.Gift;
-import Modules.Communication.Trade;
-import Modules.Communication.FriendShip;
-import Modules.Communication.Gift;
-import Modules.Communication.Trade;
-import Modules.Crafting.CraftingRecipe;
 import Modules.Crafting.Material;
 import Modules.Crafting.MaterialType;
 import Modules.Enums.*;
-import Modules.Interactions.Commands.GameCommand;
-import Modules.Interactions.Messages.*;
 import Modules.Enums.Menu;
 import Modules.Enums.Season;
 import Modules.Enums.Weather;
@@ -21,11 +14,11 @@ import Modules.Farming.*;
 import Modules.Interactions.Messages.GameMessage;
 import Modules.Interactions.Messages.Message;
 import Modules.Map.*;
+import Modules.Store.Store;
 import Modules.Tools.*;
 import Views.*;
 
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Random;
 
 public class GameController extends Controller {
@@ -585,33 +578,14 @@ public class GameController extends Controller {
             return new GameMessage(null,"There is no item with this name");
         }
         Tile tile = null;
-        if(direction.equals("north")){
-            tile =player.getFarm().getTile(new Position(player.getPosition().x - 1, player.getPosition().y));
+        Direction direction1 = Direction.getDirection(direction);
+        if(direction1 == null){
+            return new GameMessage(null,"Wrong direction");
         }
-        else if(direction.equals("south")){
-            tile = player.getFarm().getTile(new Position(player.getPosition().x+1, player.getPosition().y));
-        }
-        else if(direction.equals("east")){
-            tile = player.getFarm().getTile(new Position(player.getPosition().x, player.getPosition().y+1));
-        }
-        else if(direction.equals("west")){
-            tile = player.getFarm().getTile(new Position(player.getPosition().x, player.getPosition().y-1));
-        }
-        else if(direction.equals("northwest")){
-            tile = player.getFarm().getTile(new Position(player.getPosition().x-1, player.getPosition().y-1));
-        }
-        else if(direction.equals("northeast")){
-            tile = player.getFarm().getTile(new Position(player.getPosition().x-1, player.getPosition().y+1));
-        }
-        else if(direction.equals("southeast")){
-            tile = player.getFarm().getTile(new Position(player.getPosition().x+1, player.getPosition().y+1));
-        }
-        else if(direction.equals("southwest")){
-            tile = player.getFarm().getTile(new Position(player.getPosition().x+1, player.getPosition().y-1));
-        }
-        else {
-            return new GameMessage(null,"Wrong direction!");
-        }
+        Position playerPosition = player.getPosition();
+        Position targetPosition = new Position(playerPosition.x, playerPosition.y);
+        targetPosition.move(direction1);
+        tile = player.getFarm().getTile(targetPosition);
         if(tile.getObject() != null){
             return new GameMessage(null,"This position is already taken!");
         }
@@ -669,7 +643,13 @@ public class GameController extends Controller {
         App app = App.getInstance();
         Game game=app.getCurrentGame();
         Player player=app.getCurrentGame().getCurrentPlayer();
-        Animal animal=player.getFarm().getBarn().getAnimalByName(animalName);
+        Animal animal = null;
+        if(player.getFarm().getBarn() != null){
+            animal=player.getFarm().getBarn().getAnimalByName(animalName);
+        }
+        if(animal==null && player.getFarm().getCoop() != null){
+            animal = player.getFarm().getCoop().getAnimalByName(animalName);
+        }
         if(animal==null){
             return new GameMessage(null,"There is no such animal");
         }
@@ -1556,6 +1536,40 @@ public class GameController extends Controller {
         ask.getBackPack().removeItem(new Material(MaterialType.weddingRing),1);
         answer.getBackPack().addItem(new Material(MaterialType.weddingRing),1);
         return new GameMessage(null,"You accepted "+ask.getUser().getUsername());
+    }
+
+    public GameMessage enterStore(String StoreName){
+        App app = App.getInstance();
+        Game game = app.getCurrentGame();
+        Player player = game.getCurrentPlayer();
+        Store store = Store.getStoreByName(StoreName);
+        if(store == null){
+            return new GameMessage(null, "There is no store with that name");
+        }
+        if(player.getCurrentStore()!=null){
+            return new GameMessage(null, "You are already in a store!");
+        }
+//        TODO: check if player is near this store
+        player.setCurrentStore(store);
+        return new GameMessage(null,"You successfully entered "+StoreName);
+    }
+
+    public GameMessage exitStore(String StoreName){
+        App app = App.getInstance();
+        Game game = app.getCurrentGame();
+        Player player = game.getCurrentPlayer();
+        Store store = Store.getStoreByName(StoreName);
+        if(store == null){
+            return new GameMessage(null, "There is no store with that name");
+        }
+        if(player.getCurrentStore()==null){
+            return new GameMessage(null, "You are not in any store");
+        }
+        if(!player.getCurrentStore().getName().equals(StoreName)){
+            return new GameMessage(null, "You are not int this store");
+        }
+        player.setCurrentStore(null);
+        return new GameMessage(null,"You successfully exited "+StoreName);
     }
 
 

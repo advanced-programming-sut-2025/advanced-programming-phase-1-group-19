@@ -615,6 +615,37 @@ public class GameMenu implements AppMenu {
                 System.out.println(gameController.hugging(username).message());
                 break;
             }
+            case enterStore:{
+                Pattern pattern = Pattern.compile("^\\s*enter store -n (?<storeName>.+?)\\s*$");
+                Matcher matcher = pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
+                String storeName = matcher.group("storeName");
+                System.out.println(gameController.enterStore(storeName).message());
+                break;
+            }
+            case exitStore:{
+                Pattern pattern = Pattern.compile("^\\s*exit store -n (?<storeName>.+?)\\s*$");
+                Matcher matcher = pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
+                String storeName = matcher.group("storeName");
+                System.out.println(gameController.exitStore(storeName).message());
+                break;
+            }
+            case buyRecipe:{
+                Pattern pattern = Pattern.compile("^\\s*buy recipe (?<recipeName>.+?) -n (?<count>.+?)\\s*$");
+                Matcher matcher = pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
+                String recipeName = matcher.group("recipeName");
+                int count = Integer.parseInt(matcher.group("count"));
+                System.out.println(storeController.buyRecipe(recipeName,count).message());
+                break;
+            }
         }
     }
 
@@ -880,6 +911,15 @@ public class GameMenu implements AppMenu {
         }
         else if(input.matches("^\\s*hug -u (?<username>.+?)\\s*$")){
             runCommand(GameCommand.hug,input);
+        }
+        else if(input.matches("^\\s*enter store -n (?<storeName>.+?)\\s*$")){
+            runCommand(GameCommand.enterStore,input);
+        }
+        else if(input.matches("^\\s*exit store -n (?<storeName>.+?)\\s*$")){
+            runCommand(GameCommand.exitStore,input);
+        }
+        else if(input.matches("^\\s*buy recipe (?<recipeName>.+?) -n (?<count>.+?)\\s*$")){
+            runCommand(GameCommand.buyRecipe,input);
         }
         else{
             System.out.println("invalid command");

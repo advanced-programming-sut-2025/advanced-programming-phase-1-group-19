@@ -77,5 +77,8 @@ public enum GameCommand implements Command {
     answerMarriage,
     showMarriageRequests,
     hug,
+    enterStore,
+    exitStore,
+    buyRecipe,
     exit;
 }

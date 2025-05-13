@@ -8,11 +8,11 @@ import Modules.Crafting.CraftingRecipe;
 import Modules.Enums.SkillType;
 import Modules.Map.Farm;
 import Modules.Map.Position;
+import Modules.Store.Store;
 import Modules.Tools.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.function.ToLongBiFunction;
 
 public class Player {
     private int money;
@@ -32,6 +32,7 @@ public class Player {
     private ArrayList<FriendShip> friendShips;
     private Tool currentTool = null;
     private ArrayList<NPC> npcs;
+    private Store currentStore;
     public Player(User user, Farm farm) {
         this.money = 0;
         this.user = user;
@@ -199,5 +200,13 @@ public class Player {
 
     public ArrayList<NPC> getNpcs() {
         return npcs;
+    }
+
+    public void setCurrentStore(Store currentStore) {
+        this.currentStore = currentStore;
+    }
+
+    public Store getCurrentStore() {
+        return currentStore;
     }
 }
