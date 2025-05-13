@@ -349,6 +349,9 @@ public class GameMenu implements AppMenu {
             case fishing:{
                 Pattern pattern=Pattern.compile("fishing -p (?<fishingPole>.+?)");
                 Matcher matcher=pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
                 System.out.println(gameController.fishing(matcher.group(1)).message());
                 break;
             }
@@ -646,6 +649,20 @@ public class GameMenu implements AppMenu {
                 System.out.println(storeController.buyRecipe(recipeName,count).message());
                 break;
             }
+            case cheatAddRecipe:{
+                Pattern pattern = Pattern.compile("^\\s*cheat add recipe -n (?<recipeName>.+?)\\s*$");
+                Matcher matcher = pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
+                String recipeName = matcher.group("recipeName");
+                System.out.println(craftingController.cheatAddRecipe(recipeName).message());
+                break;
+            }
+            case showAnimalProducts:{
+                System.out.println(gameController.showProducts().message());
+                break;
+            }
         }
     }
 
@@ -655,6 +672,7 @@ public class GameMenu implements AppMenu {
     private final GameController gameController = GameController.getInstance();
     private final StoreController storeController = StoreController.getInstance();
     private final TradeController tradeController = TradeController.getInstance();
+    private final CraftingController craftingController = CraftingController.getInstance();
 
     private  HouseController houseController = new HouseController();
 
@@ -879,7 +897,7 @@ public class GameMenu implements AppMenu {
         else if(input.matches("^\\s*close house menu\\s*$")){
             runCommand(GameCommand.closeHouseMenu,"");
         }
-        else if(input.matches("^\\s*close crafting house menu\\s*$")){
+        else if(input.matches("^\\s*close crafting menu\\s*$")){
             runCommand(GameCommand.closeCraftingMenu,"");
         }
         else if(input.matches("^\\s*crafting show recipes\\s*$")){
@@ -920,6 +938,12 @@ public class GameMenu implements AppMenu {
         }
         else if(input.matches("^\\s*buy recipe (?<recipeName>.+?) -n (?<count>.+?)\\s*$")){
             runCommand(GameCommand.buyRecipe,input);
+        }
+        else if(input.matches("^\\s*cheat add recipe -n (?<recipeName>.+?)\\s*$")){
+            runCommand(GameCommand.cheatAddRecipe,input);
+        }
+        else if(input.matches("^\\s*produces\\s*$")){
+            runCommand(GameCommand.showAnimalProducts,"");
         }
         else{
             System.out.println("invalid command");

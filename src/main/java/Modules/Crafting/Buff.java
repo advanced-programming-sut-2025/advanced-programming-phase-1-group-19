@@ -8,7 +8,7 @@ public class Buff {
     private final int hours;
     private final int energyAddition;
 
-    private Buff(SkillType skillType, int hours, int energyAddition) {
+    Buff(SkillType skillType, int hours, int energyAddition) {
         this.skillType = skillType;
         this.hours = hours;
         this.energyAddition = energyAddition;

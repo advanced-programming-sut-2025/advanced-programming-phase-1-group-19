@@ -80,5 +80,7 @@ public enum GameCommand implements Command {
     enterStore,
     exitStore,
     buyRecipe,
+    cheatAddRecipe,
+    showAnimalProducts,
     exit;
 }

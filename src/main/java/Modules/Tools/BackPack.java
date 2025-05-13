@@ -102,17 +102,6 @@ public class BackPack {
         return items.get(item);
     }
 
-//    public int getRemainingSpace() {
-//        int totalCapacity = 0;
-//        for (Map.Entry<Item, Integer> entry : items.entrySet()) {
-//            Item item = entry.getKey();
-//            Integer count = entry.getValue();
-//            int takenspace =0;
-//            takenspace = item.getTakenSpace();
-//            totalCapacity += count * takenspace;
-//        }
-//        return (maxCapacity-totalCapacity);
-//    }
 
     public int getCapacity() {
         int totalCapacity = 0;
@@ -127,4 +116,6 @@ public class BackPack {
     public int getMaxCapacity() {
         return maxCapacity;
     }
+
+
 }

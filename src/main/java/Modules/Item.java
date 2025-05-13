@@ -43,6 +43,10 @@ public abstract class Item extends TileObject {
         if(cropType != null){
             item = new Crop(cropType);
         }
+        AnimalProductType animalProductType= AnimalProductType.getProductTypeByName(name);
+        if(animalProductType != null){
+            item = new AnimalProduct(animalProductType);
+        }
 
         SeedType seedType = SeedType.getSeedTypeByName(name);
         if(seedType != null){
@@ -65,6 +69,19 @@ public abstract class Item extends TileObject {
 
     public int getTakenSpace() {
         return takenSpace;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Item other = (Item) obj;
+        return getName().equalsIgnoreCase(other.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return getName().toLowerCase().hashCode();
     }
 
 }

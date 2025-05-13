@@ -32,7 +32,7 @@ public enum AnimalProductType {
 
     public static AnimalProductType getProductTypeByName(String name) {
         for (AnimalProductType value : AnimalProductType.values()) {
-            if (value.name().equals(name)) {
+            if (value.name.equals(name)) {
                 return value;
             }
         }

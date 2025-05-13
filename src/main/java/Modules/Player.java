@@ -24,7 +24,7 @@ public class Player {
     private boolean isFainted = false;
     private final BackPack backPack;
     private final TrashCan trashCan;
-    private final HashMap<SkillType, Skill> skills;
+    private final HashMap<SkillType, Skill> skills ;
     private final ArrayList<CraftingRecipe> knownCraftingRecipes;
     private final ArrayList<CookingRecipe> knownCookingRecipes;
     private Time[] lastBuffTime; // 0:farming, 1: extraction, 2: foraging, 3: fishing, 4: energy;
@@ -33,6 +33,7 @@ public class Player {
     private Tool currentTool = null;
     private ArrayList<NPC> npcs;
     private Store currentStore;
+    private int Hay;
     public Player(User user, Farm farm) {
         this.money = 0;
         this.user = user;
@@ -60,8 +61,10 @@ public class Player {
 //        npcs.add(new NPC("Harvey"));
 //        npcs.add(new NPC("Lia"));
 //        npcs.add(new NPC("Robin"));
-
-
+        for (SkillType skillType : SkillType.values()) {
+            skills.put(skillType, new Skill(skillType));
+        }
+        this.Hay = 0;
     }
 
     public ArrayList<FriendShip> getFriendShips() {
@@ -129,7 +132,7 @@ public class Player {
     }
 
     public void addKnownCraftingRecipe(CraftingRecipe recipe) {
-//        TODO: first check if the player can learn the recipe or not
+        this.knownCraftingRecipes.add(recipe);
     }
 
     public ArrayList<CookingRecipe> getKnownCookingRecipes() {
@@ -145,7 +148,7 @@ public class Player {
     }
 
     public void addKnownCookingRecipe(CookingRecipe recipe) {
-//        TODO: first check if the player can learn the recipe or not
+        this.knownCookingRecipes.add(recipe);
     }
 
     public void applyBuff(Buff buff) {
@@ -208,5 +211,17 @@ public class Player {
 
     public Store getCurrentStore() {
         return currentStore;
+    }
+
+    public int getHay(){
+        return Hay;
+    }
+
+    public void addHay(int amount) {
+        this.Hay += amount;
+    }
+
+    public void decreaseHay(int amount) {
+        this.Hay -= amount;
     }
 }
