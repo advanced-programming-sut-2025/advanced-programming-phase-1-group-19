@@ -1,5 +1,6 @@
 package Modules.Tools;
 
+import Modules.Animal.*;
 import Modules.App;
 import Modules.Crafting.Material;
 import Modules.Crafting.MaterialType;
@@ -53,29 +54,26 @@ public class Tool extends Item {
     public void use() {
 
     }
-    public GameMessage use(Position position){
+    public GameMessage use(Position position) {
         Game game = App.getInstance().getCurrentGame();
         Map map = game.getMap();
         Tile tile = map.getTile(position);
         BackPack backPack = game.getCurrentPlayer().getBackPack();
-        switch (toolType){
+        switch (toolType) {
             case hoe -> {
                 boolean isSuccess;
-                if(tile.getBuilding() == null && tile.getObject() == null){
+                if (tile.getBuilding() == null && tile.getObject() == null) {
                     isSuccess = true;
-                }
-                else{
+                } else {
                     isSuccess = false;
                 }
                 int energy = toolType.getEnergy(level, isSuccess);
-                if(energy > game.getCurrentPlayer().getEnergy().getAmount()){
+                if (energy > game.getCurrentPlayer().getEnergy().getAmount()) {
                     return new GameMessage(null, "You don't have enough energy to use this tool.");
-                }
-                else if(!isSuccess){
+                } else if (!isSuccess) {
                     game.getCurrentPlayer().decreaseEnergy(energy);
                     return new GameMessage(null, "You couldn't use this tool.");
-                }
-                else{
+                } else {
                     game.getCurrentPlayer().decreaseEnergy(energy);
                     tile.setPlowed(true);
                     return new GameMessage(null, "You plowed this tile");
@@ -83,21 +81,18 @@ public class Tool extends Item {
             }
             case axe -> {
                 boolean isSuccess;
-                if(tile.getBuilding() == null && tile.getObject() != null && tile.getObject() instanceof Plant){
+                if (tile.getBuilding() == null && tile.getObject() != null && tile.getObject() instanceof Plant) {
                     isSuccess = true;
-                }
-                else{
+                } else {
                     isSuccess = false;
                 }
                 int energy = toolType.getEnergy(level, isSuccess);
-                if(energy > game.getCurrentPlayer().getEnergy().getAmount()){
+                if (energy > game.getCurrentPlayer().getEnergy().getAmount()) {
                     return new GameMessage(null, "You don't have enough energy to use this tool.");
-                }
-                else if(!isSuccess){
+                } else if (!isSuccess) {
                     game.getCurrentPlayer().decreaseEnergy(energy);
                     return new GameMessage(null, "You couldn't use this tool.");
-                }
-                else{
+                } else {
                     game.getCurrentPlayer().decreaseEnergy(energy);
                     map.setTile(position, new Tile(position));
                     game.getCurrentPlayer().getBackPack().addItem(new Material(MaterialType.wood), 50);
@@ -106,35 +101,30 @@ public class Tool extends Item {
             }
             case wateringCan -> {
                 int options = 0;
-                if(tile.getBuilding() != null && tile.getBuilding() instanceof Lake){
+                if (tile.getBuilding() != null && tile.getBuilding() instanceof Lake) {
                     options = 1;
-                }
-                else if(tile.getObject() != null && tile.getObject() instanceof Plant){
+                } else if (tile.getObject() != null && tile.getObject() instanceof Plant) {
                     options = 2;
                 }
                 int energy = toolType.getEnergy(level, options != 0);
-                if(energy > game.getCurrentPlayer().getEnergy().getAmount()){
+                if (energy > game.getCurrentPlayer().getEnergy().getAmount()) {
                     return new GameMessage(null, "You don't have enough energy to use this tool.");
-                }
-                else if(options == 0){
+                } else if (options == 0) {
                     game.getCurrentPlayer().decreaseEnergy(energy);
                     return new GameMessage(null, "You couldn't use this tool.");
-                }
-                else{
-                    if(options == 2){
+                } else {
+                    if (options == 2) {
                         game.getCurrentPlayer().decreaseEnergy(energy);
                         Plant plant = (Plant) tile.getObject();
                         WateringCan wateringCan = (WateringCan) game.getCurrentPlayer().getBackPack().getToolByType(ToolType.wateringCan);
-                        if(wateringCan.getCurrentCapacity() == 0){
+                        if (wateringCan.getCurrentCapacity() == 0) {
                             return new GameMessage(null, "There is no water in your watering can!");
-                        }
-                        else{
+                        } else {
                             plant.setLastWateringTime(new Time(game.getTime()));
                             wateringCan.decreaseCapacity(1);
                             return new GameMessage(null, "You successfully watered this plant!");
                         }
-                    }
-                    else{
+                    } else {
                         game.getCurrentPlayer().decreaseEnergy(energy);
                         WateringCan wateringCan = (WateringCan) game.getCurrentPlayer().getBackPack().getToolByType(ToolType.wateringCan);
                         wateringCan.fill();
@@ -144,36 +134,86 @@ public class Tool extends Item {
             }
             case scythe -> {
                 boolean isSuccess;
-                if(tile.getBuilding() != null && tile.getBuilding() instanceof GreenHouse){
+                if (tile.getBuilding() != null && tile.getBuilding() instanceof GreenHouse) {
                     isSuccess = true;
-                }
-                else if(tile.getObject() != null && tile.getObject() instanceof Plant){
+                } else if (tile.getObject() != null && tile.getObject() instanceof Plant) {
                     isSuccess = true;
-                }
-                else{
+                } else {
                     isSuccess = false;
                 }
                 int energy = toolType.getEnergy(level, isSuccess);
-                if(energy > game.getCurrentPlayer().getEnergy().getAmount()){
+                if (energy > game.getCurrentPlayer().getEnergy().getAmount()) {
                     return new GameMessage(null, "You don't have enough energy to use this tool.");
-                }
-                else if(!isSuccess){
+                } else if (!isSuccess) {
                     game.getCurrentPlayer().decreaseEnergy(energy);
                     return new GameMessage(null, "You couldn't use this tool.");
-                }
-                else{
+                } else {
                     game.getCurrentPlayer().decreaseEnergy(energy);
                     Plant plant = (Plant) tile.getObject();
-                    if(plant.getCurrentStage() == plant.getType().getStages().size()+1){
-                        if(!backPack.canAddItem(new Crop(plant.getType().getCrop()), 1)){
+                    if (plant.getCurrentStage() == plant.getType().getStages().size() + 1) {
+                        if (!backPack.canAddItem(new Crop(plant.getType().getCrop()), 1)) {
                             return new GameMessage(null, "You don't have enough capacity in backpack");
                         }
                         backPack.addItem(new Crop(plant.getType().getCrop()), 1);
                         return new GameMessage(null, "You got some fruit!");
-                    }
-                    else{
+                    } else {
                         return new GameMessage(null, "Let your tree grow as it should");
                     }
+                }
+            }
+            case shear -> {
+                boolean isSuccess = false;
+                int cnt = 0;
+                if (tile.getBuilding() == null && tile.getObject() != null && tile.getObject() instanceof Barn) {
+                    for (Animal animal : ((Barn) tile.getObject()).getAnimals()) {
+                        if (animal.getType() == AnimalType.rabbit || animal.getType() == AnimalType.sheep) {
+                            isSuccess = true;
+                        }
+                    }
+                }
+                int energy = toolType.getEnergy(level, isSuccess);
+                if (energy > game.getCurrentPlayer().getEnergy().getAmount()) {
+                    return new GameMessage(null, "You don't have enough energy to use this tool.");
+                } else if (!isSuccess) {
+                    game.getCurrentPlayer().decreaseEnergy(energy);
+                    return new GameMessage(null, "You couldn't use this tool.");
+                } else {
+                    game.getCurrentPlayer().decreaseEnergy(energy);
+                    for (Animal animal : ((Barn) tile.getObject()).getAnimals()) {
+                        if (animal.getType() == AnimalType.rabbit) {
+                            backPack.addItem(new AnimalProduct(AnimalProductType.rabbitWool), 1);
+                        } else if (animal.getType() == AnimalType.sheep) {
+                            backPack.addItem(new AnimalProduct(AnimalProductType.wool), 1);
+                        }
+                    }
+                    return new GameMessage(null, "You collected some wools");
+                }
+            }
+            case milkPail -> {
+                boolean isSuccess = false;
+                if (tile.getBuilding() == null && tile.getObject() != null && tile.getObject() instanceof Barn) {
+                    for (Animal animal : ((Barn) tile.getObject()).getAnimals()) {
+                        if (animal.getType() == AnimalType.cow || animal.getType() == AnimalType.goat) {
+                            isSuccess = true;
+                        }
+                    }
+                }
+                int energy = toolType.getEnergy(level, isSuccess);
+                if (energy > game.getCurrentPlayer().getEnergy().getAmount()) {
+                    return new GameMessage(null, "You don't have enough energy to use this tool.");
+                } else if (!isSuccess) {
+                    game.getCurrentPlayer().decreaseEnergy(energy);
+                    return new GameMessage(null, "You couldn't use this tool.");
+                } else {
+                    game.getCurrentPlayer().decreaseEnergy(energy);
+                    for (Animal animal : ((Barn) tile.getObject()).getAnimals()) {
+                        if (animal.getType() == AnimalType.goat) {
+                            backPack.addItem(new AnimalProduct(AnimalProductType.goatMilk), 1);
+                        } else if (animal.getType() == AnimalType.cow) {
+                            backPack.addItem(new AnimalProduct(AnimalProductType.milk), 1);
+                        }
+                    }
+                    return new GameMessage(null, "You collected some milk :)");
                 }
             }
         }

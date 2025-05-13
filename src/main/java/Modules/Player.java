@@ -45,9 +45,11 @@ public class Player {
         Tool scythe = new Tool(ToolType.scythe);
         WateringCan wateringCan = new WateringCan(ToolType.wateringCan);
         Tool axe = new Tool(ToolType.axe);
+        Tool shear = new Tool(ToolType.shear);
         backPack.addItem(scythe, 1);
         backPack.addItem(wateringCan, 1);
         backPack.addItem(axe, 1);
+        backPack.addItem(shear, 1);
         // add this bullshit to backpack
         backPack.addItem(new Seed(SeedType.carrot), 10);
         trashCan = new TrashCan();
