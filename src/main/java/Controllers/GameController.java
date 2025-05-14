@@ -1178,6 +1178,20 @@ public class GameController extends Controller {
         App app = App.getInstance();
         Game game = app.getCurrentGame();
         Player player = app.getCurrentGame().getCurrentPlayer();
+        Position position = player.getPosition();
+        int x = position.x;
+        int y = position.y;
+        for(int dx = -1; dx <= 1; dx++){
+            for(int dy = -1; dy <= 1; dy++){
+                if(dx == 0 && dy == 0){
+                    continue;
+                }
+                Tile tile = game.getMap().getTile(new Position(x, y));
+                if(tile == null || !(tile.getBuilding() instanceof Lake)) {
+                    return new GameMessage(null, "you must be near the lake!");
+                }
+            }
+        }
         player.decreaseEnergy(8);
         switch (fishingPole) {
             case "Training": {
