@@ -13,10 +13,11 @@ import Modules.Map.Position;
 import Modules.Store.Store;
 import Modules.Tools.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Player {
+public class Player implements Serializable {
     private int money;
     private int featureMoney;
     private User user;

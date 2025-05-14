@@ -1,8 +1,9 @@
 package Modules.Tools;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class WateringCan extends Tool {
+public class WateringCan extends Tool implements Serializable {
     private static ArrayList<Integer> maxCapacity = new ArrayList<>();
     private int amount;
 

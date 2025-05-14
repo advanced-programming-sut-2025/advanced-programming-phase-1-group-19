@@ -1,6 +1,8 @@
 package Modules.Enums;
 
-public enum Question {
+import java.io.Serializable;
+
+public enum Question implements Serializable {
     first("1- What was the name of your first teacher?"),
     second("2- What was the name of your childhood pet?"),
     third("3- What was the name of your elementary school?"),

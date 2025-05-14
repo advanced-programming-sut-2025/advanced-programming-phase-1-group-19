@@ -13,6 +13,8 @@ import Modules.Map.Position;
 import Modules.Map.Tile;
 import Modules.Player;
 
+import java.io.Serializable;
+
 public class CraftingController extends Controller {
     private static CraftingController instance;
 

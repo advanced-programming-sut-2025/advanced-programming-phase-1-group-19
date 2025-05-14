@@ -2,9 +2,10 @@ package Modules.Communication;
 
 import Modules.Player;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class FriendShip {
+public class FriendShip implements Serializable {
     private Player player;
     private int xp;
     private int level;

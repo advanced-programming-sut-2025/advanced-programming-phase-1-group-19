@@ -1,8 +1,10 @@
 package Modules.Map;
 
+import java.io.Serializable;
+
 import java.util.ArrayList;
 
-public class ShippingBin extends TileObject{
+public class ShippingBin extends TileObject implements Serializable{
     private ArrayList<Double> refundAmount;
     private int level = 0;
     {

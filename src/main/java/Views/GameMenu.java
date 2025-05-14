@@ -101,6 +101,10 @@ public class GameMenu implements AppMenu {
                 System.out.println(gameController.exitGame().message());
                 break;
             }
+            case loadGame: {
+                System.out.println(gameController.loadGame().message());
+                break;
+            }
             case nextTurn: {
                 System.out.println(gameController.nextTurn().message());
                 break;
@@ -736,6 +740,9 @@ public class GameMenu implements AppMenu {
         }
         else if(input.matches("^\\s*exit game\\s*$")){
             runCommand(GameCommand.exitGame, "");
+        }
+        else if(input.matches("^load game$")) {
+            runCommand(GameCommand.loadGame, input);
         }
         else if(input.matches("^\\s*energy show\\s*$")){
             runCommand(GameCommand.showEnergy,"");

@@ -1,6 +1,8 @@
 package Modules.Crafting;
 
-public enum MaterialType {
+import java.io.Serializable;
+
+public enum MaterialType implements Serializable {
     sugar("sugar"),
     cheese("cheese"),
     fiber("fiber"),

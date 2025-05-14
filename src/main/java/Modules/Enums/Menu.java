@@ -1,6 +1,8 @@
 package Modules.Enums;
 
-public enum Menu {
+import java.io.Serializable;
+
+public enum Menu implements Serializable {
     RegistrationMenu("registration"),
     MainMenu("main"),
     ProfileMenu("profile"),

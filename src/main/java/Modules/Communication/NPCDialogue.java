@@ -4,10 +4,11 @@ import Modules.Enums.Season;
 import Modules.Enums.Weather;
 import Modules.Time;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class NPCDialogue {
+public class NPCDialogue implements Serializable {
     private ArrayList<String> Dialogues;
     public NPCDialogue(NPC npc) {
         switch (npc.getName()) {

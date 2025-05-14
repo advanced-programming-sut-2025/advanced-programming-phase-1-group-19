@@ -19,6 +19,7 @@ import Modules.Tools.*;
 import Views.*;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class GameController extends Controller {
@@ -95,10 +96,19 @@ public class GameController extends Controller {
                 mapIDs[i] = Integer.parseInt(idString);
             }
         }
+        ArrayList<Store> stores = new ArrayList<>();
+        stores.add(new Store("Clint"));
+        stores.add(new Store("Morris"));
+        stores.add(new Store("Pierre"));
+        stores.add(new Store("Robin"));
+        stores.add(new Store("Willy"));
+        stores.add(new Store("Marnie"));
+        stores.add(new Store("Gus"));
+
         ArrayList<Player> players = new ArrayList<>();
         ArrayList<Farm> farms = new ArrayList<>();
         for (int i = 0; i < users.length; i++) {
-            Farm farm = new Farm(FarmMap.getFarmMap(mapIDs[i]), i);
+            Farm farm = new Farm(FarmMap.getFarmMap(mapIDs[i]), i, stores);
             Player player = new Player(users[i], farm);
             farms.add(farm);
             players.add(player);
@@ -111,7 +121,7 @@ public class GameController extends Controller {
             }
         }
         Map map = new Map(farms);
-        Game game = new Game(players, map);
+        Game game = new Game(players, map, stores);
 
         app.addGame(game);
         app.setCurrentGame(game);
@@ -124,8 +134,13 @@ public class GameController extends Controller {
     }
 
     public GameMessage loadGame() {
-//        TODO: fix this
-        return null;
+        User user = app.getCurrentUser();
+        if(user.getCurrentGame() == null) {
+            return new GameMessage(null, "you have no game to load!");
+        }
+        app.setCurrentGame(user.getCurrentGame());
+        app.setCurrentGameStarter(user);
+        return new GameMessage(null, "Game loaded successfully!");
     }
 
     public GameMessage exitGame() {
@@ -137,7 +152,6 @@ public class GameController extends Controller {
         if (!app.getCurrentGameStarter().equals(app.getCurrentUser())) {
             return new GameMessage(null, "you can't exit game!");
         }
-        // TODO: save game
         app.setCurrentGame(null);
         app.setCurrentMenu(Menu.MainMenu);
         return new GameMessage(null, "exited game successfully! you are now in main menu!");
@@ -167,7 +181,8 @@ public class GameController extends Controller {
             App.getInstance().getGames().remove(App.getInstance().getCurrentGame());
             App.getInstance().setCurrentGame(null);
             App.getInstance().setCurrentGameStarter(null);
-            return new GameMessage(null, "Game has been terminated!");
+            App.getInstance().setCurrentMenu(Menu.MainMenu);
+            return new GameMessage(null, "Game has been terminated! you are now in main menu!");
         } else {
             return new GameMessage(null, "Not enough votes");
         }
@@ -496,7 +511,6 @@ public class GameController extends Controller {
     }
 
     public GameMessage useTool(Direction direction) {
-//        TODO: fix this important!!!!
         Tool tool = App.getInstance().getCurrentGame().getCurrentPlayer().getCurrentTool();
         if(tool == null){
             return new GameMessage(null, "You don't have a current tool!");
@@ -515,8 +529,8 @@ public class GameController extends Controller {
     }
 
     public GameMessage printMap(Position position, int size) {
-        if (size > 100) {
-            return new GameMessage(null, "please use sizes smaller than 100");
+        if (size > 250) {
+            return new GameMessage(null, "please use sizes smaller than 250");
         }
         Game game = App.getInstance().getCurrentGame();
         Map map = game.getMap();
@@ -540,6 +554,9 @@ public class GameController extends Controller {
                     } else if (building instanceof Quarry) {
                         c = 'Q';
                     }
+                    else if(building instanceof Store) {
+                        c = 'S';
+                    }
                     if(tileObject != null) {
                         if(tileObject instanceof Plant){
                             c = 'P';
@@ -556,6 +573,13 @@ public class GameController extends Controller {
                     }
                 }
                 all[i][j] = c;
+            }
+        }
+        for(int i = 0; i < game.getPlayers().size(); i++){
+            Player player = game.getPlayers().get(i);
+            Position p = player.getPosition();
+            if(p.x >= position.x && p.x < position.x + size && p.y >= position.y && p.y < position.y + size){
+                all[p.x - position.x][p.y - position.y] = Character.forDigit(i+1, 10);
             }
         }
         StringBuilder ret = new StringBuilder();
@@ -576,7 +600,9 @@ public class GameController extends Controller {
         ret += "\u001B[34mL\u001B[0m ~> lake tiles\n";
         ret += "\u001B[33mQ\u001B[0m ~> quarry tiles\n";
         ret += "I ~> items\n";
-        ret += "B ~> Barn\n";
+        ret += "P ~> plants\n";
+        ret += "B ~> barn\n";
+        ret += "C ~> coop\n";
 
 //        TODO: fix this if needed to show other stuff
         return new GameMessage(null, ret);
@@ -1257,19 +1283,25 @@ public class GameController extends Controller {
             p[2].setGianPosition(1);
             p[3].setGianPosition(3);
 
-            Time lastWatering = Time.maximum(Time.maximum(tile.getLastWateringTime(), t[1].getLastWateringTime())
-                    , Time.maximum(t[2].getLastWateringTime(), t[3].getLastWateringTime()));
+            Time lastWatering = Time.maximum(Time.maximum(plant.getLastWateringTime(), p[1].getLastWateringTime())
+                    , Time.maximum(p[2].getLastWateringTime(), p[3].getLastWateringTime()));
             Time planting = Time.minimum(Time.minimum(plant.getPlantingTime(), p[1].getPlantingTime())
                     , Time.minimum(p[2].getPlantingTime(), p[3].getPlantingTime()));
 
-            tile.setLastWateringTime(lastWatering);
+            plant.setLastWateringTime(lastWatering);
             plant.setPlantingTime(planting);
-            t[1].setLastWateringTime(lastWatering);
+            p[1].setLastWateringTime(lastWatering);
             p[1].setPlantingTime(planting);
-            t[2].setLastWateringTime(lastWatering);
+            p[2].setLastWateringTime(lastWatering);
             p[2].setPlantingTime(planting);
-            t[3].setLastWateringTime(lastWatering);
+            p[3].setLastWateringTime(lastWatering);
             p[3].setPlantingTime(planting);
+
+            ArrayList<Plant> giantPlants = new ArrayList<>(){{add(plant); add(p[1]); add(p[2]); add(p[3]);}};
+            plant.setGianPlants(giantPlants);
+            p[1].setGianPlants(giantPlants);
+            p[2].setGianPlants(giantPlants);
+            p[3].setGianPlants(giantPlants);
 
         } else if (flag[3] && flag[4] && flag[5]) {
             plant.setGianPosition(0);
@@ -1277,19 +1309,25 @@ public class GameController extends Controller {
             p[4].setGianPosition(3);
             p[5].setGianPosition(2);
 
-            Time lastWatering = Time.maximum(Time.maximum(tile.getLastWateringTime(), t[3].getLastWateringTime())
-                    , Time.maximum(t[4].getLastWateringTime(), t[5].getLastWateringTime()));
+            Time lastWatering = Time.maximum(Time.maximum(plant.getLastWateringTime(), p[3].getLastWateringTime())
+                    , Time.maximum(p[4].getLastWateringTime(), p[5].getLastWateringTime()));
             Time planting = Time.minimum(Time.minimum(plant.getPlantingTime(), p[3].getPlantingTime())
                     , Time.minimum(p[4].getPlantingTime(), p[5].getPlantingTime()));
 
-            tile.setLastWateringTime(lastWatering);
+            plant.setLastWateringTime(lastWatering);
             plant.setPlantingTime(planting);
-            t[3].setLastWateringTime(lastWatering);
+            p[3].setLastWateringTime(lastWatering);
             p[3].setPlantingTime(planting);
-            t[4].setLastWateringTime(lastWatering);
+            p[4].setLastWateringTime(lastWatering);
             p[4].setPlantingTime(planting);
-            t[5].setLastWateringTime(lastWatering);
+            p[5].setLastWateringTime(lastWatering);
             p[5].setPlantingTime(planting);
+
+            ArrayList<Plant> giantPlants = new ArrayList<>(){{add(plant); add(p[3]); add(p[4]); add(p[5]);}};
+            plant.setGianPlants(giantPlants);
+            p[3].setGianPlants(giantPlants);
+            p[4].setGianPlants(giantPlants);
+            p[5].setGianPlants(giantPlants);
 
         } else if (flag[5] && flag[6] && flag[7]) {
             plant.setGianPosition(1);
@@ -1298,19 +1336,25 @@ public class GameController extends Controller {
             p[7].setGianPosition(0);
 
 
-            Time lastWatering = Time.maximum(Time.maximum(tile.getLastWateringTime(), t[5].getLastWateringTime())
-                    , Time.maximum(t[6].getLastWateringTime(), t[7].getLastWateringTime()));
+            Time lastWatering = Time.maximum(Time.maximum(plant.getLastWateringTime(), p[5].getLastWateringTime())
+                    , Time.maximum(p[6].getLastWateringTime(), p[7].getLastWateringTime()));
             Time planting = Time.minimum(Time.minimum(plant.getPlantingTime(), p[5].getPlantingTime())
                     , Time.minimum(p[6].getPlantingTime(), p[7].getPlantingTime()));
 
-            tile.setLastWateringTime(lastWatering);
+            plant.setLastWateringTime(lastWatering);
             plant.setPlantingTime(planting);
-            t[5].setLastWateringTime(lastWatering);
+            p[5].setLastWateringTime(lastWatering);
             p[5].setPlantingTime(planting);
-            t[6].setLastWateringTime(lastWatering);
+            p[6].setLastWateringTime(lastWatering);
             p[6].setPlantingTime(planting);
-            t[7].setLastWateringTime(lastWatering);
+            p[7].setLastWateringTime(lastWatering);
             p[7].setPlantingTime(planting);
+
+            ArrayList<Plant> giantPlants = new ArrayList<>(){{add(plant); add(p[5]); add(p[6]); add(p[7]);}};
+            plant.setGianPlants(giantPlants);
+            p[5].setGianPlants(giantPlants);
+            p[6].setGianPlants(giantPlants);
+            p[7].setGianPlants(giantPlants);
 
         } else if (flag[7] && flag[0] && flag[1]) {
             plant.setGianPosition(3);
@@ -1319,19 +1363,25 @@ public class GameController extends Controller {
             p[1].setGianPosition(1);
 
 
-            Time lastWatering = Time.maximum(Time.maximum(tile.getLastWateringTime(), t[7].getLastWateringTime())
-                    , Time.maximum(t[0].getLastWateringTime(), t[1].getLastWateringTime()));
+            Time lastWatering = Time.maximum(Time.maximum(plant.getLastWateringTime(), p[7].getLastWateringTime())
+                    , Time.maximum(p[0].getLastWateringTime(), p[1].getLastWateringTime()));
             Time planting = Time.minimum(Time.minimum(plant.getPlantingTime(), p[7].getPlantingTime())
                     , Time.minimum(p[0].getPlantingTime(), p[1].getPlantingTime()));
 
-            tile.setLastWateringTime(lastWatering);
+            plant.setLastWateringTime(lastWatering);
             plant.setPlantingTime(planting);
-            t[7].setLastWateringTime(lastWatering);
+            p[7].setLastWateringTime(lastWatering);
             p[7].setPlantingTime(planting);
-            t[0].setLastWateringTime(lastWatering);
+            p[0].setLastWateringTime(lastWatering);
             p[0].setPlantingTime(planting);
-            t[1].setLastWateringTime(lastWatering);
+            p[1].setLastWateringTime(lastWatering);
             p[1].setPlantingTime(planting);
+
+            ArrayList<Plant> giantPlants = new ArrayList<>(){{add(plant); add(p[7]); add(p[0]); add(p[1]);}};
+            plant.setGianPlants(giantPlants);
+            p[7].setGianPlants(giantPlants);
+            p[0].setGianPlants(giantPlants);
+            p[1].setGianPlants(giantPlants);
         }
         player.getSkill(SkillType.farming).addAmount(5);
         return new GameMessage(null, "seed planted successfully!");
@@ -1352,7 +1402,7 @@ public class GameController extends Controller {
         String ret = "";
         ret += "Name: " + plantType.getName() + "\n";
         ret += "Is Giant: " + (plant.getGianPosition() != -1) + "\n";
-        ret += "Last Watering Time: " + tile.getLastWateringTime() + "\n";
+        ret += "Last Watering Time: " + plant.getLastWateringTime() + "\n";
         ret += "Planting Time: " + plant.getPlantingTime();
         return new GameMessage(null, ret);
     }
@@ -1671,7 +1721,6 @@ public class GameController extends Controller {
 
     @Override
     public Message exit() {
-//        TODO: save game and go back to main Menu
         return null;
     }
 }

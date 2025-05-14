@@ -11,10 +11,11 @@ import Modules.Player;
 import Modules.Tools.LevelInfo;
 import Modules.Tools.Tool;
 
+import java.io.Serializable;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Fish extends Item {
+public class Fish extends Item implements Serializable {
 
     public static int getFishingQuality(Weather weather, int skillLevel, LevelInfo levelInfo) {
         App app = App.getInstance();

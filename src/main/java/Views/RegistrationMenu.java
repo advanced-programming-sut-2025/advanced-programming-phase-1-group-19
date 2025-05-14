@@ -121,6 +121,12 @@ public class RegistrationMenu implements AppMenu {
                 }
                 break;
             }
+            case exit: {
+                controller.exit();
+                System.out.println("you have exited the app!");
+                System.exit(0);
+                break;
+            }
         }
     }
 
@@ -136,7 +142,11 @@ public class RegistrationMenu implements AppMenu {
             runCommand(RegistrationCommand.login, input);
         } else if (input.matches("^\\s*forget password -u (?<username>.+?)\\s*$")) {
             runCommand(RegistrationCommand.forgetPassword, input);
-        } else {
+        }
+        else if (input.matches("^exit$")) {
+            runCommand(RegistrationCommand.exit, input);
+        }
+        else {
             System.out.println("invalid command!");
         }
     }

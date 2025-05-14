@@ -2,9 +2,10 @@ package Modules;
 
 import Modules.Enums.Question;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class User {
+public class User implements Serializable {
     private String username;
     private String password;
     private String nickname;

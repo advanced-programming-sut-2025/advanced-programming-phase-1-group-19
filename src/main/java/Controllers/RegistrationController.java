@@ -176,7 +176,7 @@ public class RegistrationController extends Controller implements UserInfoContro
 
     @Override
     public Message exit() {
-//        TODO: exit app
+        App.getInstance().saveApp();
         return null;
     }
 }

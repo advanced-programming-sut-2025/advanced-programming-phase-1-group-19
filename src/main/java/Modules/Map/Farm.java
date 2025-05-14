@@ -2,11 +2,17 @@ package Modules.Map;
 
 import Modules.Animal.Barn;
 import Modules.Animal.Coop;
+import Modules.App;
+import Modules.Crafting.Material;
+import Modules.Crafting.MaterialType;
+import Modules.Game;
 import Modules.Store.Store;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Random;
 
-public class Farm {
+public class Farm implements Serializable {
 
     private final Position topLeft;
     private final Size size;
@@ -21,11 +27,7 @@ public class Farm {
     private Barn barn;
     private Coop coop;
 
-    private void setRandomObjects() {
-//        TODO: implement this
-    }
-
-    public Farm(FarmMap farmMap, int turn) {
+    public Farm(FarmMap farmMap, int turn, ArrayList<Store> stores) {
         switch (turn) {
             case 0: {
                 topLeft = new Position(0, 0);
@@ -80,7 +82,8 @@ public class Farm {
 
         for(int i = topLeft.x; i < topLeft.x + size.height; i++) {
             for(int j = topLeft.y; j < topLeft.y + size.width; j++) {
-                Tile tile = new Tile(new Position(i, j));
+                Position position = new Position(i, j);
+                Tile tile = new Tile(position);
                 if(i >= lakeTopLeft.x && i < lakeBottomRight.x
                 && j >= lakeTopLeft.y && j < lakeBottomRight.y) {
                     lakeTiles.add(tile);
@@ -98,8 +101,16 @@ public class Farm {
                     quarryTiles.add(tile);
                 }
                 tiles.add(tile);
+                for(int k = 0; k < stores.size(); k++) {
+                    Position storePosition = farmMap.getStorePositions().get(k);
+                    if(position.equals(new Position(storePosition.x + topLeft.x, storePosition.y + topLeft.y))) {
+                        Store store = stores.get(k);
+                        tile.setBuilding(store);
+                    }
+                }
             }
         }
+
         lake = new Lake(lakeTiles, farmMap.getLakeSize());
         for(Tile tile : lakeTiles) {
             tile.setBuilding(lake);
@@ -119,8 +130,6 @@ public class Farm {
         for (Tile tile : quarryTiles) {
             tile.setBuilding(quarry);
         }
-
-        setRandomObjects();
     }
 
     public Position getTopLeft() {

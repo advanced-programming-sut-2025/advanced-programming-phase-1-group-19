@@ -1,9 +1,10 @@
 package Modules.Animal;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public enum AnimalType {
+public enum AnimalType implements Serializable {
     cow(false,1500,new ArrayList<AnimalProduct>(List.of(new AnimalProduct(AnimalProductType.milk) , new AnimalProduct(AnimalProductType.bigMilk))),4),
     goat(false,4000,new ArrayList<AnimalProduct>(List.of(new AnimalProduct(AnimalProductType.goatMilk),new AnimalProduct(AnimalProductType.bigGoatMilk))),8),
     sheep(false,8000,new ArrayList<AnimalProduct>(List.of(new AnimalProduct(AnimalProductType.wool))),12),

@@ -13,10 +13,11 @@ import Modules.Game;
 import Modules.Item;
 import Modules.Map.TileObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class NPC extends TileObject {
+public class NPC extends TileObject implements Serializable {
     private String name;
     private String job;
     private ArrayList<Item> favoriteItems = new ArrayList<>();

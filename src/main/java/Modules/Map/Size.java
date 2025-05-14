@@ -1,6 +1,8 @@
 package Modules.Map;
 
-public class Size {
+import java.io.Serializable;
+
+public class Size implements Serializable {
     public int height;
     public int width;
 

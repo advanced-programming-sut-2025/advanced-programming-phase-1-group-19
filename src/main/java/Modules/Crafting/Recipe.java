@@ -2,6 +2,7 @@ package Modules.Crafting;
 
 import Modules.Item;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 public interface Recipe {

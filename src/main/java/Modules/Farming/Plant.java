@@ -4,16 +4,20 @@ import Modules.App;
 import Modules.Map.TileObject;
 import Modules.Time;
 
-public class Plant extends TileObject {
+import java.io.Serializable;
+import java.util.ArrayList;
+
+public class Plant extends TileObject implements Serializable {
 
     private PlantType type;
     private Time plantingTime;
     private int regrownTimes;
     private int gianPosition;
+    //    0 1
+//    2 3 and -1 if not gianted
+    private ArrayList<Plant> gianPlants;
     private Time lastWateringTime;
     private int currentStage;
-//    0 1
-//    2 3 and -1 if not gianted
 
     public Plant(PlantType type, Time plantingTime) {
         super();
@@ -54,6 +58,14 @@ public class Plant extends TileObject {
         this.gianPosition = gianPosition;
     }
 
+    public ArrayList<Plant> getGianPlants() {
+        return gianPlants;
+    }
+
+    public void setGianPlants(ArrayList<Plant> gianPlants) {
+        this.gianPlants = gianPlants;
+    }
+
     public void harvest() {}
 
     public Time getLastWateringTime() {
@@ -87,7 +99,6 @@ public class Plant extends TileObject {
             }
             sum += type.getStages().get(i);
         }
-        boolean a = false;
         if(diff > type.getTotalTime()){
             regrownTimes++;
         }

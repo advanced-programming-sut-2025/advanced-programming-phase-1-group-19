@@ -3,7 +3,9 @@ package Modules.Communication;
 import Modules.Item;
 import Modules.Player;
 
-public class Trade {
+import java.io.Serializable;
+
+public class Trade implements Serializable {
     private Player player;
     private boolean type; // 0: offer 1: request
     private Item item;

@@ -2,9 +2,10 @@ package Modules.Map;
 
 import Modules.Crafting.Refrigerator;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class House extends Building {
+public class House extends Building implements Serializable {
 
     private Refrigerator refrigerator = new Refrigerator();
 

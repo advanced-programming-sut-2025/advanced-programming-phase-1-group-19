@@ -3,9 +3,10 @@ package Modules.Crafting;
 import Modules.Item;
 import Modules.Map.Tile;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class CraftingItem extends Item {
+public class CraftingItem extends Item implements Serializable {
 
     private  CraftingRecipe recipe;
 

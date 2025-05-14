@@ -4,11 +4,12 @@ import Modules.App;
 import Modules.Enums.SkillType;
 import Modules.Player;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public enum ToolType {
+public enum ToolType implements Serializable {
     hoe("Hoe", Arrays.asList(
             new LevelInfo("initial", 5, 5),
             new LevelInfo("copper", 4, 4),

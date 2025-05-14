@@ -3,7 +3,9 @@ package Modules;
 import Modules.Enums.Season;
 import Modules.Interactions.Messages.GameMessage;
 
-public class Time {
+import java.io.Serializable;
+
+public class Time implements Serializable {
     private int hour;
     private int day;
     private Season season;

@@ -1,6 +1,9 @@
 package Modules.Map;
 
-public enum FarmMap {
+import java.io.Serializable;
+import java.util.ArrayList;
+
+public enum FarmMap implements Serializable {
     first(1),
     second(2),
     third(3),
@@ -20,6 +23,8 @@ public enum FarmMap {
     private final Size lakeSize;
     private final Position quarryPosition;
     private final Size quarrySize;
+
+    ArrayList<Position> storePositions = new ArrayList<>();
 
     FarmMap(int id) {
         this.id = id;
@@ -95,6 +100,13 @@ public enum FarmMap {
                 break;
             }
         }
+        storePositions.add(new Position(2, 10));
+        storePositions.add(new Position(2, 20));
+        storePositions.add(new Position(2, 30));
+        storePositions.add(new Position(2, 40));
+        storePositions.add(new Position(2, 50));
+        storePositions.add(new Position(2, 60));
+        storePositions.add(new Position(2, 70));
     }
 
     public static FarmMap getFarmMap(int id) {
@@ -142,6 +154,10 @@ public enum FarmMap {
         return quarrySize;
     }
 
+    public ArrayList<Position> getStorePositions() {
+        return storePositions;
+    }
+
     public String printMap() {
         StringBuilder ret = new StringBuilder();
         for(int i = 0; i < size.height; i++) {
@@ -165,6 +181,12 @@ public enum FarmMap {
                 }
                 else {
                     c = '.';
+                }
+                for(Position position : storePositions) {
+                    if (position.x == i && position.y == j) {
+                        c = 'S';
+                        break;
+                    }
                 }
                 ret.append(c);
             }

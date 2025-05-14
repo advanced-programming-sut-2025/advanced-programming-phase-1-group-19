@@ -1,11 +1,12 @@
 package Modules.Enums;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-public enum Weather {
+public enum Weather implements Serializable {
     sunny(new ArrayList<>(Arrays.asList(Season.values()))),
     rain(new ArrayList<>(Arrays.asList(Season.spring, Season.summer, Season.fall))),
     storm(new ArrayList<>(Arrays.asList(Season.spring, Season.summer, Season.fall))),

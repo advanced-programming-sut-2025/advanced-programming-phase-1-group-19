@@ -2,7 +2,9 @@ package Modules.Communication;
 
 import Modules.Item;
 
-public class Gift {
+import java.io.Serializable;
+
+public class Gift implements Serializable {
     private Item item;
     private int amount;
     private int rate;

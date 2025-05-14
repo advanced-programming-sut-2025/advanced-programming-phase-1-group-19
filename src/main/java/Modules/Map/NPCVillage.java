@@ -1,8 +1,9 @@
 package Modules.Map;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class NPCVillage {
+public class NPCVillage implements Serializable {
     private final Position topLeft;
     private final Size size;
     private final ArrayList<Tile> tiles;

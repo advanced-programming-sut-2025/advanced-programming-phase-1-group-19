@@ -1,22 +1,27 @@
 package Modules.Store;
 
 import Modules.Crafting.*;
+import Modules.App;
+import Modules.Crafting.CookingRecipe;
+import Modules.Crafting.CraftingRecipe;
+import Modules.Crafting.Food;
+import Modules.Crafting.Recipe;
 import Modules.Enums.Season;
 import Modules.Farming.Crop;
 import Modules.Farming.Seed;
 import Modules.Farming.SeedType;
-import Modules.Map.Building;
-import Modules.Map.Size;
-import Modules.Map.Tile;
+import Modules.Game;
+import Modules.Map.*;
 import Modules.Item;
 import Modules.Map.Building;
 import Modules.Map.Tile;
 import Modules.Tools.Tool;
 import Modules.Tools.ToolType;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Store extends Building {
+public class Store extends Building implements Serializable {
     private int openingTime;
     private int closingTime;
     private String ownerName;
@@ -494,27 +499,28 @@ public class Store extends Building {
     }
 
     public static Store getStoreByName(String name) {
+        Game game = App.getInstance().getCurrentGame();
         switch (name) {
             case "Blacksmith":{
-                return new Store("Clint");
+                return game.getStores().get(0);
             }
             case "Joja Mart":{
-                return new Store("Morris");
+                return game.getStores().get(1);
             }
             case "Pierre's General Store":{
-                return new Store("Pierre");
+                return game.getStores().get(2);
             }
             case "Carpenter's Shop":{
-                return new Store("Robin");
+                return game.getStores().get(3);
             }
             case "Fish Shop":{
-                return new Store("Willy");
+                return game.getStores().get(4);
             }
             case "Marnie's Ranch":{
-                return new Store("Marnie");
+                return game.getStores().get(5);
             }
             case "The Stardrop Saloon":{
-                return new Store("Gus");
+                return game.getStores().get(6);
             }
         }
         return null;
@@ -570,5 +576,6 @@ public class Store extends Building {
         }
         return null;
     }
+
 
 }

@@ -1,17 +1,82 @@
 package Modules.Map;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
+import Modules.App;
+import Modules.Crafting.Material;
+import Modules.Crafting.MaterialType;
+import Modules.Farming.*;
+import Modules.Game;
 
-public class Map {
+import java.io.Serializable;
+import java.util.*;
+
+public class Map implements Serializable {
     private ArrayList<Farm> farms;
     private NPCVillage npcVillage;
 
     public Map(ArrayList<Farm> farms) {
         this.farms = farms;
         this.npcVillage = new NPCVillage();
+        setRandomObjects();
+    }
+
+    private void setRandomObjects() {
+        Random rand = new Random();
+        for(int i = 0; i < 100; i++) {
+            for(int j = 0; j < 100; j++) {
+                if(i == 50 && j == 50) {
+                    continue;
+                }
+                Position position = new Position(i, j);
+                Map map = this;
+                Tile tile = map.getTile(position);
+                if(tile != null) {
+                    if(tile.isTotallyEmpty()) {
+                        int r = rand.nextInt(3000);
+                        if(r == 0) {
+                            tile.setObject(new Material(MaterialType.coal));
+                        }
+                        if(r == 1) {
+                            tile.setObject(new Material(MaterialType.wood));
+                        }
+                        if(r == 2) {
+                            tile.setObject(new Material(MaterialType.stone));
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void setNewDayForaging() {
+        Random rand = new Random();
+        for(int i = 0; i < 100; i++) {
+            for(int j = 0; j < 100; j++) {
+                if(i == 50 && j == 50) {
+                    continue;
+                }
+                Position position = new Position(i, j);
+                Map map = this;
+                Tile tile = map.getTile(position);
+                if(tile != null) {
+                    if(tile.isTotallyEmpty()) {
+                        int r = rand.nextInt(2000);
+                        if(r == 0) {
+                            ForagingCropType type = ForagingCropType.getRandomInstance();
+                            ForagingCrop crop = new ForagingCrop(type);
+                            tile.setObject(crop);
+                        }
+                        if(r == 1) {
+                            SeedType type = MixedSeed.getMixedSeedBySeason(App.getInstance().getCurrentGame().getTime().getSeason()).getRandomSeed();
+                            Seed seed = new Seed(type);
+                            tile.setObject(seed);
+                        }
+                        if(r == 2) {
+                            tile.setObject(new Material(MaterialType.stone));
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public ArrayList<Tile> getPath(Position start, Position end) {
@@ -56,7 +121,6 @@ public class Map {
         }
         Collections.reverse(path);
         return path;
-//        TODO: search the farms for the tile and check if you can go to that tile or not
     }
 
     public Tile getTile(Position position) {
@@ -88,36 +152,5 @@ public class Map {
             return npcVillage.getTile(position);
         }
         return null;
-//        TODO: search farms for that tile
-    }
-
-    public void setTile(Position position, Tile tile) {
-        if(position.x >= 0 && position.x < 100 && position.y >= 0 && position.y < 100) {
-            if(farms.size() < 1) {
-                return;
-            }
-            farms.get(0).setTile(position, tile);
-        }
-        else if (position.x >= 0 && position.x < 100 && position.y >= 150 && position.y < 250) {
-            if(farms.size() < 2) {
-                return;
-            }
-            farms.get(1).setTile(position, tile);
-        }
-        else if(position.x >= 150 && position.x < 250 && position.y >= 0 && position.y < 100) {
-            if(farms.size() < 3) {
-                return;
-            }
-            farms.get(2).setTile(position, tile);
-        }
-        else if(position.x >= 150 && position.x < 250 && position.y >= 150 && position.y < 250) {
-            if (farms.size() < 4) {
-                return;
-            }
-            farms.get(3).setTile(position, tile);
-        }
-        else if(position.x >= 100 && position.x < 150 && position.y >= 100 && position.y < 150) {
-            return ;
-        }
     }
 }

@@ -4,9 +4,10 @@ import Modules.App;
 import Modules.Item;
 import Modules.Player;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class Refrigerator {
+public class Refrigerator implements Serializable {
     private HashMap<Item, Integer> items;
 
     public Refrigerator() {

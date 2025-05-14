@@ -68,7 +68,7 @@ public class MainMenu implements AppMenu {
         else if(input.matches("^\\s*user logout\\s*$")){
             runCommand(MainCommand.logout, input);
         }
-        else if(input.matches("^\\s*menu exit\\s*$")){
+        else if(input.matches("^\\s*exit\\s*$")){
             runCommand(MainCommand.exit, input);
         }
         else {

@@ -1,6 +1,8 @@
 package Modules.Enums;
 
-public enum SkillType {
+import java.io.Serializable;
+
+public enum SkillType implements Serializable {
     farming,
     extraction,
     foraging,

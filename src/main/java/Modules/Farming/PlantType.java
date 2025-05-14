@@ -2,9 +2,11 @@
 package Modules.Farming;
 
 import Modules.Enums.Season;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public enum PlantType {
+public enum PlantType implements Serializable {
     blueJazz("blue jazz", SeedType.jazz, CropType.blueJazz, new int[]{1, 2, 2, 2}, 7, -1, new Season[]{Season.spring}, false, false),
     carrot("carrot", SeedType.carrot, CropType.carrot, new int[]{1, 1, 1}, 3, -1, new Season[]{Season.spring}, false, false),
     cauliflower("cauliflower", SeedType.cauliflower, CropType.cauliflower, new int[]{1, 2, 4, 4, 1}, 12, -1, new Season[]{Season.spring}, true, false),

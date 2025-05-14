@@ -8,14 +8,16 @@ import Modules.Map.TileObject;
 import Modules.Tools.Tool;
 import Modules.Tools.ToolType;
 
-public abstract class Item extends TileObject {
+import java.io.Serializable;
+
+public abstract class Item extends TileObject implements Serializable {
 
     protected final String name;
     protected final int takenSpace;
     protected final boolean isEdible;
     abstract public int getPrice();
 
-    public Item(String name, int takenSpace, boolean isEdible) {
+    public Item(String name, int takenSpace, boolean isEdible){
         this.name = name;
         this.takenSpace = takenSpace;
         this.isEdible = isEdible;
@@ -72,7 +74,14 @@ public abstract class Item extends TileObject {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         Item other = (Item) obj;
-        return getName().equalsIgnoreCase(other.getName());
+        if(obj instanceof Tool && this instanceof Tool) {
+            boolean f1 = getName().equalsIgnoreCase(other.getName());
+            boolean f2 = ((Tool)this).getLevel() == ((Tool)other).getLevel();
+            return f1 && f2;
+        }
+        else {
+            return getName().equalsIgnoreCase(other.getName());
+        }
     }
 
     @Override

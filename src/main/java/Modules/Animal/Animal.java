@@ -7,10 +7,11 @@ import Modules.Map.Tile;
 import Modules.Player;
 import Modules.Time;
 
+import java.io.Serializable;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Animal {
+public class Animal  implements Serializable {
 
     private final String name;
     private final AnimalType type;

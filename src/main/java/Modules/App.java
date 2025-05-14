@@ -2,7 +2,7 @@ package Modules;
 
 import Modules.Enums.Menu;
 
-import java.io.Serializable;
+import java.io.*;
 import java.util.ArrayList;
 
 public class App implements Serializable {
@@ -11,7 +11,7 @@ public class App implements Serializable {
     private App() {}
     public static App getInstance() {
         if (instance == null) {
-            instance = new App();
+            instance = App.loadApp();
         }
         return instance;
     }
@@ -105,10 +105,29 @@ public class App implements Serializable {
         games.remove(game);
     }
 
-    public void loadGame() {
-//        TODO: load game from data based on loggedIn user and set currentGameStarter
+    public static App loadApp() {
+        File file = new File("app.ser");
+
+        if (file.exists()) {
+            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
+                return (App) ois.readObject();
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+                return new App();
+            }
+        } else {
+            return new App();
+        }
     }
 
-    public void saveGame() {}
+    public void saveApp() {
+        try (ObjectOutputStream oos = new ObjectOutputStream(
+            new FileOutputStream("app.ser")
+    )) {
+        oos.writeObject(instance);
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    }
 
 }

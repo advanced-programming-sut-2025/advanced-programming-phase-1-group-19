@@ -6,21 +6,20 @@ import Modules.Game;
 import Modules.Time;
 
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 
-public class Tile {
+public class Tile implements Serializable {
 
     private final Position position;
     private TileObject object;
     private Building building;
     private boolean isPlowed;
     private boolean containsPlant;
-    private Time lastWateringTime;
 
     public Tile(Position position) {
         this.position = position;
         isPlowed = false;
         containsPlant = false;
-        lastWateringTime = Game.startingTime;
     }
 
     public boolean isTotallyEmpty() {
@@ -55,18 +54,13 @@ public class Tile {
         isPlowed = plowed;
     }
 
-    public Time getLastWateringTime() {
-        return lastWateringTime;
-    }
 
     public void setContainsPlant(boolean containsPlant) {
         this.containsPlant = containsPlant;
 //        TODO: when there is no more plant change it to false
     }
 
-    public void setLastWateringTime(Time lastWateringTime) {
-        this.lastWateringTime = lastWateringTime;
-    }
+
 
     public boolean containsPlant() {
         return containsPlant;

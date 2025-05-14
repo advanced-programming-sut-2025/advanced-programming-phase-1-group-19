@@ -3,7 +3,9 @@ package Modules.Farming;
 import Modules.Item;
 import Modules.Map.Tile;
 
-public class ForagingCrop extends Item {
+import java.io.Serializable;
+
+public class ForagingCrop extends Item implements Serializable {
     private ForagingCropType type;
 
     public ForagingCrop(ForagingCropType type) {

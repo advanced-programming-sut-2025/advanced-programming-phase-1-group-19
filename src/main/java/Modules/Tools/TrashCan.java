@@ -2,9 +2,10 @@ package Modules.Tools;
 
 import Modules.Item;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class TrashCan{
+public class TrashCan implements Serializable {
     private final static ArrayList<Double> ratios = new ArrayList<>();
     private static final ArrayList<String> name = new ArrayList<>();
     private int level = 0;

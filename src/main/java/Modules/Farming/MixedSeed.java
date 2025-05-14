@@ -3,11 +3,12 @@ package Modules.Farming;
 
 import Modules.Enums.Season;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-public enum MixedSeed {
+public enum MixedSeed implements Serializable {
     SPRING(Season.spring, new ArrayList<>(List.of(
             SeedType.cauliflower,
             SeedType.parsnip,

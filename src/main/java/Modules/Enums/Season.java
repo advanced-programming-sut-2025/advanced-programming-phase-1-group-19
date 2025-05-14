@@ -1,6 +1,8 @@
 package Modules.Enums;
 
-public enum Season {
+import java.io.Serializable;
+
+public enum Season implements Serializable {
     spring,
     summer,
     fall,
