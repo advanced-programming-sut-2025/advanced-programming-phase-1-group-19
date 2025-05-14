@@ -100,12 +100,17 @@ public class StoreController extends Controller {
         Game game = app.getCurrentGame();
         Player player = game.getCurrentPlayer();
         Store currentStore = player.getCurrentStore();
+
+
         if(currentStore == null){
             return new GameMessage(null, "You are not at Store");
         }
         StoreItem item = currentStore.getItemByName(itemName);
         if(item == null){
             return new GameMessage(null, "There is no item with this name in this store!");
+        }
+        if(count == -1) {
+            count = item.getDailyLimit();
         }
         if(item.getDailyLimit() < count){
             return new GameMessage(null, "You do not have enough daily limit");

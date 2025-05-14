@@ -260,4 +260,7 @@ public class Player implements Serializable {
     public void decreaseHay(int amount) {
         this.Hay -= amount;
     }
+    public void resetMoney(){
+        this.featureMoney = 0;
+    }
 }

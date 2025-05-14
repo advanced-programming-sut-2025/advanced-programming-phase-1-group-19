@@ -4,6 +4,8 @@ import Modules.Animal.*;
 import Modules.App;
 import Modules.Crafting.Material;
 import Modules.Crafting.MaterialType;
+import Modules.Enums.Season;
+import Modules.Enums.Weather;
 import Modules.Farming.Crop;
 import Modules.Farming.ForagingCrop;
 import Modules.Farming.Plant;
@@ -65,6 +67,14 @@ public class Tool extends Item implements Serializable {
         Map map = game.getMap();
         Tile tile = map.getTile(position);
         BackPack backPack = game.getCurrentPlayer().getBackPack();
+
+        double mp = 1;
+        if(game.getTodayWeather().equals(Weather.rain) || game.getTodayWeather().equals(Weather.storm)) {
+            mp *= 1.5;
+        }
+        if(game.getTodayWeather().equals(Weather.snow)) {
+            mp *= 2;
+        }
         switch (toolType) {
             case hoe -> {
                 boolean isSuccess;
@@ -73,7 +83,7 @@ public class Tool extends Item implements Serializable {
                 } else {
                     isSuccess = false;
                 }
-                int energy = toolType.getEnergy(level, isSuccess);
+                int energy = (int)(toolType.getEnergy(level, isSuccess) * mp);
                 if (energy > game.getCurrentPlayer().getEnergy().getAmount()) {
                     return new GameMessage(null, "You don't have enough energy to use this tool.");
                 } else if (!isSuccess) {
@@ -92,7 +102,7 @@ public class Tool extends Item implements Serializable {
                 } else {
                     isSuccess = false;
                 }
-                int energy = toolType.getEnergy(level, isSuccess);
+                int energy = (int) (toolType.getEnergy(level, isSuccess) * mp);
                 if (energy > game.getCurrentPlayer().getEnergy().getAmount()) {
                     return new GameMessage(null, "You don't have enough energy to use this tool.");
                 } else if (!isSuccess) {
@@ -112,7 +122,7 @@ public class Tool extends Item implements Serializable {
                 } else if (tile.getObject() != null && tile.getObject() instanceof Plant) {
                     options = 2;
                 }
-                int energy = toolType.getEnergy(level, options != 0);
+                int energy = (int) (toolType.getEnergy(level, options != 0) * mp);
                 if (energy > game.getCurrentPlayer().getEnergy().getAmount()) {
                     return new GameMessage(null, "You don't have enough energy to use this tool.");
                 } else if (options == 0) {
@@ -154,7 +164,7 @@ public class Tool extends Item implements Serializable {
                 } else {
                     isSuccess = false;
                 }
-                int energy = toolType.getEnergy(level, isSuccess);
+                int energy = (int)(toolType.getEnergy(level, isSuccess) * mp);
                 if (energy > game.getCurrentPlayer().getEnergy().getAmount()) {
                     return new GameMessage(null, "You don't have enough energy to use this tool.");
                 } else if (!isSuccess) {
@@ -188,7 +198,7 @@ public class Tool extends Item implements Serializable {
                         }
                     }
                 }
-                int energy = toolType.getEnergy(level, isSuccess);
+                int energy = (int)(toolType.getEnergy(level, isSuccess) * mp);
                 if (energy > game.getCurrentPlayer().getEnergy().getAmount()) {
                     return new GameMessage(null, "You don't have enough energy to use this tool.");
                 } else if (!isSuccess) {
@@ -215,7 +225,7 @@ public class Tool extends Item implements Serializable {
                         }
                     }
                 }
-                int energy = toolType.getEnergy(level, isSuccess);
+                int energy = (int)(toolType.getEnergy(level, isSuccess) * mp);
                 if (energy > game.getCurrentPlayer().getEnergy().getAmount()) {
                     return new GameMessage(null, "You don't have enough energy to use this tool.");
                 } else if (!isSuccess) {
@@ -240,7 +250,7 @@ public class Tool extends Item implements Serializable {
                 } else {
                     isSuccess = false;
                 }
-                int energy = toolType.getEnergy(level, isSuccess);
+                int energy = (int)(toolType.getEnergy(level, isSuccess) * mp);
                 if (energy > game.getCurrentPlayer().getEnergy().getAmount()) {
                     return new GameMessage(null, "You don't have enough energy to use this tool.");
                 } else if (!isSuccess) {

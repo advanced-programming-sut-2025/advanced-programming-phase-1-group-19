@@ -67,17 +67,16 @@ public class Game implements Serializable {
 //        TODO: check if it was the last player nextHour()
 //        TODO: check if the player is fainted
         int index = players.indexOf(currentPlayer);
-        if(index == players.size() - 1) {
+        if (index == players.size() - 1) {
             index = 0;
             nextHour();
-        }
-        else{
+        } else {
             index++;
         }
         setCurrentPlayer(players.get(index));
     }
 
-    public void nextSeason(){
+    public void nextSeason() {
         time.nextSeason();
     }
 
@@ -88,10 +87,10 @@ public class Game implements Serializable {
         // todayWeather for nextDay is tomrrowWeather for today!
         todayWeather = tomrrowWeather;
         setTomorrowWeather();
-        switch (tomrrowWeather){
+        switch (tomrrowWeather) {
             case rain -> {
 //                watering plants automatically
-                    autoWaterPlant();
+                autoWaterPlant();
 //                TODO:1.5x while using tools
                 break;
             }
@@ -106,98 +105,148 @@ public class Game implements Serializable {
             }
         }
 
-        if(currentPlayer.getFarm().getBarn() != null){
+        if (currentPlayer.getFarm().getBarn() != null) {
             for (Animal animal : currentPlayer.getFarm().getBarn().getAnimals()) {
-                if(animal.isOutside()){
+                if (animal.isOutside()) {
                     animal.decreaseFriendship(20);
                 }
             }
         }
 
-        if(currentPlayer.getFarm().getCoop() != null){
+        if (currentPlayer.getFarm().getCoop() != null) {
             for (Animal animal : currentPlayer.getFarm().getCoop().getAnimals()) {
-                if(animal.isOutside()){
+                if (animal.isOutside()) {
                     animal.decreaseFriendship(20);
                 }
             }
         }
 
-        if(currentPlayer.getFarm().getBarn() != null){
+        if (currentPlayer.getFarm().getBarn() != null) {
             for (Animal animal : currentPlayer.getFarm().getBarn().getAnimals()) {
-                if(!animal.hasBeenFedToday(time)){
+                if (!animal.hasBeenFedToday(time)) {
                     animal.decreaseFriendship(20);
                 }
             }
         }
 
-        if(currentPlayer.getFarm().getCoop() != null){
+        if (currentPlayer.getFarm().getCoop() != null) {
             for (Animal animal : currentPlayer.getFarm().getCoop().getAnimals()) {
-                if(!animal.hasBeenFedToday(time)){
+                if (!animal.hasBeenFedToday(time)) {
                     animal.decreaseFriendship(20);
                 }
             }
         }
 
-        if(currentPlayer.getFarm().getBarn() != null){
+        if (currentPlayer.getFarm().getBarn() != null) {
             for (Animal animal : currentPlayer.getFarm().getBarn().getAnimals()) {
-                if(!animal.hasBeenPetToday(time)){
+                if (!animal.hasBeenPetToday(time)) {
                     animal.decreaseFriendship(20);
                 }
             }
         }
 
-        if(currentPlayer.getFarm().getCoop() != null){
+        if (currentPlayer.getFarm().getCoop() != null) {
             for (Animal animal : currentPlayer.getFarm().getCoop().getAnimals()) {
-                if(animal.hasBeenPetToday(time)){
+                if (animal.hasBeenPetToday(time)) {
                     animal.decreaseFriendship(20);
                 }
             }
         }
 
-        if(time.getDay() == 28){
+        if (time.getDay() == 28) {
             time.nextSeason();
         }
         time.nextDay();
         // check all plants
-        for(int i = 0; i < 250; i++){
-            for(int j = 0; j < 250; j++){
+
+        ArrayList<Store> stores = new ArrayList<>();
+        stores.add(new Store("Clint"));
+        stores.add(new Store("Morris"));
+        stores.add(new Store("Pierre"));
+        stores.add(new Store("Robin"));
+        stores.add(new Store("Willy"));
+        stores.add(new Store("Marnie"));
+        stores.add(new Store("Gus"));
+        this.stores = stores;
+
+        for (int i = 0; i < 250; i++) {
+            for (int j = 0; j < 250; j++) {
                 Tile tile = map.getTile(new Position(i, j));
-                if(tile != null){
+                if (tile != null) {
                     TileObject tileObject = tile.getObject();
-                    if(tileObject instanceof Plant){
-                        if(((Plant) tileObject).isDestroyed()){
+                    if (tileObject instanceof Plant) {
+                        if (((Plant) tileObject).isDestroyed()) {
                             tile.setObject(null);
-                        }
-                        else{
+                        } else {
                             ((Plant) tileObject).grow();
+                        }
+                    }
+                    if (tile.getBuilding() instanceof Store) {
+                        Store store = (Store) tile.getBuilding();
+                        switch (store.getOwnerName()) {
+                            case "Clint":
+                                tile.setBuilding(stores.get(0));
+                                break;
+                            case "Morris": {
+                                tile.setBuilding(stores.get(1));
+                                break;
+                            }
+                            case "Pierre": {
+                                tile.setBuilding(stores.get(2));
+                                break;
+                            }
+                            case "Robin": {
+                                tile.setBuilding(stores.get(3));
+                                break;
+                            }
+                            case "Willy": {
+                                tile.setBuilding(stores.get(4));
+                                break;
+                            }
+                            case "Marnie": {
+                                tile.setBuilding(stores.get(5));
+                                break;
+                            }
+                            case "Gus": {
+                                tile.setBuilding(stores.get(6));
+                                break;
+                            }
                         }
                     }
                 }
             }
         }
+        resetMoney();
         thor();
         crowAttack();
         map.setNewDayForaging();
     }
 
+    public void resetMoney(){
+        for(Player player : players){
+            player.addMoney(player.getFeatureMoney());
+            player.resetMoney();
+        }
+    }
     public void nextHour() {
-        if(time.getHour() == 22) {
+        if (time.getHour() == 22) {
             nextDay();
         }
         time.nextHour();
     }
+
     public Time getTime() {
         return time;
     }
 
     public void crowAttack() {
         Random rand = new Random();
-        for(int i = 0; i < 250; i++){
-            for(int j = 0; j < 250; j++) {
+        for (int i = 0; i < 250; i++) {
+            for (int j = 0; j < 250; j++) {
                 Tile tile = map.getTile(new Position(i, j));
-                if(tile != null) {
-                    if(tile.getBuilding() == null && tile.getObject() instanceof Plant) {
-                        if(rand.nextInt(64) == 0) {
+                if (tile != null) {
+                    if (tile.getBuilding() == null && tile.getObject() instanceof Plant) {
+                        if (rand.nextInt(64) == 0) {
                             tile.setObject(null);
                         }
                     }
@@ -206,23 +255,23 @@ public class Game implements Serializable {
         }
     }
 
-    public void thor(){
+    public void thor() {
         for (Player player : players) {
-            for(int i = 0; i < 3; i++){
-                int x = player.getFarm().getTopLeft().x + 2 + (int)(Math.random() * 70);
-                int y = player.getFarm().getTopLeft().y + 2 + (int)(Math.random() * 70);
+            for (int i = 0; i < 3; i++) {
+                int x = player.getFarm().getTopLeft().x + 2 + (int) (Math.random() * 70);
+                int y = player.getFarm().getTopLeft().y + 2 + (int) (Math.random() * 70);
                 thor(new Position(x, y));
             }
         }
     }
 
-    public void thor(Position position){
-        if(map.getTile(position) == null){
+    public void thor(Position position) {
+        if (map.getTile(position) == null) {
             return;
         }
         Tile tile = map.getTile(position);
         TileObject tileObject = tile.getObject();
-        if(tileObject instanceof Plant && tile.getBuilding() == null){
+        if (tileObject instanceof Plant && tile.getBuilding() == null) {
             tile.setObject(new Material(MaterialType.coal));
         }
     }
@@ -236,10 +285,9 @@ public class Game implements Serializable {
     }
 
     public void setTomorrowWeather() {
-        if(time.getDay() == 28) {
+        if (time.getDay() == 28) {
             tomrrowWeather = Weather.getRandomWeather(time.getSeason().getNext());
-        }
-        else{
+        } else {
             tomrrowWeather = Weather.getRandomWeather(time.getSeason());
         }
     }
@@ -259,20 +307,20 @@ public class Game implements Serializable {
 
     public Player getPlayerByUsername(String username) {
         for (Player player : players) {
-            if(player.getUser().getUsername().equals(username)) {
+            if (player.getUser().getUsername().equals(username)) {
                 return player;
             }
         }
         return null;
     }
 
-    public void autoWaterPlant(){
-        for(int i = 0; i < 250; i++){
-            for(int j = 0; j < 250; j++){
+    public void autoWaterPlant() {
+        for (int i = 0; i < 250; i++) {
+            for (int j = 0; j < 250; j++) {
                 Tile tile = map.getTile(new Position(i, j));
-                if(tile != null){
+                if (tile != null) {
                     TileObject tileObject = tile.getObject();
-                    if(tileObject instanceof Plant){
+                    if (tileObject instanceof Plant) {
                         ((Plant) tileObject).setLastWateringTime(new Time(time));
                     }
                 }

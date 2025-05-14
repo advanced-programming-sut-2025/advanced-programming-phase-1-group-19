@@ -558,11 +558,14 @@ public class GameController extends Controller {
                         c = 'S';
                     }
                     if(tileObject != null) {
+                        if(tileObject instanceof Item){
+                            c = 'I';
+                        }
                         if(tileObject instanceof Plant){
                             c = 'P';
                         }
-                        if(tileObject instanceof Item){
-                            c = 'I';
+                        if(tileObject instanceof ShippingBin) {
+                            c = 's';
                         }
                         if(tileObject instanceof Barn){
                             c = 'B';
@@ -603,6 +606,8 @@ public class GameController extends Controller {
         ret += "P ~> plants\n";
         ret += "B ~> barn\n";
         ret += "C ~> coop\n";
+        ret += "S ~> store\n";
+        ret += "s ~> shipping bin\n";
 
 //        TODO: fix this if needed to show other stuff
         return new GameMessage(null, ret);

@@ -108,6 +108,9 @@ public class Farm implements Serializable {
                         tile.setBuilding(store);
                     }
                 }
+                if(i == topLeft.x + 2 && j == topLeft.y + 80) {
+                    tile.setObject(new ShippingBin());
+                }
             }
         }
 

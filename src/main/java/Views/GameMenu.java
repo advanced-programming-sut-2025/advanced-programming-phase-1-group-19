@@ -552,24 +552,45 @@ public class GameMenu implements AppMenu {
             case showAllProduct:{
                 Pattern pattern = Pattern.compile("^\\s*show all products\\s*$");
                 Matcher matcher = pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
                 System.out.println(storeController.showAllProduct().message());
                 break;
             }
             case showAvailableProduct:{
                 Pattern pattern = Pattern.compile("^\\s*show available products\\s*$");
                 Matcher matcher = pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
                 System.out.println(storeController.showAvailableProduct().message());
                 break;
             }
             case purchaseItem:{
                 Pattern pattern = Pattern.compile("^\\s*purchase (?<productName>.*) -n (?<count>.*)\\s*$");
                 Matcher matcher = pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
                 System.out.println(storeController.purchaseItem(matcher.group("productName").trim(),Integer.parseInt(matcher.group("count").trim())).message());
+                break;
+            }
+            case purchaseItemAll: {
+                Pattern pattern = Pattern.compile("^\\s*purchase (?<productName>.*)\\s*$");
+                Matcher matcher = pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
+                System.out.println(storeController.purchaseItem(matcher.group("productName").trim(),-1).message());
                 break;
             }
             case cheatAddMoney:{
                 Pattern pattern = Pattern.compile("^\\s*cheat add (?<countMoney>\\d+) dollars\\s*$");
                 Matcher matcher = pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
                 if(matcher.matches()) {
                     System.out.println(storeController.cheatAddMoney(Integer.parseInt(matcher.group("countMoney").trim())).message());
                 }
@@ -578,6 +599,9 @@ public class GameMenu implements AppMenu {
             case sellItem:{
                 Pattern pattern = Pattern.compile("^\\s*sell (?<productName>.*) -n (?<count>.*)\\s*$");
                 Matcher matcher = pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
                 System.out.println(storeController.sellItem(matcher.group("productName").trim(),Integer.parseInt(matcher.group("count").trim())).message());
                 break;
             }
@@ -933,6 +957,9 @@ public class GameMenu implements AppMenu {
         }
         else if(input.matches("^\\s*purchase (?<productName>.*) -n (?<count>.*)\\s*$")){
             runCommand(GameCommand.purchaseItem, input);
+        }
+        else if(input.matches("^\\s*purchase (?<productName>.*)\\s*$")){
+            runCommand(GameCommand.purchaseItemAll, input);
         }
         else if(input.matches("^\\s*cheat add (?<count>\\d+) dollars\\s*$")){
             runCommand(GameCommand.cheatAddMoney, input);

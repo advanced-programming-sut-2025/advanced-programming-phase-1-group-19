@@ -67,6 +67,7 @@ public enum GameCommand implements Command {
     showAvailableProduct,
     sellProduct,
     purchaseItem,
+    purchaseItemAll,
     cheatAddMoney,
     sellItem,
     askAboutMarriage,
