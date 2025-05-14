@@ -3,6 +3,7 @@ package Modules.Farming;
 import Modules.Enums.Season;
 
 import java.io.Serializable;
+import java.util.concurrent.ThreadLocalRandom;
 
 public enum ForagingCropType implements Serializable {
     commonMushroom(null, 40, 38),
@@ -56,5 +57,10 @@ public enum ForagingCropType implements Serializable {
     public String getName(){
         return name().toLowerCase();
     }
+
+    public static ForagingCropType getRandomInstance() {
+        return values()[ThreadLocalRandom.current().nextInt(values().length)];
+    }
+
 
 }

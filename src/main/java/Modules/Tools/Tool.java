@@ -18,7 +18,7 @@ import java.lang.reflect.Member;
 import java.util.ArrayList;
 
 public class Tool extends Item implements Serializable {
-    private ToolType toolType;
+    private final ToolType toolType;
     protected int level = 0;
 
     public Tool(ToolType toolType) {

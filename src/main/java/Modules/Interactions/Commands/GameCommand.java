@@ -11,6 +11,7 @@ public enum GameCommand implements Command {
     nextTurn,
     forceTerminate,
     exitGame,
+    loadGame,
     startNewGame,
     walk,
     printMap,

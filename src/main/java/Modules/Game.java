@@ -7,8 +7,10 @@ import Modules.Enums.Season;
 import Modules.Enums.Weather;
 import Modules.Farming.Plant;
 import Modules.Map.*;
+import Modules.Store.Store;
 
 import java.io.Serializable;
+import java.sql.SQLTransactionRollbackException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.RandomAccess;
@@ -22,8 +24,9 @@ public class Game implements Serializable {
     private Weather tomrrowWeather;
     private InGameMenu inGameMenu;
     public final static Time startingTime = new Time();
+    private ArrayList<Store> stores = new ArrayList<>();
 
-    public Game(ArrayList<Player> players, Map map) {
+    public Game(ArrayList<Player> players, Map map, ArrayList<Store> stores) {
         this.players = players;
         this.currentPlayer = players.getFirst();
         this.map = map;
@@ -31,6 +34,7 @@ public class Game implements Serializable {
         this.inGameMenu = null;
         todayWeather = Weather.getRandomWeather(Season.spring);
         tomrrowWeather = Weather.getRandomWeather(Season.spring);
+        this.stores = stores;
     }
 
     public ArrayList<Player> getPlayers() {
@@ -51,6 +55,10 @@ public class Game implements Serializable {
 
     public void setMap(Map map) {
         this.map = map;
+    }
+
+    public ArrayList<Store> getStores() {
+        return stores;
     }
 
     public void setNextPlayer() {
@@ -117,6 +125,7 @@ public class Game implements Serializable {
         }
         thor();
         crowAttack();
+        map.setNewDayForaging();
     }
 
     public void nextHour() {

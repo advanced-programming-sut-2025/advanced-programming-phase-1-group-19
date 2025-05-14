@@ -96,10 +96,19 @@ public class GameController extends Controller {
                 mapIDs[i] = Integer.parseInt(idString);
             }
         }
+        ArrayList<Store> stores = new ArrayList<>();
+        stores.add(new Store("Clint"));
+        stores.add(new Store("Morris"));
+        stores.add(new Store("Pierre"));
+        stores.add(new Store("Robin"));
+        stores.add(new Store("Willy"));
+        stores.add(new Store("Marnie"));
+        stores.add(new Store("Gus"));
+
         ArrayList<Player> players = new ArrayList<>();
         ArrayList<Farm> farms = new ArrayList<>();
         for (int i = 0; i < users.length; i++) {
-            Farm farm = new Farm(FarmMap.getFarmMap(mapIDs[i]), i);
+            Farm farm = new Farm(FarmMap.getFarmMap(mapIDs[i]), i, stores);
             Player player = new Player(users[i], farm);
             farms.add(farm);
             players.add(player);
@@ -112,7 +121,7 @@ public class GameController extends Controller {
             }
         }
         Map map = new Map(farms);
-        Game game = new Game(players, map);
+        Game game = new Game(players, map, stores);
 
         app.addGame(game);
         app.setCurrentGame(game);
@@ -125,8 +134,13 @@ public class GameController extends Controller {
     }
 
     public GameMessage loadGame() {
-//        TODO: fix this
-        return null;
+        User user = app.getCurrentUser();
+        if(user.getCurrentGame() == null) {
+            return new GameMessage(null, "you have no game to load!");
+        }
+        app.setCurrentGame(user.getCurrentGame());
+        app.setCurrentGameStarter(user);
+        return new GameMessage(null, "Game loaded successfully!");
     }
 
     public GameMessage exitGame() {
@@ -138,7 +152,6 @@ public class GameController extends Controller {
         if (!app.getCurrentGameStarter().equals(app.getCurrentUser())) {
             return new GameMessage(null, "you can't exit game!");
         }
-        // TODO: save game
         app.setCurrentGame(null);
         app.setCurrentMenu(Menu.MainMenu);
         return new GameMessage(null, "exited game successfully! you are now in main menu!");
@@ -168,7 +181,8 @@ public class GameController extends Controller {
             App.getInstance().getGames().remove(App.getInstance().getCurrentGame());
             App.getInstance().setCurrentGame(null);
             App.getInstance().setCurrentGameStarter(null);
-            return new GameMessage(null, "Game has been terminated!");
+            App.getInstance().setCurrentMenu(Menu.MainMenu);
+            return new GameMessage(null, "Game has been terminated! you are now in main menu!");
         } else {
             return new GameMessage(null, "Not enough votes");
         }
@@ -459,6 +473,9 @@ public class GameController extends Controller {
                     } else if (building instanceof Quarry) {
                         c = 'Q';
                     }
+                    else if(building instanceof Store) {
+                        c = 'S';
+                    }
                     if(tileObject != null) {
                         if(tileObject instanceof Plant){
                             c = 'P';
@@ -480,7 +497,9 @@ public class GameController extends Controller {
         for(int i = 0; i < game.getPlayers().size(); i++){
             Player player = game.getPlayers().get(i);
             Position p = player.getPosition();
-            all[p.x][p.y] = Character.forDigit(i+1, 10);
+            if(p.x >= position.x && p.x < position.x + size && p.y >= position.y && p.y < position.y + size){
+                all[p.x - position.x][p.y - position.y] = Character.forDigit(i+1, 10);
+            }
         }
         StringBuilder ret = new StringBuilder();
         for (int i = 0; i < size; i++) {
@@ -1573,10 +1592,8 @@ public class GameController extends Controller {
     }
 
 
-
     @Override
     public Message exit() {
-//        TODO: save game and go back to main Menu
         return null;
     }
 }

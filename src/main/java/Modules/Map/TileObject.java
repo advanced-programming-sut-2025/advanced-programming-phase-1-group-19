@@ -1,6 +1,8 @@
 package Modules.Map;
 
-public abstract class TileObject {
+import java.io.Serializable;
+
+public abstract class TileObject implements Serializable {
 
     protected Tile placedTile;
 

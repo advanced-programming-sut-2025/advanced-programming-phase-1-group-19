@@ -27,37 +27,7 @@ public class Farm implements Serializable {
     private Barn barn;
     private Coop coop;
 
-    private void setRandomObjects() {
-        Random rand = new Random();
-        for(int i = 0; i < 100; i++) {
-            for(int j = 0; j < 100; j++) {
-                if(i == 50 && j == 50) {
-                    continue;
-                }
-                Position position = new Position(i, j);
-                Game game = App.getInstance().getCurrentGame();
-                Map map = game.getMap();
-                Tile tile = map.getTile(position);
-                if(tile != null) {
-                    if(tile.isTotallyEmpty()) {
-                        int r = rand.nextInt(3000);
-                        if(r == 0) {
-                            tile.setObject(new Material(MaterialType.coal));
-                        }
-                        if(r == 1) {
-                            tile.setObject(new Material(MaterialType.wood));
-                        }
-                        if(r == 2) {
-                            tile.setObject(new Material(MaterialType.stone));
-                        }
-                    }
-                }
-            }
-        }
-//        TODO: check this
-    }
-
-    public Farm(FarmMap farmMap, int turn) {
+    public Farm(FarmMap farmMap, int turn, ArrayList<Store> stores) {
         switch (turn) {
             case 0: {
                 topLeft = new Position(0, 0);
@@ -112,7 +82,8 @@ public class Farm implements Serializable {
 
         for(int i = topLeft.x; i < topLeft.x + size.height; i++) {
             for(int j = topLeft.y; j < topLeft.y + size.width; j++) {
-                Tile tile = new Tile(new Position(i, j));
+                Position position = new Position(i, j);
+                Tile tile = new Tile(position);
                 if(i >= lakeTopLeft.x && i < lakeBottomRight.x
                 && j >= lakeTopLeft.y && j < lakeBottomRight.y) {
                     lakeTiles.add(tile);
@@ -130,8 +101,16 @@ public class Farm implements Serializable {
                     quarryTiles.add(tile);
                 }
                 tiles.add(tile);
+                for(int k = 0; k < stores.size(); k++) {
+                    Position storePosition = farmMap.getStorePositions().get(k);
+                    if(position.equals(new Position(storePosition.x + topLeft.x, storePosition.y + topLeft.y))) {
+                        Store store = stores.get(k);
+                        tile.setBuilding(store);
+                    }
+                }
             }
         }
+
         lake = new Lake(lakeTiles, farmMap.getLakeSize());
         for(Tile tile : lakeTiles) {
             tile.setBuilding(lake);
@@ -151,8 +130,6 @@ public class Farm implements Serializable {
         for (Tile tile : quarryTiles) {
             tile.setBuilding(quarry);
         }
-
-        setRandomObjects();
     }
 
     public Position getTopLeft() {
