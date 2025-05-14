@@ -23,7 +23,7 @@ public class TrashCan{
     }
 
     public void upgradeLevel() {
-        if(level < 3){
+        if(level <= 3){
             level++;
         }
     }
@@ -35,4 +35,9 @@ public class TrashCan{
 //        TODO: fix this
         return 0;
     }
+
+    public int getLevel() {
+        return level;
+    }
+
 }

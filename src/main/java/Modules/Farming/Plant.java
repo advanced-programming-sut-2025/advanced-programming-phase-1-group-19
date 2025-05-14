@@ -74,33 +74,28 @@ public class Plant extends TileObject {
 
     public void grow(){
         // TODO: check if it was watered or day was rainy
-        if(getType().isCanBeComeGiant()){
-            // TODO: handle giantPart
+        int diff = Time.getDayDifference(plantingTime, App.getInstance().getCurrentGame().getTime());
+        if(type.getReGrowth() > regrownTimes){
+            diff %= type.getTotalTime() + 2;
         }
-        else{
-            int diff = Time.getDayDifference(plantingTime, App.getInstance().getCurrentGame().getTime());
-            if(type.getReGrowth() > regrownTimes){
-                diff %= type.getTotalTime() + 2;
+        int sum = 0;
+        this.currentStage = type.getStages().size()+1;
+        for(int i = 0; i < type.getStages().size(); i++){
+            if(type.getStages().get(i) + sum >= diff){
+                currentStage = i+1;
+                break;
             }
-            int sum = 0;
-            this.currentStage = type.getStages().size()+1;
-            for(int i = 0; i < type.getStages().size(); i++){
-                if(type.getStages().get(i) + sum >= diff){
-                    currentStage = i+1;
-                    break;
-                }
-                sum += type.getStages().get(i);
-            }
-            boolean a = false;
-            if(diff > type.getTotalTime()){
-                regrownTimes++;
-            }
+            sum += type.getStages().get(i);
+        }
+        boolean a = false;
+        if(diff > type.getTotalTime()){
+            regrownTimes++;
         }
     }
     public boolean isDestroyed(){
         if(regrownTimes == 1 && type.getReGrowth() == -1)
             return true;
-        else if(regrownTimes == type.getReGrowth()){
+        else if(regrownTimes >= type.getReGrowth()){
             return true;
         }
         if(Time.getDayDifference(lastWateringTime, App.getInstance().getCurrentGame().getTime()) > 2){

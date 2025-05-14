@@ -1,9 +1,6 @@
 package Modules.Store;
 
-import Modules.Crafting.CookingRecipe;
-import Modules.Crafting.CraftingRecipe;
-import Modules.Crafting.Food;
-import Modules.Crafting.Recipe;
+import Modules.Crafting.*;
 import Modules.Enums.Season;
 import Modules.Farming.Crop;
 import Modules.Farming.Seed;
@@ -30,10 +27,25 @@ public class Store extends Building {
     }
 
     public Store(String ownerName) {
-        this.tiles = tiles;
         this.size = new Size(1, 1);
         this.ownerName = ownerName;
         switch (ownerName){
+            case "Clint":{
+                this.openingTime = 9;
+                this.closingTime = 16;
+                this.items.add(new StoreItem(new Material(MaterialType.copperOre), 75, 2000, null, 75));
+                this.items.add(new StoreItem(new Material(MaterialType.ironOre), 150, 2000, null, 150));
+                this.items.add(new StoreItem(new Material(MaterialType.goldOre), 400, 2000, null, 400));
+                this.items.add(new StoreItem(new Material(MaterialType.coal), 150, 2000, null, 150));
+                break;
+            }
+            case "Robin":{
+                this.openingTime = 9;
+                this.closingTime = 18;
+                this.items.add(new StoreItem(new Material(MaterialType.wood), 10, 2000, null, 10));
+                this.items.add(new StoreItem(new Material(MaterialType.stone), 20, 2000, null, 20));
+                break;
+            }
             case "Pierre":{
                 this.openingTime = 9;
                 this.closingTime = 17;
@@ -75,47 +87,7 @@ public class Store extends Building {
                 this.recipes.add(new StoreRecipes(CraftingRecipe.grassStarter,1000,1,null,1000));
                 break;
             }
-        }
-        switch (ownerName){
-            case "Pierre":{
-                openingTime = 9;
-                closingTime = 17;
-                items.add(new StoreItem(new Seed(SeedType.parsnip),30,5, Season.spring,20));
-                items.add(new StoreItem(new Seed(SeedType.beanStarter),90,5, Season.spring,60));
-                items.add(new StoreItem(new Seed(SeedType.cauliflower),120,5, Season.spring,80));
-                items.add(new StoreItem(new Seed(SeedType.potato),75,5, Season.spring,50));
-                items.add(new StoreItem(new Seed(SeedType.tulipBulb),30,5, Season.spring,20));
-                items.add(new StoreItem(new Seed(SeedType.kale),30,5, Season.spring,20));
-                items.add(new StoreItem(new Seed(SeedType.jazz),45,5, Season.spring,30));
-                items.add(new StoreItem(new Seed(SeedType.garlic),60,5, Season.spring,40));
-                items.add(new StoreItem(new Seed(SeedType.riceShoot),60,5, Season.spring,40));
-                items.add(new StoreItem(new Seed(SeedType.melon),120,5,Season.summer,80));
-                items.add(new StoreItem(new Seed(SeedType.tomato),75,5,Season.summer,50));
-                items.add(new StoreItem(new Seed(SeedType.blueberry),120,5,Season.summer,80));
-                items.add(new StoreItem(new Seed(SeedType.pepper),60,5,Season.summer,40));
-                items.add(new StoreItem(new Seed(SeedType.wheat),15,5,Season.summer,10));
-                items.add(new StoreItem(new Seed(SeedType.radish),60,5,Season.summer,40));
-                items.add(new StoreItem(new Seed(SeedType.poppy),150,5,Season.summer,100));
-                items.add(new StoreItem(new Seed(SeedType.spangle),75,5,Season.summer,50));
-                items.add(new StoreItem(new Seed(SeedType.hopsStarter),90,5,Season.summer,60));
-                items.add(new StoreItem(new Seed(SeedType.corn),225,5,Season.summer,150));
-                items.add(new StoreItem(new Seed(SeedType.sunflower),300,5,Season.summer,200));
-                items.add(new StoreItem(new Seed(SeedType.redCabbage),150,5,Season.summer,100));
-                items.add(new StoreItem(new Seed(SeedType.eggplant),30,5,Season.fall,20));
-                items.add(new StoreItem(new Seed(SeedType.corn),225,5,Season.fall,150));
-                items.add(new StoreItem(new Seed(SeedType.pumpkin),150,5,Season.fall,100));
-                items.add(new StoreItem(new Seed(SeedType.bokChoy),75,5,Season.fall,50));
-                items.add(new StoreItem(new Seed(SeedType.yam),90,5,Season.fall,60));
-                items.add(new StoreItem(new Seed(SeedType.cranberry),360,5,Season.fall,240));
-                items.add(new StoreItem(new Seed(SeedType.sunflower),300,5,Season.summer,200));
-                items.add(new StoreItem(new Seed(SeedType.fairy),300,5,Season.fall,200));
-                items.add(new StoreItem(new Seed(SeedType.amaranth),105,5,Season.fall,70));
-                items.add(new StoreItem(new Seed(SeedType.grapeStarter),90,5,Season.fall,60));
-                items.add(new StoreItem(new Seed(SeedType.wheat),15,5,Season.fall,10));
-                items.add(new StoreItem(new Seed(SeedType.artichoke),45,5,Season.fall,30));
-                break;
-            }
-            case "Robin":{
+            case "Morris":{
                 openingTime = 9;
                 closingTime = 20;
                 items.add(new StoreItem(
@@ -576,8 +548,14 @@ public class Store extends Building {
     }
 
     public StoreItem getItemByName(String name) {
+//        for (StoreItem item : items) {
+//            if(item.getItem().getName().equals(name)){
+//                return item;
+//            }
+//        }
+//        return null;
         for (StoreItem item : items) {
-            if(item.getItem().getName().equals(name)){
+            if(item.getItem().toString().equals(name)){
                 return item;
             }
         }

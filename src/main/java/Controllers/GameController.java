@@ -305,8 +305,8 @@ public class GameController extends Controller {
         Player player = app.getCurrentGame().getCurrentPlayer();
         if (delete) {
             for (Item item : player.getBackPack().getItems().keySet()) {
-                if (item.getName().equals(itemName)) {
-                    //TODO: add refund!
+                if (item.toString().equals(itemName)) {
+                    player.addMoney((int) (item.getPrice() * player.getBackPack().getItems().get(item) * player.getTrashCan().calcRatio()));
                     player.getBackPack().getItems().remove(item);
                     break;
                 }
@@ -314,18 +314,24 @@ public class GameController extends Controller {
             return new GameMessage(null, "You fully trashed item " + itemName);
         }
         for (Item item : player.getBackPack().getItems().keySet()) {
-            if (item.getName().equals(itemName)) {
-                //TODO: add refund!
+            if (item.toString().equals(itemName)) {
                 int currentQty = player.getBackPack().getItems().get(item);
-                if (currentQty > number) {
-                    player.getBackPack().getItems().put(item, currentQty - number);
-                } else {
-                    player.getBackPack().getItems().remove(item);
+                if (currentQty >= number) {
+                    player.addMoney((int) (item.getPrice() * player.getBackPack().getItems().get(item) * player.getTrashCan().calcRatio()));
+                    if(currentQty > number) {
+                        player.getBackPack().getItems().put(item, currentQty - number);
+                    }
+                    else{
+                        player.getBackPack().getItems().remove(item);
+                    }
+                    return new GameMessage(null, "You successfully trashed " + number + " of " + itemName);
                 }
-                break;
+                else {
+                    return new GameMessage(null, "You don't have enough of this item to trash it");
+                }
             }
         }
-        return new GameMessage(null, "You successfully trashed " + number + " of " + itemName);
+        return new GameMessage(null, "You don't have that item!");
     }
 
     public GameMessage cheatEnergySet(int amount) {
@@ -398,11 +404,26 @@ public class GameController extends Controller {
         for (java.util.Map.Entry<Item, Integer> entry : backPack.getItems().entrySet()) {
             Item item = entry.getKey();
             if (item instanceof Tool && item.toString().equals(toolName)) {
-                if(player.getMoney() >= 20){
-                    player.decreaseEnergy(20);
-                    if(((Tool) item).getLevel() + 1 == ((Tool) item).getToolType().getLevels().size()){
-                        return new GameMessage(null, "Your tool is at maximum level!");
-                    }
+                if(((Tool) item).getLevel() + 1 == ((Tool) item).getToolType().getLevels().size()){
+                    return new GameMessage(null, "Your tool is at maximum level!");
+                }
+                if(player.getMoney() >= 2000 && ((Tool) item).getLevel() == 0){
+                    player.decreaseEnergy(2000);
+                    ((Tool) item).upgradeLevel();
+                    return new GameMessage(null, "Your tool got upgraded " + toolName);
+                }
+                else if(player.getMoney() >= 5000 && ((Tool) item).getLevel() == 1){
+                    player.decreaseEnergy(5000);
+                    ((Tool) item).upgradeLevel();
+                    return new GameMessage(null, "Your tool got upgraded " + toolName);
+                }
+                else if(player.getMoney() >= 10000 && ((Tool) item).getLevel() == 2){
+                    player.decreaseEnergy(10000);
+                    ((Tool) item).upgradeLevel();
+                    return new GameMessage(null, "Your tool got upgraded " + toolName);
+                }
+                else if(player.getMoney() >= 25000 && ((Tool) item).getLevel() == 3){
+                    player.decreaseEnergy(25000);
                     ((Tool) item).upgradeLevel();
                     return new GameMessage(null, "Your tool got upgraded " + toolName);
                 }
@@ -412,6 +433,66 @@ public class GameController extends Controller {
             }
         }
         return new GameMessage(null, "You don't have that tool!");
+    }
+
+    public GameMessage upgradeBackPack() {
+        Player player = app.getCurrentGame().getCurrentPlayer();
+        BackPack backPack = player.getBackPack();
+        if(backPack.getLevel() == 0){
+            if(player.getMoney() < 2000){
+                return new GameMessage(null, "You don't have enough money!");
+            }
+            player.decreaseMoney(2000);
+            backPack.increaseLevel();
+            return new GameMessage(null, "You got upgraded Large Back pack");
+        }
+        else if(backPack.getLevel() == 1){
+            if(player.getMoney() < 10000){
+                return new GameMessage(null, "You don't have enough money!");
+            }
+            player.decreaseMoney(10000);
+            backPack.increaseLevel();
+            return new GameMessage(null, "You got upgraded Deluxe Back pack");
+        }
+        return new GameMessage(null, "You couldn't upgrade Back pack");
+    }
+
+    public GameMessage upgradeTrashCan() {
+        Player player = app.getCurrentGame().getCurrentPlayer();
+        TrashCan trashCan = player.getTrashCan();
+        if(trashCan.getLevel() == 0){
+            if(player.getMoney() < 1000){
+                return new GameMessage(null, "You don't have enough money!");
+            }
+            player.decreaseMoney(1000);
+            trashCan.upgradeLevel();
+            return new GameMessage(null, "You got upgraded Copper TrashCan");
+        }
+        else if(trashCan.getLevel() == 1){
+            if(player.getMoney() < 2500){
+                return new GameMessage(null, "You don't have enough money!");
+            }
+            player.decreaseMoney(2500);
+            trashCan.upgradeLevel();
+            return new GameMessage(null, "You got upgraded Steel TrashCan");
+        }
+        else if(trashCan.getLevel() == 2){
+            if(player.getMoney() < 5000){
+                return new GameMessage(null, "You don't have enough money!");
+            }
+            player.decreaseMoney(5000);
+            trashCan.upgradeLevel();
+            return new GameMessage(null, "You got upgraded Gold TrashCan");
+        }
+        else if(trashCan.getLevel() == 3){
+            if(player.getMoney() < 12500){
+                return new GameMessage(null, "You don't have enough money!");
+            }
+            player.decreaseMoney(12500);
+            trashCan.upgradeLevel();
+            return new GameMessage(null, "You got upgraded Iridium TrashCan");
+        }
+        return new GameMessage(null, "You couldn't upgrade TrashCan!");
     }
 
     public GameMessage useTool(Direction direction) {
@@ -1252,6 +1333,7 @@ public class GameController extends Controller {
             t[1].setLastWateringTime(lastWatering);
             p[1].setPlantingTime(planting);
         }
+        player.getSkill(SkillType.farming).addAmount(5);
         return new GameMessage(null, "seed planted successfully!");
     }
 
@@ -1541,7 +1623,51 @@ public class GameController extends Controller {
         return new GameMessage(null,"You successfully exited "+StoreName);
     }
 
+    public GameMessage shippingBinSell(String itemName, int count){
+        Game game = App.getInstance().getCurrentGame();
+        Player player = game.getCurrentPlayer();
+        ShippingBin shippingBin = null;
+        for(int i = -1; i <= 1; i++){
+            for(int j = -1; j <= 1; j++){
+                if(i == 0 & j == 0){
+                    continue;
+                }
+                Tile tile = game.getMap().getTile(new Position(i, j));
+                if(tile != null){
+                    TileObject tileObject = tile.getObject();
+                    if(tileObject instanceof ShippingBin){
+                        shippingBin = (ShippingBin) tileObject;
+                    }
+                }
+            }
+        }
+        if(shippingBin == null){
+            return new GameMessage(null, "There is no shipping bin");
+        }
+        BackPack backPack = App.getInstance().getCurrentGame().getCurrentPlayer().getBackPack();
+        for (java.util.Map.Entry<Item, Integer> entry : backPack.getItems().entrySet()) {
+            Item item = entry.getKey();
+            Integer value = entry.getValue();
+            if(item.toString().equals(itemName)){
+                if(value < count){
+                    return new GameMessage(null, "You don't have this amount of this item!");
+                }
+                if(value == count){
+                    player.setFeatureMoney((int) (item.getPrice() * count * shippingBin.getRefund()));
+                    backPack.getItems().remove(item);
+                    return new GameMessage(null, "You have been successfully selled " + itemName);
+                }
+                player.setFeatureMoney((int) (item.getPrice() * count * shippingBin.getRefund()));
+                backPack.removeItem(item, count);
+                return new GameMessage(null, "You have been successfully selled " + itemName);
+//                if(item.getPrice() == 0){
+//                    return new GameMessage(null, "You can't sell this item!");
+//                }
 
+            }
+        }
+        return new GameMessage(null, "You don't have this item!");
+    }
 
     @Override
     public Message exit() {

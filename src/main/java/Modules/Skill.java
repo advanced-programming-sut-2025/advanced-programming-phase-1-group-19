@@ -28,7 +28,6 @@ public class Skill {
         else if(level==3 && amount >= 450) {
             this.level=4;
         }
-
     }
 
     public int getAmount() {

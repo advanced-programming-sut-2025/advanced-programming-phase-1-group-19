@@ -136,4 +136,12 @@ public class BackPack {
     public int getMaxCapacity() {
         return maxCapacity;
     }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void increaseLevel() {
+        level++;
+    }
 }

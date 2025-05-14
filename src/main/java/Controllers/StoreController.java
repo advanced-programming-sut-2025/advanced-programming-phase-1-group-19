@@ -111,8 +111,11 @@ public class StoreController extends Controller {
             return new GameMessage(null, "You do not have enough daily limit");
         }
         item.removeDailyLimit(count);
-        player.getBackPack().addItem(item.getItem(),count);
-        if(item.getSeason()!=null && game.getTime().getSeason().equals(item.getSeason())){
+        if(player.getBackPack().getMaxCapacity() - player.getBackPack().getCapacity() < item.getItem().getTakenSpace() * count){
+            return new GameMessage(null, "You do not have enough space to take this item");
+        }
+        player.getBackPack().addItem(item.getItem(), count);
+        if(item.getSeason()!= null && game.getTime().getSeason().equals(item.getSeason())){
             if(player.getMoney() < item.getSeasonPrice()){
                 return new GameMessage(null, "you don't have enough money to buy");
             }

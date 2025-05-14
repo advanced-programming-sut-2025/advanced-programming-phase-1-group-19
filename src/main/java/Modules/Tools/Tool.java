@@ -5,7 +5,9 @@ import Modules.App;
 import Modules.Crafting.Material;
 import Modules.Crafting.MaterialType;
 import Modules.Farming.Crop;
+import Modules.Farming.ForagingCrop;
 import Modules.Farming.Plant;
+import Modules.Farming.Seed;
 import Modules.Game;
 import Modules.Interactions.Messages.GameMessage;
 import Modules.Item;
@@ -15,6 +17,9 @@ import Modules.Time;
 
 import java.lang.reflect.Member;
 import java.util.ArrayList;
+
+import static Modules.Enums.SkillType.foraging;
+import static Modules.Enums.SkillType.mining;
 
 public class Tool extends Item {
     private ToolType toolType;
@@ -218,7 +223,7 @@ public class Tool extends Item {
             }
             case pickaxe -> {
                 boolean isSuccess;
-                if (tile.getObject() != null && tile.getObject() instanceof Material) {
+                if (tile.getObject() != null && tile.getObject() instanceof Item) {
                     isSuccess = true;
                 } else {
                     isSuccess = false;
@@ -231,9 +236,21 @@ public class Tool extends Item {
                     return new GameMessage(null, "You couldn't use this tool.");
                 } else {
                     game.getCurrentPlayer().decreaseEnergy(energy);
-                    Material material = (Material) tile.getObject();
-                    backPack.addItem(material, 10);
-                    return new GameMessage(null, "You collected some material");
+                    Item item = (Item) tile.getObject();
+                    backPack.addItem(item, 10);
+                    if(item instanceof Material){
+                        if(((Material) item).getType() == MaterialType.stone){
+                            App.getInstance().getCurrentGame().getCurrentPlayer().getSkill(mining).addAmount(10);
+                            if(App.getInstance().getCurrentGame().getCurrentPlayer().getSkill(mining).getLevel() == 2){
+                                backPack.addItem(item, 10);
+                            }
+                        }
+                        return new GameMessage(null, "You collected some stone!");
+                    }
+                    if(item instanceof ForagingCrop || item instanceof Seed){
+                        App.getInstance().getCurrentGame().getCurrentPlayer().getSkill(foraging).addAmount(10);
+                    }
+                    return new GameMessage(null, "You collected some " + item.getName() +" !");
                 }
             }
         }

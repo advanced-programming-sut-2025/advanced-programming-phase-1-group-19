@@ -211,6 +211,15 @@ public class GameMenu implements AppMenu {
                 }
                 break;
             }
+            case sellProduct:{
+                Pattern pattern = Pattern.compile("\\s*sell (?<productName>.*) -n (?<count>\\d+)\\s*");
+                Matcher matcher = pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
+                System.out.println(gameController.shippingBinSell(matcher.group("productName"), Integer.parseInt(matcher.group("count"))).message());
+                break;
+            }
             case toolEquip:{
                 Pattern pattern  = Pattern.compile("^\\s*tools equip (?<toolName>.+)\\s*$");
                 Matcher matcher = pattern.matcher(input);
@@ -237,6 +246,24 @@ public class GameMenu implements AppMenu {
                     System.out.println("invalid command!");
                 }
                 System.out.println(gameController.upgradeTool(matcher.group("toolName")).message());
+                break;
+            }
+            case backPackUpgrade:{
+                Pattern pattern = Pattern.compile("\\s*upgrade backpack\\s*");
+                Matcher matcher = pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
+                System.out.println(gameController.upgradeBackPack().message());
+                break;
+            }
+            case trashCanUpgrade:{
+                Pattern pattern = Pattern.compile("\\s*upgrade trashcan\\s*");
+                Matcher matcher = pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
+                System.out.println(gameController.upgradeTrashCan().message());
                 break;
             }
             case toolUse:{
@@ -832,8 +859,17 @@ public class GameMenu implements AppMenu {
         else if(input.matches("^\\s*tools upgrade (?<toolName>.+)\\s*$")){
             runCommand(GameCommand.toolUpgrade, input);
         }
+        else if(input.matches("\\s*upgrade backpack\\s*")){
+            runCommand(GameCommand.backPackUpgrade, input);
+        }
+        else if(input.matches("\\s*upgrade trashcan\\s*")){
+            runCommand(GameCommand.trashCanUpgrade, input);
+        }
         else if(input.matches("^\\s*tools use -d (?<direction>.+)\\s*$")){
             runCommand(GameCommand.toolUse, input);
+        }
+        else if(input.matches("\\s*sell (?<productName>.*) -n (?<count>\\d+)\\s*")){
+            runCommand(GameCommand.sellProduct, input);
         }
         else if(input.matches("\\s*how much water\\s*")){
             runCommand(GameCommand.howMuchWater, input);
