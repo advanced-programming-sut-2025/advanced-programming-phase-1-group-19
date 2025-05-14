@@ -2,6 +2,7 @@ package Modules;
 
 import Modules.Crafting.Material;
 import Modules.Crafting.MaterialType;
+import Modules.Animal.Animal;
 import Modules.Enums.InGameMenu;
 import Modules.Enums.Season;
 import Modules.Enums.Weather;
@@ -92,16 +93,67 @@ public class Game implements Serializable {
 //                watering plants automatically
                     autoWaterPlant();
 //                TODO:1.5x while using tools
+                break;
             }
             case storm -> {
 //                TODO:has rain affects and also break trees
                 autoWaterPlant();
+                break;
             }
             case snow -> {
 //                TODO:1.5x while using tools
                 break;
             }
         }
+
+        if(currentPlayer.getFarm().getBarn() != null){
+            for (Animal animal : currentPlayer.getFarm().getBarn().getAnimals()) {
+                if(animal.isOutside()){
+                    animal.decreaseFriendship(20);
+                }
+            }
+        }
+
+        if(currentPlayer.getFarm().getCoop() != null){
+            for (Animal animal : currentPlayer.getFarm().getCoop().getAnimals()) {
+                if(animal.isOutside()){
+                    animal.decreaseFriendship(20);
+                }
+            }
+        }
+
+        if(currentPlayer.getFarm().getBarn() != null){
+            for (Animal animal : currentPlayer.getFarm().getBarn().getAnimals()) {
+                if(!animal.hasBeenFedToday(time)){
+                    animal.decreaseFriendship(20);
+                }
+            }
+        }
+
+        if(currentPlayer.getFarm().getCoop() != null){
+            for (Animal animal : currentPlayer.getFarm().getCoop().getAnimals()) {
+                if(!animal.hasBeenFedToday(time)){
+                    animal.decreaseFriendship(20);
+                }
+            }
+        }
+
+        if(currentPlayer.getFarm().getBarn() != null){
+            for (Animal animal : currentPlayer.getFarm().getBarn().getAnimals()) {
+                if(!animal.hasBeenPetToday(time)){
+                    animal.decreaseFriendship(20);
+                }
+            }
+        }
+
+        if(currentPlayer.getFarm().getCoop() != null){
+            for (Animal animal : currentPlayer.getFarm().getCoop().getAnimals()) {
+                if(animal.hasBeenPetToday(time)){
+                    animal.decreaseFriendship(20);
+                }
+            }
+        }
+
         if(time.getDay() == 28){
             time.nextSeason();
         }

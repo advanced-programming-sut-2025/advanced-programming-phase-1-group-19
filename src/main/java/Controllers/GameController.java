@@ -777,8 +777,22 @@ public class GameController extends Controller {
             stringBuilder.append("Barn Animals:\n");
             for (Animal animal1 : player.getFarm().getBarn().getAnimals()) {
                 stringBuilder.append(animal1.getName()+"\n");
+                stringBuilder.append(animal1.getFriendship()+"\n");
                 if(animal1.getLastFeedingTime()==null){
                     hasBeenFedToday = false;
+                }
+                else if(game.getTime().getDay()==animal1.getLastFeedingTime().getDay() &&
+                        game.getTime().getSeason()==animal1.getLastFeedingTime().getSeason()){
+                    hasBeenFedToday=true;
+                }
+                if(hasBeenFedToday){
+                    stringBuilder.append("Has Your Animal Been Fed Today : true\n\n");
+                }
+                else{
+                    stringBuilder.append("Has Your Animal Been Fed Today : false\n\n");
+                }
+                if(animal1.getLastPetingTime()==null){
+                    hasBeenPetToday = false;
                 }
                 else if(game.getTime().getDay()==animal1.getLastPetingTime().getDay() &&
                         game.getTime().getSeason()==animal1.getLastPetingTime().getSeason()){
@@ -796,6 +810,7 @@ public class GameController extends Controller {
             stringBuilder.append("Coop Animals:\n");
             for (Animal animal1 : player.getFarm().getCoop().getAnimals()) {
                 stringBuilder.append(animal1.getName()+"\n");
+                stringBuilder.append(animal1.getFriendship()+"\n");
                 if(animal1.getLastFeedingTime() == null){
                     hasBeenFedToday = false;
                 }
@@ -808,6 +823,19 @@ public class GameController extends Controller {
                 }
                 else{
                     stringBuilder.append("Has Your Animal Been Fed Today : false\n\n");
+                }
+                if(animal1.getLastPetingTime() == null){
+                    hasBeenPetToday = false;
+                }
+                else if(game.getTime().getDay()==animal1.getLastPetingTime().getDay() &&
+                        game.getTime().getSeason()==animal1.getLastPetingTime().getSeason()){
+                    hasBeenPetToday = true;
+                }
+                if(hasBeenPetToday){
+                    stringBuilder.append("Has Your Animal Been Pet Today : true\n\n");
+                }
+                else{
+                    stringBuilder.append("Has Your Animal Been Pet Today : false\n\n");
                 }
             }
         }
@@ -832,6 +860,7 @@ public class GameController extends Controller {
             }
             animal.setOutside(true);
             animal.setPosition(new Position(x, y));
+            animal.increaseFriendship(8);
             return new GameMessage(null,"The animal successfully moved");
         } else {
             if (animal.getType().isInCage()) {
@@ -864,7 +893,15 @@ public class GameController extends Controller {
             return new GameMessage(null, "The animal must be in the coop or barn to feed hay");
         }
         animal.setLastFeedingTime(game.getTime());
+        player.decreaseHay(2);
         return new GameMessage(null,"The animal successfully fed");
+    }
+
+    public GameMessage showHay(){
+        App app = App.getInstance();
+        Game game = app.getCurrentGame();
+        Player player = app.getCurrentGame().getCurrentPlayer();
+        return new GameMessage(null,"Hay: "+player.getHay());
     }
 
     public GameMessage showProducts(){
@@ -872,11 +909,14 @@ public class GameController extends Controller {
         Game game = app.getCurrentGame();
         Player player = app.getCurrentGame().getCurrentPlayer();
         StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("These are all products: \n");
         if(player.getFarm().getBarn() != null){
             for (Animal animal : player.getFarm().getBarn().getAnimals()) {
                 if(animal.doesProduce()){
                     stringBuilder.append(animal.getName()+" Produces:  ");
-                    stringBuilder.append(animal.whichProduct().getName());
+                    AnimalProduct animalProduct = animal.whichProduct();
+                    animal.setCurrentProduct(animalProduct);
+                    stringBuilder.append(animal.getCurrentProduct().getName());
                     stringBuilder.append("\n");
                 }
             }
@@ -885,7 +925,9 @@ public class GameController extends Controller {
             for (Animal animal : player.getFarm().getCoop().getAnimals()) {
                 if(animal.doesProduce()){
                     stringBuilder.append(animal.getName()+" Produces:  ");
-                    stringBuilder.append(animal.whichProduct().getName());
+                    AnimalProduct animalProduct = animal.whichProduct();
+                    animal.setCurrentProduct(animalProduct);
+                    stringBuilder.append(animal.getCurrentProduct().getName());
                     stringBuilder.append("\n");
                 }
             }
@@ -897,36 +939,47 @@ public class GameController extends Controller {
         App app = App.getInstance();
         Game game = app.getCurrentGame();
         Player player = app.getCurrentGame().getCurrentPlayer();
-        Animal animal= player.getFarm().getBarn().getAnimalByName(animalName);
-        if (animal == null) {
+        Animal animal = null;
+        if(player.getFarm().getBarn() != null){
+            animal= player.getFarm().getBarn().getAnimalByName(animalName);
+        }
+        if (animal == null && player.getFarm().getCoop() != null) {
             animal = player.getFarm().getCoop().getAnimalByName(animalName);
         }
         if (animal == null) {
             return new GameMessage(null, "There is no such animal");
         }
+
         if(animal.getCurrentProduct() != null){
-            if(animal.getName().equals("cow") || animal.getName().equals("goat")){
-//               TODO:check if there is watering can in inventory
+            if(animal.getType().equals(AnimalType.cow) || animal.getType().equals(AnimalType.goat)){
+                if(!player.getBackPack().checkItem(new WateringCan(ToolType.wateringCan),1)){
+                    return new GameMessage(null, "There is no wateringCan");
+                }
                 player.decreaseEnergy(4);
-                if(player.getBackPack().getCapacity()>=player.getBackPack().getCapacity()){
+                if(player.getBackPack().getCapacity()>=player.getBackPack().getMaxCapacity()){
                     return new GameMessage(null,"There is no space in your backpack");
                 }
 
                 player.getBackPack().addItem(animal.getCurrentProduct(),1);
+                String output = animal.getCurrentProduct().getName();
                 animal.setCurrentProduct(null);
-                return new GameMessage(null,animal.getCurrentProduct().getName()+" collected");
+                animal.increaseFriendship(5);
+                return new GameMessage(null,output+" collected");
             }
-            else if(animal.getName().equals("sheep")){
-//               TODO:check if there is gheuchi in inventory
+            else if(animal.getType().equals(AnimalType.sheep)){
+                if(!player.getBackPack().checkItem(new Tool(ToolType.shear),1)){
+                    return new GameMessage(null, "There is no shear");
+                }
                 player.decreaseEnergy(4);
                 if(player.getBackPack().getCapacity()>=player.getBackPack().getMaxCapacity()){
                     return new GameMessage(null,"There is no space in your backpack");
                 }
                 player.getBackPack().addItem(animal.getCurrentProduct(),1);
                 animal.setCurrentProduct(null);
+                animal.increaseFriendship(5);
                 return new GameMessage(null,animal.getCurrentProduct().getName()+" collected");
             }
-            else if(animal.getName().equals("pig")){
+            else if(animal.getType().equals(AnimalType.pig)){
                 if(animal.isOutside()){
                     if(player.getBackPack().getCapacity()>=player.getBackPack().getMaxCapacity()){
                         return new GameMessage(null,"There is no space in your backpack");
@@ -937,7 +990,7 @@ public class GameController extends Controller {
                 }
             }
         }
-        return null;
+        return new GameMessage(null,"There is no product");
     }
 
     public GameMessage sellAnimal(String animalName) {
@@ -1122,63 +1175,83 @@ public class GameController extends Controller {
         Player player = app.getCurrentGame().getCurrentPlayer();
         player.decreaseEnergy(8);
         switch (fishingPole) {
-            case "Training":{
+            case "Training": {
                 for (Item item : player.getBackPack().getItems().keySet()) {
-                    if(item.getName().equals("Fishing Pole")){
+                    if (item.getName().equals("FishingPole")) {
                         Tool tool = (Tool) item;
-                        if(tool.getLevel() == 0){
+                        if (tool.getLevel() == 0) {
                             player.decreaseEnergy(8);
-                            FishType type = generateRandomFish(game.getTime().getSeason(),false);
-                            Fish fish=new Fish(type);
-                            return new GameMessage(null,"You successfully got "+fish.getFishingCount(game.getTodayWeather(),player.getSkill(SkillType.fishing).getLevel())+" of "+fish.getName());
+                            FishType type = generateRandomFish(game.getTime().getSeason(), false);
+                            Fish fish = new Fish(type);
+                            int count = fish.getFishingCount(game.getTodayWeather(), player.getSkill(SkillType.fishing).getLevel());
+                            String quality = fish.getFishingQuality(game.getTodayWeather(),player.getSkill(SkillType.fishing).getLevel(),"Training");
+                            player.getBackPack().addItem(fish,count);
+                            player.getSkill(SkillType.fishing).addAmount(5);
+                            return new GameMessage(null, "You successfully got " + count + " of " + fish.getName()+" with quality: "+quality);
                         }
                     }
                 }
                 break;
             }
-            case "Bamboo":{
+            case "Bamboo": {
                 for (Item item : player.getBackPack().getItems().keySet()) {
-                    if(item.getName().equals("Fishing Pole")){
+                    if (item.getName().equals("FishingPole")) {
                         Tool tool = (Tool) item;
-                        if(tool.getLevel() == 1){
+                        if (tool.getLevel() == 1) {
                             player.decreaseEnergy(8);
-                            FishType type = generateRandomFish(game.getTime().getSeason(),false);
-                            Fish fish=new Fish(type);
-                            return new GameMessage(null,"You successfully got "+fish.getFishingCount(game.getTodayWeather(),player.getSkill(SkillType.fishing).getLevel())+" of "+fish.getName());
+                            FishType type = generateRandomFish(game.getTime().getSeason(), false);
+                            Fish fish = new Fish(type);
+                            int count = fish.getFishingCount(game.getTodayWeather(), player.getSkill(SkillType.fishing).getLevel());
+                            String quality = fish.getFishingQuality(game.getTodayWeather(),player.getSkill(SkillType.fishing).getLevel(),"Training");
+                            player.getBackPack().addItem(fish,count);
+                            player.getSkill(SkillType.fishing).addAmount(5);
+                            return new GameMessage(null, "You successfully got " + count + " of " + fish.getName()+" with quality: "+quality);
                         }
                     }
                 }
                 break;
             }
-            case "Fiberglass":{
+            case "Fiberglass": {
                 for (Item item : player.getBackPack().getItems().keySet()) {
-                    if(item.getName().equals("Fishing Pole")){
+                    if (item.getName().equals("FishingPole")) {
                         Tool tool = (Tool) item;
-                        if(tool.getLevel() == 2){
-                            player.decreaseEnergy(6);FishType type = generateRandomFish(game.getTime().getSeason(),false);
-                            Fish fish=new Fish(type);
-                            return new GameMessage(null,"You successfully got "+fish.getFishingCount(game.getTodayWeather(),player.getSkill(SkillType.fishing).getLevel())+" of "+fish.getName());
+                        if (tool.getLevel() == 2) {
+                            player.decreaseEnergy(6);
+                            FishType type = generateRandomFish(game.getTime().getSeason(), false);
+                            Fish fish = new Fish(type);
+                            int count = fish.getFishingCount(game.getTodayWeather(), player.getSkill(SkillType.fishing).getLevel());
+                            String quality = fish.getFishingQuality(game.getTodayWeather(),player.getSkill(SkillType.fishing).getLevel(),"Training");
+                            player.getBackPack().addItem(fish,count);
+                            player.getSkill(SkillType.fishing).addAmount(5);
+                            return new GameMessage(null, "You successfully got " + count + " of " + fish.getName()+" with quality: "+quality);
                         }
                     }
                 }
                 break;
             }
-            case "Iridium":{
+            case "Iridium": {
                 for (Item item : player.getBackPack().getItems().keySet()) {
-                    if(item.getName().equals("Fishing Pole")){
+                    if (item.getName().equals("FishingPole")) {
                         Tool tool = (Tool) item;
-                        if(tool.getLevel() == 3){
+                        if (tool.getLevel() == 3) {
                             player.decreaseEnergy(4);
-                            FishType type = generateRandomFish(game.getTime().getSeason(),true);
-                            Fish fish=new Fish(type);
-                            return new GameMessage(null,"You successfully got "+fish.getFishingCount(game.getTodayWeather(),player.getSkill(SkillType.fishing).getLevel())+" of "+fish.getName());
+                            FishType type = generateRandomFish(game.getTime().getSeason(), true);
+                            Fish fish = new Fish(type);
+                            int count = fish.getFishingCount(game.getTodayWeather(), player.getSkill(SkillType.fishing).getLevel());
+                            String quality = fish.getFishingQuality(game.getTodayWeather(),player.getSkill(SkillType.fishing).getLevel(),"Training");
+                            player.getBackPack().addItem(fish,count);
+                            player.getSkill(SkillType.fishing).addAmount(5);
+                            return new GameMessage(null, "You successfully got " + count + " of " + fish.getName()+" with quality: "+quality);
                         }
                     }
                 }
                 break;
+            }
+            default: {
+                return new GameMessage(null, "You need to choose a right fishing pole");
             }
         }
-        return null;
+        return new GameMessage(null, "You don't access to this fishing pole in this level");
     }
 
     public GameMessage craftInfo(String name) {
@@ -1644,13 +1717,19 @@ public class GameController extends Controller {
         Game game = app.getCurrentGame();
         Player player = game.getCurrentPlayer();
         Store store = Store.getStoreByName(StoreName);
+
         if(store == null){
             return new GameMessage(null, "There is no store with that name");
+        }
+        if(game.getTime().getHour() > store.getClosingTime() || game.getTime().getHour() < store.getOpeningTime()){
+            return new GameMessage(null,"You can't enter a store in this hour");
         }
         if(player.getCurrentStore()!=null){
             return new GameMessage(null, "You are already in a store!");
         }
-//        TODO: check if player is near this store
+        if(store.isNear(player.getPosition())){
+            return new GameMessage(null, "You are not close enough to store!");
+        }
         player.setCurrentStore(store);
         return new GameMessage(null,"You successfully entered "+StoreName);
     }

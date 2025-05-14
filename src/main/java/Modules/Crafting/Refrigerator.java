@@ -51,4 +51,20 @@ public class Refrigerator implements Serializable {
     public HashMap<Item, Integer> getItems() {
         return items;
     }
+
+    public boolean checkItem(Item item, int count) {
+        if (!items.containsKey(item)) {
+            return false;
+        }
+        return items.get(item) >= count;
+    }
+
+    public void removeItem(Item item, int count) {
+        if (checkItem(item, count)) {
+            items.put(item, items.get(item) - count);
+            if (items.get(item) == 0) {
+                items.remove(item);
+            }
+        }
+    }
 }

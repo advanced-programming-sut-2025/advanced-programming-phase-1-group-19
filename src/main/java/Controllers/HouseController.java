@@ -13,10 +13,11 @@ import Modules.Interactions.Messages.GameMessage;
 import Modules.Interactions.Messages.MainMessage;
 import Modules.Interactions.Messages.Message;
 import Modules.Item;
-import Modules.Map.Map;
 import Modules.Map.Position;
 import Modules.Map.Tile;
 import Modules.Player;
+
+import java.util.Map;
 
 public class HouseController extends Controller {
 
@@ -81,50 +82,30 @@ public class HouseController extends Controller {
     public GameMessage cookingPrepare(String recipeName) {
         App app = App.getInstance();
         Player player=app.getCurrentGame().getCurrentPlayer();
-        for(int i=0;i<player.getKnownCookingRecipes().size();i++){
-            CookingRecipe recipe=player.getKnownCookingRecipes().get(i);
-            if(recipe.name().equals(recipeName)){
-                //TODO: check how aboo has wrote recipes
-                for(Item item:recipe.getIngredients().keySet()){
-                    if(!player.getBackPack().getItems().containsKey(item)  && !player.getFarm().getHouse().getRefrigerator().doesItemExist(item)) {
-                        return new GameMessage(null,"You don't have needed ingredients");
-                    }
-                    if(player.getBackPack().getItems().containsKey(item)){
-                        if(player.getBackPack().getItems().get(item) < recipe.getIngredients().get(item)){
-                            return new GameMessage(null,"You don't have enough quantity of needed ingredients");
-                        }
-                        if(player.getBackPack().getCapacity() >= player.getBackPack().getMaxCapacity()){
-                            return new GameMessage(null,"You don't have enough capacity for needed ingredients");
-                        }
-                    }
-                    if(player.getFarm().getHouse().getRefrigerator().doesItemExist(item)){
-                        if(player.getFarm().getHouse().getRefrigerator().getItems().get(item) < recipe.getIngredients().get(item)){
-                            return new GameMessage(null,"You don't have enough quantity of needed ingredients");
+        CookingRecipe cookingRecipe = CookingRecipe.getCookingRecipeByName(recipeName);
+        if(cookingRecipe == null){
+            return new GameMessage(null,"There is no such recipe");
+        }
+        for (CookingRecipe knownCookingRecipe : player.getKnownCookingRecipes()) {
+            if(knownCookingRecipe.getProductName().equals(cookingRecipe.getProductName())){
+                for (Map.Entry<Item, Integer> itemIntegerEntry : knownCookingRecipe.getIngredients().entrySet()) {
+                    if(!player.getBackPack().checkItem(itemIntegerEntry.getKey(),itemIntegerEntry.getValue())){
+                        if(!player.getFarm().getHouse().getRefrigerator().checkItem(itemIntegerEntry.getKey(),itemIntegerEntry.getValue())){
+                            return new GameMessage(null,"You don't have enough ingredients in your backpack");
                         }
                     }
                 }
-                for(Item item:player.getBackPack().getItems().keySet()){
-                    if(item.getName().equals(recipe.getProductName())){
-                        player.getBackPack().getItems().put(item,player.getBackPack().getItems().get(item)+1);
-                        player.decreaseEnergy(3);
-                        return new GameMessage(null,"You successfully cooked");
+                for (Map.Entry<Item, Integer> itemIntegerEntry : knownCookingRecipe.getIngredients().entrySet()) {
+                    if(player.getBackPack().checkItem(itemIntegerEntry.getKey(),itemIntegerEntry.getValue())){
+                        player.getBackPack().removeItem(itemIntegerEntry.getKey(),itemIntegerEntry.getValue());
+                    }
+                    else if(player.getFarm().getHouse().getRefrigerator().checkItem(itemIntegerEntry.getKey(),itemIntegerEntry.getValue())){
+                        player.getFarm().getHouse().getRefrigerator().removeItem(itemIntegerEntry.getKey(),itemIntegerEntry.getValue());
                     }
                 }
-                player.getBackPack().addItem(new Food(recipe), 1);
-                //TODO:look for the food to add it to your inventory
-                if(player.getEnergy().getAmount()<3){
-                    player.setFainted(true);
-                }
-                else {
-                    player.decreaseEnergy(3);
-                }
-                if(player.getBackPack().getCapacity() > player.getBackPack().getMaxCapacity()){
-                    player.getBackPack().addItem(new Food(recipe),1);
-                }
-                else {
-                    return new GameMessage(null,"You don't have any space in your backpack");
-                }
-                return new GameMessage(null,"You successfully cooked");
+                player.decreaseEnergy(3);
+                player.getBackPack().addItem(new Food(knownCookingRecipe),1);
+                return new GameMessage(null,"You successfully cooked the "+cookingRecipe.getProductName()+" into your backpack");
             }
         }
         return new GameMessage(null,"You do not have this recipe");
@@ -133,20 +114,17 @@ public class HouseController extends Controller {
     public GameMessage eatFood(String foodName){
         App app = App.getInstance();
         Player player=app.getCurrentGame().getCurrentPlayer();
-        for(Item item : player.getBackPack().getItems().keySet()){
-            if(item.getName().equals(foodName)){
-                player.getBackPack().getItems().put(item,player.getBackPack().getItems().get(item)-1);
-                Food food=(Food) item;
-                //TODO:apply Buff
-                player.addEnergy(food.getRecipe().getEnergy());
-                if(food.getRecipe().getBuff()!=null){
-
-                }
-                player.getBackPack().getItems().remove(item);
-
-            }
+        Item item = player.getBackPack().getItemByName(foodName);
+        if(item == null){
+            return new GameMessage(null,"You don't have this item in your backpack");
         }
-        return new GameMessage(null,"There is no food with that name");
+        player.getBackPack().removeItem(item,1);
+        Food food = (Food) item;
+        player.addEnergy(food.getRecipe().getEnergy());
+        if(food.getRecipe().getBuff() != null){
+            player.applyBuff(food.getRecipe().getBuff());
+        }
+        return new GameMessage(null,"You successfully eat the "+foodName);
     }
 
     public GameMessage buildBarn(String type,int x,int y) {
@@ -156,6 +134,9 @@ public class HouseController extends Controller {
         Position position1 = new Position(x+1,y);
         Position position2 = new Position(x, y+1);
         Position position3 = new Position(x+1, y+1);
+        if(player.getFarm().getBarn() != null){
+            return new GameMessage(null,"You have already built barn");
+        }
         if (player.getFarm().getTile(position) == null) {
             return new GameMessage(null, "This position is out of your farm");
         }

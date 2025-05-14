@@ -45,6 +45,10 @@ public abstract class Item extends TileObject implements Serializable {
         if(cropType != null){
             item = new Crop(cropType);
         }
+        AnimalProductType animalProductType= AnimalProductType.getProductTypeByName(name);
+        if(animalProductType != null){
+            item = new AnimalProduct(animalProductType);
+        }
 
         SeedType seedType = SeedType.getSeedTypeByName(name);
         if(seedType != null){

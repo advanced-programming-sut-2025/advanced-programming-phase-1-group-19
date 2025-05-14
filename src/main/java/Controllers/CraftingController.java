@@ -3,6 +3,7 @@ package Controllers;
 import Modules.App;
 import Modules.Crafting.CraftingItem;
 import Modules.Crafting.CraftingRecipe;
+import Modules.Crafting.Recipe;
 import Modules.Game;
 import Modules.Interactions.Messages.GameMessage;
 import Modules.Enums.InGameMenu;
@@ -14,6 +15,8 @@ import Modules.Map.Tile;
 import Modules.Player;
 
 import java.io.Serializable;
+
+import java.util.Map;
 
 public class CraftingController extends Controller {
     private static CraftingController instance;
@@ -57,14 +60,33 @@ public class CraftingController extends Controller {
         if(!player.knowCraftingRecipe(recipe)){
             return new GameMessage(null,"You haven't yet learned this crafting recipe");
         }
-        if(player.getBackPack().getCapacity() >= player.getBackPack().getMaxCapacity() ){
-            return new GameMessage(null,"You have no remain place in your backpack");
+        for (Map.Entry<Item, Integer> itemIntegerEntry : recipe.getIngredients().entrySet()) {
+            if(!player.getBackPack().checkItem(itemIntegerEntry.getKey(),itemIntegerEntry.getValue())){
+                return new GameMessage(null,"You have not enough ingredients in your crafting recipe");
+            }
+        }
+        for (Map.Entry<Item, Integer> itemIntegerEntry : recipe.getIngredients().entrySet()) {
+            player.getBackPack().removeItem(itemIntegerEntry.getKey(),itemIntegerEntry.getValue());
         }
         CraftingItem craftingItem = new CraftingItem(recipe);
         player.decreaseEnergy(2);
-//        TODO : remove used item of player's backpack
         player.getBackPack().addItem(craftingItem,1);
         return new GameMessage(null,"You successfully craft "+craftName+"!");
+    }
+
+    public GameMessage cheatAddRecipe(String recipe){
+        App app = App.getInstance();
+        Game game = app.getCurrentGame();
+        Player player = game.getCurrentPlayer();
+        if(game.getInGameMenu() != InGameMenu.craftingMenu){
+            return new GameMessage(null,"You are not in crafting menu");
+        }
+        CraftingRecipe newRecipe = CraftingRecipe.getCraftingRecipeByName(recipe);
+        if(newRecipe == null){
+            return new GameMessage(null,"There is no item with this name");
+        }
+        player.addKnownCraftingRecipe(newRecipe);
+        return new GameMessage(null,"You successfully added  this recipe");
     }
 
 

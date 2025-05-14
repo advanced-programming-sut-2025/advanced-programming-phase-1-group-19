@@ -27,7 +27,7 @@ public class Player implements Serializable {
     private boolean isFainted = false;
     private final BackPack backPack;
     private final TrashCan trashCan;
-    private final HashMap<SkillType, Skill> skills;
+    private final HashMap<SkillType, Skill> skills ;
     private final ArrayList<CraftingRecipe> knownCraftingRecipes;
     private final ArrayList<CookingRecipe> knownCookingRecipes;
     private Time[] lastBuffTime; // 0:farming, 1: extraction, 2: foraging, 3: fishing, 4: energy;
@@ -36,8 +36,9 @@ public class Player implements Serializable {
     private Tool currentTool = null;
     private ArrayList<NPC> npcs;
     private Store currentStore;
+    private int Hay;
     public Player(User user, Farm farm) {
-        this.money = 0;
+        this.money = 100;
         this.user = user;
         this.farm = farm;
         this.position = new Position(farm.getTopLeft().x + 50, farm.getTopLeft().y + 50);
@@ -73,8 +74,10 @@ public class Player implements Serializable {
 //        npcs.add(new NPC("Harvey"));
 //        npcs.add(new NPC("Lia"));
 //        npcs.add(new NPC("Robin"));
-
-
+        for (SkillType skillType : SkillType.values()) {
+            skills.put(skillType, new Skill(skillType));
+        }
+        this.Hay = 100;
     }
 
     public ArrayList<FriendShip> getFriendShips() {
@@ -159,11 +162,34 @@ public class Player implements Serializable {
 
     public void addKnownCookingRecipe(CookingRecipe recipe) {
         this.knownCookingRecipes.add(recipe);
-//        TODO: first check if the player can learn the recipe or not
     }
 
     public void applyBuff(Buff buff) {
-
+        App app = App.getInstance();
+        Game game = app.getCurrentGame();
+        Time time = game.getTime();
+        switch (buff.getSkillType()){
+            case SkillType.farming :{
+                lastBuffTime[0] = Time.addHour(time,buff.getHours());
+                break;
+            }
+            case SkillType.extraction:{
+                lastBuffTime[1] = Time.addHour(time,buff.getHours());
+                break;
+            }
+            case SkillType.foraging:{
+                lastBuffTime[2] = Time.addHour(time,buff.getHours());
+                break;
+            }
+            case SkillType.fishing:{
+                lastBuffTime[3] = Time.addHour(time,buff.getHours());
+                break;
+            }
+            default:{
+                lastBuffTime[4] = Time.addHour(time,buff.getHours());
+                break;
+            }
+        }
     }
 
     public boolean isBuffed(SkillType skillType) {
@@ -221,5 +247,17 @@ public class Player implements Serializable {
 
     public Store getCurrentStore() {
         return currentStore;
+    }
+
+    public int getHay(){
+        return Hay;
+    }
+
+    public void addHay(int amount) {
+        this.Hay += amount;
+    }
+
+    public void decreaseHay(int amount) {
+        this.Hay -= amount;
     }
 }

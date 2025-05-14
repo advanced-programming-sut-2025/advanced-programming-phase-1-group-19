@@ -4,6 +4,7 @@ import Modules.Animal.AnimalProduct;
 import Modules.Animal.AnimalProductType;
 import Modules.Animal.Fish;
 import Modules.Animal.FishType;
+import Modules.Enums.SkillType;
 import Modules.Farming.Crop;
 import Modules.Farming.CropType;
 import Modules.Item;
@@ -44,7 +45,7 @@ public enum CookingRecipe implements Recipe, Serializable {
     }}, 50, null, 50),
     tripleShotEspresso("triple Shot Espresso", new HashMap<>(){{
         put(new Material(MaterialType.coffee), 3);
-    }}, 450, null, 200),
+    }}, 450, new Buff(null,5,100), 200),
     cookie("Cookie", new HashMap<>(){{
         put(new Material(MaterialType.wheatFlour), 1);
         put(new Material(MaterialType.sugar), 1);
@@ -52,11 +53,11 @@ public enum CookingRecipe implements Recipe, Serializable {
     hashBrowns("hash Browns", new HashMap<>(){{
         put(new Material(MaterialType.oil), 1);
         put(new Crop(CropType.potato), 1);
-    }}, 120, null, 90),
+    }}, 120, new Buff(SkillType.farming,5,0), 90),
     pancakes("pancakes", new HashMap<>(){{
         put(new AnimalProduct(AnimalProductType.egg), 1);
         put(new Material(MaterialType.wheatFlour), 1);
-    }}, 80, null, 90),
+    }}, 80, new Buff(SkillType.foraging,11,0), 90),
     fruitSalad("fruit salad", new HashMap<>(){{
         put(new Crop(CropType.melon), 1);
         put(new Crop(CropType.blueberry), 1);
@@ -68,7 +69,16 @@ public enum CookingRecipe implements Recipe, Serializable {
     }}, 400, null, 240),
     bread("bread", new HashMap<>(){{
         put(new Material(MaterialType.wheatFlour), 1);
-    }}, 60, null, 50);
+    }}, 60, null, 50),
+    farmerLunch("farmer's lunch",new HashMap<>(){{
+        put(new Food(CookingRecipe.omelet),1);
+        put(new Crop(CropType.parsnip),1);
+    }},150, new Buff(SkillType.farming,5,0), 200),
+    survivalBurger("survival burger",new HashMap<>(){{
+        put(new Food(CookingRecipe.bread),1);
+        put(new Crop(CropType.carrot), 1);
+        put(new Crop(CropType.eggplant), 1);
+    }},180, new Buff(SkillType.foraging,5,0), 125),
 
     ;
 

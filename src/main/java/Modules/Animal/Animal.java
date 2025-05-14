@@ -32,6 +32,7 @@ public class Animal  implements Serializable {
         this.name = name;
         this.isOutside = false;
         this.isCollected=true;
+//        this.lastPetingTime = App.getInstance().getCurrentGame().getTime();
     }
 
     public AnimalType getType() {
@@ -106,13 +107,16 @@ public class Animal  implements Serializable {
     public boolean doesProduce() {
         App app = App.getInstance();
         Game game=app.getCurrentGame();
+        if(lastFeedingTime == null){
+            return false;
+        }
         if(lastFeedingTime.getSeason() == game.getTime().getSeason()){
-            if(lastPetingTime.getDay() - game.getTime().getDay()==-1){
+            if(lastFeedingTime.getDay() - game.getTime().getDay()==-1){
                 return true;
             }
         }
-        else if(lastPetingTime.getSeason().getNext() == game.getTime().getSeason()){
-            if(lastPetingTime.getDay()==28 && game.getTime().getDay()==1){
+        else if(lastFeedingTime.getSeason().getNext() == game.getTime().getSeason()){
+            if(lastFeedingTime.getDay()==28 && game.getTime().getDay()==1){
                 return true;
             }
         }
@@ -133,7 +137,7 @@ public class Animal  implements Serializable {
     }
 
     public void setLastFeedingTime(Time lastFeedingTime) {
-        this.lastFeedingTime = lastFeedingTime;
+        this.lastFeedingTime = new Time(lastFeedingTime);
     }
 
     public void setLastPettingTime(Time lastPetingTime) {
@@ -163,4 +167,29 @@ public class Animal  implements Serializable {
     public void setCollected(boolean collected) {
         isCollected = collected;
     }
+
+    public boolean hasBeenFedToday(Time time) {
+        if(lastFeedingTime==null){
+            return false;
+        }
+        if(lastFeedingTime.getSeason()==time.getSeason()){
+            if(lastFeedingTime.getDay()==time.getDay()){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hasBeenPetToday(Time time) {
+        if(lastFeedingTime==null){
+            return false;
+        }
+        if(lastFeedingTime.getSeason()==time.getSeason()){
+            if(lastFeedingTime.getDay()==time.getDay()){
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
