@@ -4,11 +4,12 @@ import Modules.Farming.Seed;
 import Modules.Farming.SeedType;
 import Modules.Item;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BackPack {
+public class BackPack implements Serializable {
     private HashMap<Item, Integer> items = new HashMap<>();
     private static ArrayList<Integer> capacity = new ArrayList<>();
     private static final ArrayList<String> name = new ArrayList<>();
@@ -74,6 +75,7 @@ public class BackPack {
         return items.get(item) >= count;
     }
     public Tool getToolByType(ToolType type) {
+//        TODO: get the highest one
         for (Map.Entry<Item, Integer> entry : items.entrySet()) {
             Item item = entry.getKey();
             if(item instanceof Tool) {

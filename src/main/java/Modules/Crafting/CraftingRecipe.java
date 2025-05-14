@@ -3,9 +3,10 @@ package Modules.Crafting;
 import Modules.Item;
 import Modules.Tools.ToolType;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public enum CraftingRecipe implements Recipe {
+public enum CraftingRecipe implements Recipe, Serializable {
     cherryBomb("Cherry Bomb",new HashMap<>(){{
         put(new Material(MaterialType.copperOre),4);
         put(new Material(MaterialType.coal),1);

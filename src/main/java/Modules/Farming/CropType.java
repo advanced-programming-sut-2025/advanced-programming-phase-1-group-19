@@ -1,6 +1,8 @@
 package Modules.Farming;
 
-public enum CropType {
+import java.io.Serializable;
+
+public enum CropType implements Serializable {
     blueJazz("blue jazz", SeedType.jazz, 50, 45, true),
     carrot("carrot", SeedType.carrot, 35, 75, true),
     cauliflower("cauliflower", SeedType.cauliflower, 175, 75, true),

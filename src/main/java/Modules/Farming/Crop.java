@@ -4,7 +4,9 @@ import Modules.Item;
 import Modules.Map.Tile;
 import Modules.Time;
 
-public class Crop extends Item {
+import java.io.Serializable;
+
+public class Crop extends Item implements Serializable {
 
     private CropType type;
 

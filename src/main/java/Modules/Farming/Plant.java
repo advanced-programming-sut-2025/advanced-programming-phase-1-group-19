@@ -4,16 +4,20 @@ import Modules.App;
 import Modules.Map.TileObject;
 import Modules.Time;
 
-public class Plant extends TileObject {
+import java.io.Serializable;
+import java.util.ArrayList;
+
+public class Plant extends TileObject implements Serializable {
 
     private PlantType type;
     private Time plantingTime;
     private int regrownTimes;
     private int gianPosition;
+    //    0 1
+//    2 3 and -1 if not gianted
+    private ArrayList<Plant> gianPlants;
     private Time lastWateringTime;
     private int currentStage;
-//    0 1
-//    2 3 and -1 if not gianted
 
     public Plant(PlantType type, Time plantingTime) {
         super();
@@ -54,6 +58,14 @@ public class Plant extends TileObject {
         this.gianPosition = gianPosition;
     }
 
+    public ArrayList<Plant> getGianPlants() {
+        return gianPlants;
+    }
+
+    public void setGianPlants(ArrayList<Plant> gianPlants) {
+        this.gianPlants = gianPlants;
+    }
+
     public void harvest() {}
 
     public Time getLastWateringTime() {
@@ -74,33 +86,27 @@ public class Plant extends TileObject {
 
     public void grow(){
         // TODO: check if it was watered or day was rainy
-        if(getType().isCanBeComeGiant()){
-            // TODO: handle giantPart
+        int diff = Time.getDayDifference(plantingTime, App.getInstance().getCurrentGame().getTime());
+        if(type.getReGrowth() > regrownTimes){
+            diff %= type.getTotalTime() + 2;
         }
-        else{
-            int diff = Time.getDayDifference(plantingTime, App.getInstance().getCurrentGame().getTime());
-            if(type.getReGrowth() > regrownTimes){
-                diff %= type.getTotalTime() + 2;
+        int sum = 0;
+        this.currentStage = type.getStages().size()+1;
+        for(int i = 0; i < type.getStages().size(); i++){
+            if(type.getStages().get(i) + sum >= diff){
+                currentStage = i+1;
+                break;
             }
-            int sum = 0;
-            this.currentStage = type.getStages().size()+1;
-            for(int i = 0; i < type.getStages().size(); i++){
-                if(type.getStages().get(i) + sum >= diff){
-                    currentStage = i+1;
-                    break;
-                }
-                sum += type.getStages().get(i);
-            }
-            boolean a = false;
-            if(diff > type.getTotalTime()){
-                regrownTimes++;
-            }
+            sum += type.getStages().get(i);
+        }
+        if(diff > type.getTotalTime()){
+            regrownTimes++;
         }
     }
     public boolean isDestroyed(){
         if(regrownTimes == 1 && type.getReGrowth() == -1)
             return true;
-        else if(regrownTimes == type.getReGrowth()){
+        else if(regrownTimes >= type.getReGrowth()){
             return true;
         }
         if(Time.getDayDifference(lastWateringTime, App.getInstance().getCurrentGame().getTime()) > 2){

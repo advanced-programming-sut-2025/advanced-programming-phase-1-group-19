@@ -17,9 +17,10 @@ import Modules.Map.Tile;
 import Modules.Tools.Tool;
 import Modules.Tools.ToolType;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Store extends Building {
+public class Store extends Building implements Serializable {
     private int openingTime;
     private int closingTime;
     private String ownerName;

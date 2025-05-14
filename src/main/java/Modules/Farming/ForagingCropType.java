@@ -2,7 +2,9 @@ package Modules.Farming;
 
 import Modules.Enums.Season;
 
-public enum ForagingCropType {
+import java.io.Serializable;
+
+public enum ForagingCropType implements Serializable {
     commonMushroom(null, 40, 38),
     daffodil(Season.spring, 30, 0),
     dandelion(Season.spring, 40, 25),

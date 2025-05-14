@@ -3,7 +3,9 @@ package Modules.Animal;
 import Modules.Item;
 import Modules.Map.Tile;
 
-public class AnimalProduct extends Item {
+import java.io.Serializable;
+
+public class AnimalProduct extends Item implements Serializable {
 
     private AnimalProductType type ;
     private Quality quality;

@@ -13,10 +13,11 @@ import Modules.Map.Tile;
 import Modules.Map.*;
 import Modules.Time;
 
+import java.io.Serializable;
 import java.lang.reflect.Member;
 import java.util.ArrayList;
 
-public class Tool extends Item {
+public class Tool extends Item implements Serializable {
     private ToolType toolType;
     protected int level = 0;
 
@@ -94,7 +95,7 @@ public class Tool extends Item {
                     return new GameMessage(null, "You couldn't use this tool.");
                 } else {
                     game.getCurrentPlayer().decreaseEnergy(energy);
-                    map.setTile(position, new Tile(position));
+                    tile.setObject(null);
                     game.getCurrentPlayer().getBackPack().addItem(new Material(MaterialType.wood), 50);
                     return new GameMessage(null, "You chopped this tile");
                 }
@@ -120,7 +121,14 @@ public class Tool extends Item {
                         if (wateringCan.getCurrentCapacity() == 0) {
                             return new GameMessage(null, "There is no water in your watering can!");
                         } else {
-                            plant.setLastWateringTime(new Time(game.getTime()));
+                            if(plant.getGianPosition() != -1) {
+                                for(Plant p : plant.getGianPlants()) {
+                                    p.setLastWateringTime(new Time(game.getTime()));
+                                }
+                            }
+                            else {
+                                plant.setLastWateringTime(new Time(game.getTime()));
+                            }
                             wateringCan.decreaseCapacity(1);
                             return new GameMessage(null, "You successfully watered this plant!");
                         }
@@ -150,12 +158,16 @@ public class Tool extends Item {
                 } else {
                     game.getCurrentPlayer().decreaseEnergy(energy);
                     Plant plant = (Plant) tile.getObject();
+                    int amount = 1;
+                    if(plant.getGianPosition() != -1) {
+                        amount = Math.min(10, backPack.getMaxCapacity() - backPack.getCapacity());
+                    }
                     if (plant.getCurrentStage() == plant.getType().getStages().size() + 1) {
                         if (!backPack.canAddItem(new Crop(plant.getType().getCrop()), 1)) {
                             return new GameMessage(null, "You don't have enough capacity in backpack");
                         }
                         backPack.addItem(new Crop(plant.getType().getCrop()), 1);
-                        return new GameMessage(null, "You got some fruit!");
+                        return new GameMessage(null, "You got some fruit! (" + amount + "x)");
                     } else {
                         return new GameMessage(null, "Let your tree grow as it should");
                     }

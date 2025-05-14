@@ -3,7 +3,9 @@ package Modules.Farming;
 import Modules.Item;
 import Modules.Map.Tile;
 
-public class Seed extends Item {
+import java.io.Serializable;
+
+public class Seed extends Item implements Serializable {
 
     private SeedType type;
 

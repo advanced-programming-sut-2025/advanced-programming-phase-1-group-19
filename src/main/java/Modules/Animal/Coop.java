@@ -3,9 +3,10 @@ package Modules.Animal;
 import Modules.Map.Tile;
 import Modules.Map.TileObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Coop extends TileObject {
+public class Coop extends TileObject implements Serializable {
 
     @Override
     public Tile getPlacedTile() {

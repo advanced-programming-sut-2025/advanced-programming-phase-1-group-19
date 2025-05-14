@@ -3,7 +3,9 @@ package Modules.Store;
 import Modules.Crafting.Recipe;
 import Modules.Enums.Season;
 
-public class StoreRecipes {
+import java.io.Serializable;
+
+public class StoreRecipes implements Serializable {
     private Recipe recipe;
     private int price;
     private int dailyLimit;// 2000 if unlimited

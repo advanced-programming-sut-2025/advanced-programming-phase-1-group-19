@@ -1,11 +1,12 @@
 package Modules.Map;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 
-public class Map {
+public class Map implements Serializable {
     private ArrayList<Farm> farms;
     private NPCVillage npcVillage;
 
@@ -56,7 +57,6 @@ public class Map {
         }
         Collections.reverse(path);
         return path;
-//        TODO: search the farms for the tile and check if you can go to that tile or not
     }
 
     public Tile getTile(Position position) {
@@ -88,36 +88,5 @@ public class Map {
             return npcVillage.getTile(position);
         }
         return null;
-//        TODO: search farms for that tile
-    }
-
-    public void setTile(Position position, Tile tile) {
-        if(position.x >= 0 && position.x < 100 && position.y >= 0 && position.y < 100) {
-            if(farms.size() < 1) {
-                return;
-            }
-            farms.get(0).setTile(position, tile);
-        }
-        else if (position.x >= 0 && position.x < 100 && position.y >= 150 && position.y < 250) {
-            if(farms.size() < 2) {
-                return;
-            }
-            farms.get(1).setTile(position, tile);
-        }
-        else if(position.x >= 150 && position.x < 250 && position.y >= 0 && position.y < 100) {
-            if(farms.size() < 3) {
-                return;
-            }
-            farms.get(2).setTile(position, tile);
-        }
-        else if(position.x >= 150 && position.x < 250 && position.y >= 150 && position.y < 250) {
-            if (farms.size() < 4) {
-                return;
-            }
-            farms.get(3).setTile(position, tile);
-        }
-        else if(position.x >= 100 && position.x < 150 && position.y >= 100 && position.y < 150) {
-            return ;
-        }
     }
 }

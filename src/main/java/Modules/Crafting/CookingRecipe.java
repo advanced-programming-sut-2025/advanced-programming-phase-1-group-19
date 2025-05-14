@@ -8,9 +8,10 @@ import Modules.Farming.Crop;
 import Modules.Farming.CropType;
 import Modules.Item;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public enum CookingRecipe implements Recipe{
+public enum CookingRecipe implements Recipe, Serializable {
     friedEgg("Fried Egg",new HashMap<>() {{
         put(new AnimalProduct(AnimalProductType.egg), 1);
     }}, 35, null, 50),

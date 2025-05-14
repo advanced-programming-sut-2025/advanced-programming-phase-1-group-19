@@ -136,6 +136,7 @@ public class GameMenu implements AppMenu {
                 out = out.replace("G", "\u001B[32mG\u001B[0m");
                 out = out.replace("L", "\u001B[34mL\u001B[0m");
                 out = out.replace("Q", "\u001B[33mQ\u001B[0m");
+                out = out.replaceAll("(\\d)", "\u001B[36m$1\u001B[0m");
                 System.out.println(out);
                 break;
             }

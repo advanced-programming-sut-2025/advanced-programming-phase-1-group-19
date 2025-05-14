@@ -4,9 +4,10 @@ import Modules.Map.Position;
 import Modules.Map.Tile;
 import Modules.Map.TileObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Barn extends TileObject {
+public class Barn extends TileObject implements Serializable {
     @Override
     public Tile getPlacedTile() {
         return super.getPlacedTile();

@@ -1,6 +1,8 @@
 package Modules.Communication;
 
-public class NPCFriendship {
+import java.io.Serializable;
+
+public class NPCFriendship implements Serializable {
     private int xp;
     private int level;
 

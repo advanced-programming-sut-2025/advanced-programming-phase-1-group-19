@@ -8,11 +8,12 @@ import Modules.Enums.Weather;
 import Modules.Farming.Plant;
 import Modules.Map.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.RandomAccess;
 
-public class Game {
+public class Game implements Serializable {
     private ArrayList<Player> players;
     private Player currentPlayer;
     private Map map;
@@ -105,8 +106,7 @@ public class Game {
                     TileObject tileObject = tile.getObject();
                     if(tileObject instanceof Plant){
                         if(((Plant) tileObject).isDestroyed()){
-                            Position position = new Position(i, j);
-                            map.setTile(position, new Tile(position));
+                            tile.setObject(null);
                         }
                         else{
                             ((Plant) tileObject).grow();
@@ -116,6 +116,7 @@ public class Game {
             }
         }
         thor();
+        crowAttack();
     }
 
     public void nextHour() {
@@ -126,6 +127,22 @@ public class Game {
     }
     public Time getTime() {
         return time;
+    }
+
+    public void crowAttack() {
+        Random rand = new Random();
+        for(int i = 0; i < 250; i++){
+            for(int j = 0; j < 250; j++) {
+                Tile tile = map.getTile(new Position(i, j));
+                if(tile != null) {
+                    if(tile.getBuilding() == null && tile.getObject() instanceof Plant) {
+                        if(rand.nextInt(64) == 0) {
+                            tile.setObject(null);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public void thor(){
@@ -142,10 +159,10 @@ public class Game {
         if(map.getTile(position) == null){
             return;
         }
-        TileObject tileObject = map.getTile(position).getObject();
-        if(tileObject instanceof Plant){
-            map.setTile(position, new Tile(position));
-            map.getTile(position).setObject(new Material(MaterialType.coal));
+        Tile tile = map.getTile(position);
+        TileObject tileObject = tile.getObject();
+        if(tileObject instanceof Plant && tile.getBuilding() == null){
+            tile.setObject(new Material(MaterialType.coal));
         }
     }
 

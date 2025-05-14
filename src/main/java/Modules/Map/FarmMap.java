@@ -1,6 +1,8 @@
 package Modules.Map;
 
-public enum FarmMap {
+import java.io.Serializable;
+
+public enum FarmMap implements Serializable {
     first(1),
     second(2),
     third(3),

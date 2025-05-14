@@ -3,7 +3,9 @@ package Modules.Crafting;
 import Modules.Item;
 import Modules.Map.Tile;
 
-public class Material extends Item {
+import java.io.Serializable;
+
+public class Material extends Item implements Serializable {
     private MaterialType type;
 
     public Material(MaterialType type) {

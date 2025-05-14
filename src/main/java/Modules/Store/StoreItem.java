@@ -3,7 +3,9 @@ package Modules.Store;
 import Modules.Enums.Season;
 import Modules.Item;
 
-public class StoreItem {
+import java.io.Serializable;
+
+public class StoreItem implements Serializable {
     private Item item;
     private int price;
     private int dailyLimit;// 2000 if unlimited

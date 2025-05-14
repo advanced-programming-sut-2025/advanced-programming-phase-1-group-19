@@ -1,6 +1,8 @@
 package Modules;
 
-public class Energy {
+import java.io.Serializable;
+
+public class Energy implements Serializable {
     public int amount = 200;
     public int maxAmount = 200;
     public boolean isFainted = false;

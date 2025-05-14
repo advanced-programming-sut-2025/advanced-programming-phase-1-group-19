@@ -1,6 +1,8 @@
 package Modules.Map;
 
-public enum Direction {
+import java.io.Serializable;
+
+public enum Direction implements Serializable {
     up("u"),
     down("d"),
     left("l"),

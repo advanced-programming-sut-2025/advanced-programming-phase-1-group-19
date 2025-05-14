@@ -2,7 +2,9 @@ package Modules.Crafting;
 
 import Modules.Enums.SkillType;
 
-public class Buff {
+import java.io.Serializable;
+
+public class Buff implements Serializable {
 
     private final SkillType skillType; // null if energy;
     private final int hours;

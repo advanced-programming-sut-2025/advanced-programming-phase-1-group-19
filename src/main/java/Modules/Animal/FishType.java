@@ -2,7 +2,9 @@ package Modules.Animal;
 
 import Modules.Enums.Season;
 
-public enum FishType {
+import java.io.Serializable;
+
+public enum FishType implements Serializable {
     salmon("Salmon",75,Season.fall,false),
     sardine("Sardine",40,Season.fall,false),
     shad("Shad",60,Season.fall,false),

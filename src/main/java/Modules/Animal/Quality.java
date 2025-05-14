@@ -1,6 +1,8 @@
 package Modules.Animal;
 
-public class Quality {
+import java.io.Serializable;
+
+public class Quality implements Serializable {
     private double amount;
 
     public Quality(double amount) {

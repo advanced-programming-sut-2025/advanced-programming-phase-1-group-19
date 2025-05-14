@@ -2,7 +2,9 @@ package Modules;
 
 import Modules.Enums.SkillType;
 
-public class Skill {
+import java.io.Serializable;
+
+public class Skill implements Serializable {
 
     private SkillType skillType;
     private int level;

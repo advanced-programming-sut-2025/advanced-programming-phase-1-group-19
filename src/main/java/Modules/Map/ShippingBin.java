@@ -1,6 +1,8 @@
 package Modules.Map;
 
-public class ShippingBin extends TileObject{
+import java.io.Serializable;
+
+public class ShippingBin extends TileObject implements Serializable {
     public ShippingBin() {
     }
 }

@@ -1,9 +1,10 @@
 package Modules.Farming;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum SeedType {
+public enum SeedType implements Serializable {
     jazz("jazz"),
     carrot("carrot"),
     cauliflower("cauliflower"),

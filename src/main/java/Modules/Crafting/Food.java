@@ -3,7 +3,9 @@ package Modules.Crafting;
 import Modules.Item;
 import Modules.Map.Tile;
 
-public class Food extends Item {
+import java.io.Serializable;
+
+public class Food extends Item implements Serializable {
 
     private CookingRecipe recipe;
 

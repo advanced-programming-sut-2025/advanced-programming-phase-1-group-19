@@ -1,6 +1,8 @@
 package Modules.Enums;
 
-public enum InGameMenu {
+import java.io.Serializable;
+
+public enum InGameMenu implements Serializable {
     tradeMenu("trade"),
     houseMenu("house"),
     craftingMenu("crafting");

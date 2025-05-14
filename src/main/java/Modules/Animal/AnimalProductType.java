@@ -1,6 +1,8 @@
 package Modules.Animal;
 
-public enum AnimalProductType {
+import java.io.Serializable;
+
+public enum AnimalProductType implements Serializable {
     milk("milk",125, true),
     bigMilk("big milk",190, true),
     goatMilk("goat milk",225, true),

@@ -2,11 +2,17 @@ package Modules.Map;
 
 import Modules.Animal.Barn;
 import Modules.Animal.Coop;
+import Modules.App;
+import Modules.Crafting.Material;
+import Modules.Crafting.MaterialType;
+import Modules.Game;
 import Modules.Store.Store;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Random;
 
-public class Farm {
+public class Farm implements Serializable {
 
     private final Position topLeft;
     private final Size size;
@@ -22,7 +28,33 @@ public class Farm {
     private Coop coop;
 
     private void setRandomObjects() {
-//        TODO: implement this
+        Random rand = new Random();
+        for(int i = 0; i < 100; i++) {
+            for(int j = 0; j < 100; j++) {
+                if(i == 50 && j == 50) {
+                    continue;
+                }
+                Position position = new Position(i, j);
+                Game game = App.getInstance().getCurrentGame();
+                Map map = game.getMap();
+                Tile tile = map.getTile(position);
+                if(tile != null) {
+                    if(tile.isTotallyEmpty()) {
+                        int r = rand.nextInt(3000);
+                        if(r == 0) {
+                            tile.setObject(new Material(MaterialType.coal));
+                        }
+                        if(r == 1) {
+                            tile.setObject(new Material(MaterialType.wood));
+                        }
+                        if(r == 2) {
+                            tile.setObject(new Material(MaterialType.stone));
+                        }
+                    }
+                }
+            }
+        }
+//        TODO: check this
     }
 
     public Farm(FarmMap farmMap, int turn) {

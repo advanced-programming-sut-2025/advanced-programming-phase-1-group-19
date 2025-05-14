@@ -14,11 +14,12 @@ import Modules.Farming.PlantType;
 import Modules.Item;
 import Modules.Pair;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class NPCQuest {
+public class NPCQuest implements Serializable {
     private ArrayList<Pair<Item, Integer> > requests;
     private ArrayList<Pair<Item, Integer> > rewards;
     private int activeQuest;
