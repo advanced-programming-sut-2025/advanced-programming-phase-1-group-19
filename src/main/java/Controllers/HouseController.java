@@ -121,7 +121,9 @@ public class HouseController extends Controller {
         player.getBackPack().removeItem(item,1);
         Food food = (Food) item;
         player.addEnergy(food.getRecipe().getEnergy());
-//        TODO:apply buff
+        if(food.getRecipe().getBuff() != null){
+            player.applyBuff(food.getRecipe().getBuff());
+        }
         return new GameMessage(null,"You successfully eat the "+foodName);
     }
 
@@ -132,6 +134,9 @@ public class HouseController extends Controller {
         Position position1 = new Position(x+1,y);
         Position position2 = new Position(x, y+1);
         Position position3 = new Position(x+1, y+1);
+        if(player.getFarm().getBarn() != null){
+            return new GameMessage(null,"You have already built barn");
+        }
         if (player.getFarm().getTile(position) == null) {
             return new GameMessage(null, "This position is out of your farm");
         }

@@ -13,6 +13,11 @@ public class Time {
         day = 1;
         season = Season.spring;
     }
+    public Time(Time time) {
+        hour = time.hour;
+        day = time.day;
+        season = time.season;
+    }
 
     public int getHour() {
         return hour;
@@ -126,5 +131,30 @@ public class Time {
             return time2;
         }
         return time1;
+    }
+
+    public static Time addHour(Time time, int hour){
+        Time newTime = new Time();
+        newTime.hour = time.getHour()+hour;
+        newTime.day = time.getDay();
+        if(newTime.hour > 22){
+            newTime.hour -= 22;
+            newTime.hour += 9;
+            newTime.day ++;
+        }
+        newTime.season = time.getSeason();
+        return newTime;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Time){
+            Time time = (Time)obj;
+            boolean f1 = getHour() == time.getHour();
+            boolean f2 = getDay() == time.getDay();
+            boolean f3 = getSeason() == time.getSeason();
+            return f1 && f2 && f3;
+        }
+        return false;
     }
 }

@@ -136,7 +136,7 @@ public class Animal {
     }
 
     public void setLastFeedingTime(Time lastFeedingTime) {
-        this.lastFeedingTime = lastFeedingTime;
+        this.lastFeedingTime = new Time(lastFeedingTime);
     }
 
     public void setLastPettingTime(Time lastPetingTime) {
@@ -166,4 +166,29 @@ public class Animal {
     public void setCollected(boolean collected) {
         isCollected = collected;
     }
+
+    public boolean hasBeenFedToday(Time time) {
+        if(lastFeedingTime==null){
+            return false;
+        }
+        if(lastFeedingTime.getSeason()==time.getSeason()){
+            if(lastFeedingTime.getDay()==time.getDay()){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hasBeenPetToday(Time time) {
+        if(lastFeedingTime==null){
+            return false;
+        }
+        if(lastFeedingTime.getSeason()==time.getSeason()){
+            if(lastFeedingTime.getDay()==time.getDay()){
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

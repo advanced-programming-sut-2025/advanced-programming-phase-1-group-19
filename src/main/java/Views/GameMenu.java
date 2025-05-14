@@ -449,6 +449,9 @@ public class GameMenu implements AppMenu {
             case ratingGift:{
                 Pattern pattern = Pattern.compile("^\\s*gift rate -u (?<username>.+?) -i (?<giftNumber>.+?) -r (?<rate>.+?)\\s*$");
                 Matcher matcher = pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
                 String username = matcher.group("username");
                 int giftNumber = Integer.parseInt(matcher.group("giftNumber"));
                 int rate = Integer.parseInt(matcher.group("rate"));
@@ -456,9 +459,7 @@ public class GameMenu implements AppMenu {
                 break;
             }
             case giftList:{
-                Pattern pattern = Pattern.compile("^\\s*gift list -u (?<username>.+?)\\s*$");
-                Matcher matcher = pattern.matcher(input);
-                String username = matcher.group("username");
+                Pattern pattern = Pattern.compile("^\\s*gift list\\s*$");
                 System.out.println(gameController.listingGift().message());
                 break;
             }
@@ -469,6 +470,9 @@ public class GameMenu implements AppMenu {
             case giftHistory:{
                 Pattern pattern = Pattern.compile("^\\s*gift history -u (?<username>.+?)\\s*$");
                 Matcher matcher = pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
                 String username = matcher.group("username");
                 System.out.println(gameController.giftHistory(username).message());
                 break;
@@ -661,6 +665,19 @@ public class GameMenu implements AppMenu {
             }
             case showAnimalProducts:{
                 System.out.println(gameController.showProducts().message());
+                break;
+            }
+            case givingFlower:{
+                Pattern pattern = Pattern.compile("^\\s*flower -u (?<userName>.+?)\\s*$");
+                Matcher matcher = pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
+                String userName = matcher.group("userName");
+                System.out.println(gameController.givingFlower(userName).message());
+            }
+            case Hay:{
+                System.out.println(gameController.showHay().message());
                 break;
             }
         }
@@ -879,7 +896,7 @@ public class GameMenu implements AppMenu {
         else if(input.matches("^\\s*gift -u (?<username>.+?) -i (?<item>.+?) -a (?<amount>.+?)\\s*$")){
             runCommand(GameCommand.gifting,input);
         }
-        else if(input.matches("^\\s*gift list -u (?<username>.+?)\\s*$")) {
+        else if(input.matches("^\\s*gift list\\s*$")) {
             runCommand(GameCommand.giftList, input);
         }
         else if(input.matches("^\\s*gift rate -u (?<username>.+?) -i (?<giftNumber>.+?) -r (?<rate>.+?)\\s*$")){
@@ -944,6 +961,12 @@ public class GameMenu implements AppMenu {
         }
         else if(input.matches("^\\s*produces\\s*$")){
             runCommand(GameCommand.showAnimalProducts,"");
+        }
+        else if(input.matches("^\\s*flower -u (?<userName>.+?)\\s*$")){
+            runCommand(GameCommand.givingFlower,input);
+        }
+        else if(input.matches("^\\s*show hay\\s*$")){
+            runCommand(GameCommand.Hay,"");
         }
         else{
             System.out.println("invalid command");

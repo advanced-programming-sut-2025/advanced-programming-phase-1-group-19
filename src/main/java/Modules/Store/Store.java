@@ -1,5 +1,6 @@
 package Modules.Store;
 
+import Modules.App;
 import Modules.Crafting.CookingRecipe;
 import Modules.Crafting.CraftingRecipe;
 import Modules.Crafting.Food;
@@ -10,6 +11,8 @@ import Modules.Farming.Seed;
 import Modules.Farming.SeedType;
 import Modules.Item;
 import Modules.Map.Building;
+import Modules.Map.Map;
+import Modules.Map.Position;
 import Modules.Map.Tile;
 import Modules.Tools.Tool;
 import Modules.Tools.ToolType;
@@ -595,6 +598,27 @@ public class Store extends Building {
             }
         }
         return null;
+    }
+
+    public boolean isNear(Position position) {
+        Map map = App.getInstance().getCurrentGame().getMap();
+        int x = position.x;
+        int y = position.y;
+        for(int i = 0; i < 10; i++) {
+            int dx = (i / 3) - 1;
+            int dy = (i % 3) - 1;
+            if(dx == 0 && dy == 0){
+                continue;
+            }
+            Tile tile = map.getTile(new Position(x + dx, y + dy));
+            if(tile == null){
+                continue;
+            }
+            if(tile.getBuilding() instanceof Store && tile.getBuilding().equals(this)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

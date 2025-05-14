@@ -669,6 +669,7 @@ public class GameController extends Controller {
             stringBuilder.append("Barn Animals:\n");
             for (Animal animal1 : player.getFarm().getBarn().getAnimals()) {
                 stringBuilder.append(animal1.getName()+"\n");
+                stringBuilder.append(animal1.getFriendship()+"\n");
                 if(animal1.getLastFeedingTime()==null){
                     hasBeenFedToday = false;
                 }
@@ -701,6 +702,7 @@ public class GameController extends Controller {
             stringBuilder.append("Coop Animals:\n");
             for (Animal animal1 : player.getFarm().getCoop().getAnimals()) {
                 stringBuilder.append(animal1.getName()+"\n");
+                stringBuilder.append(animal1.getFriendship()+"\n");
                 if(animal1.getLastFeedingTime() == null){
                     hasBeenFedToday = false;
                 }
@@ -750,6 +752,7 @@ public class GameController extends Controller {
             }
             animal.setOutside(true);
             animal.setPosition(new Position(x, y));
+            animal.increaseFriendship(8);
             return new GameMessage(null,"The animal successfully moved");
         } else {
             if (animal.getType().isInCage()) {
@@ -782,7 +785,15 @@ public class GameController extends Controller {
             return new GameMessage(null, "The animal must be in the coop or barn to feed hay");
         }
         animal.setLastFeedingTime(game.getTime());
+        player.decreaseHay(2);
         return new GameMessage(null,"The animal successfully fed");
+    }
+
+    public GameMessage showHay(){
+        App app = App.getInstance();
+        Game game = app.getCurrentGame();
+        Player player = app.getCurrentGame().getCurrentPlayer();
+        return new GameMessage(null,"Hay: "+player.getHay());
     }
 
     public GameMessage showProducts(){
@@ -795,7 +806,9 @@ public class GameController extends Controller {
             for (Animal animal : player.getFarm().getBarn().getAnimals()) {
                 if(animal.doesProduce()){
                     stringBuilder.append(animal.getName()+" Produces:  ");
-                    stringBuilder.append(animal.whichProduct().getName());
+                    AnimalProduct animalProduct = animal.whichProduct();
+                    animal.setCurrentProduct(animalProduct);
+                    stringBuilder.append(animal.getCurrentProduct().getName());
                     stringBuilder.append("\n");
                 }
             }
@@ -804,7 +817,9 @@ public class GameController extends Controller {
             for (Animal animal : player.getFarm().getCoop().getAnimals()) {
                 if(animal.doesProduce()){
                     stringBuilder.append(animal.getName()+" Produces:  ");
-                    stringBuilder.append(animal.whichProduct().getName());
+                    AnimalProduct animalProduct = animal.whichProduct();
+                    animal.setCurrentProduct(animalProduct);
+                    stringBuilder.append(animal.getCurrentProduct().getName());
                     stringBuilder.append("\n");
                 }
             }
@@ -826,29 +841,37 @@ public class GameController extends Controller {
         if (animal == null) {
             return new GameMessage(null, "There is no such animal");
         }
+
         if(animal.getCurrentProduct() != null){
-            if(animal.getName().equals("cow") || animal.getName().equals("goat")){
-//               TODO:check if there is watering can in inventory
+            if(animal.getType().equals(AnimalType.cow) || animal.getType().equals(AnimalType.goat)){
+                if(!player.getBackPack().checkItem(new WateringCan(ToolType.wateringCan),1)){
+                    return new GameMessage(null, "There is no wateringCan");
+                }
                 player.decreaseEnergy(4);
                 if(player.getBackPack().getCapacity()>=player.getBackPack().getMaxCapacity()){
                     return new GameMessage(null,"There is no space in your backpack");
                 }
 
                 player.getBackPack().addItem(animal.getCurrentProduct(),1);
+                String output = animal.getCurrentProduct().getName();
                 animal.setCurrentProduct(null);
-                return new GameMessage(null,animal.getCurrentProduct().getName()+" collected");
+                animal.increaseFriendship(5);
+                return new GameMessage(null,output+" collected");
             }
-            else if(animal.getName().equals("sheep")){
-//               TODO:check if there is gheuchi in inventory
+            else if(animal.getType().equals(AnimalType.sheep)){
+                if(!player.getBackPack().checkItem(new Tool(ToolType.shear),1)){
+                    return new GameMessage(null, "There is no shear");
+                }
                 player.decreaseEnergy(4);
                 if(player.getBackPack().getCapacity()>=player.getBackPack().getMaxCapacity()){
                     return new GameMessage(null,"There is no space in your backpack");
                 }
                 player.getBackPack().addItem(animal.getCurrentProduct(),1);
                 animal.setCurrentProduct(null);
+                animal.increaseFriendship(5);
                 return new GameMessage(null,animal.getCurrentProduct().getName()+" collected");
             }
-            else if(animal.getName().equals("pig")){
+            else if(animal.getType().equals(AnimalType.pig)){
                 if(animal.isOutside()){
                     if(player.getBackPack().getCapacity()>=player.getBackPack().getMaxCapacity()){
                         return new GameMessage(null,"There is no space in your backpack");
@@ -1593,13 +1616,19 @@ public class GameController extends Controller {
         Game game = app.getCurrentGame();
         Player player = game.getCurrentPlayer();
         Store store = Store.getStoreByName(StoreName);
+
         if(store == null){
             return new GameMessage(null, "There is no store with that name");
+        }
+        if(game.getTime().getHour() > store.getClosingTime() || game.getTime().getHour() < store.getOpeningTime()){
+            return new GameMessage(null,"You can't enter a store in this hour");
         }
         if(player.getCurrentStore()!=null){
             return new GameMessage(null, "You are already in a store!");
         }
-//        TODO: check if player is near this store
+        if(store.isNear(player.getPosition())){
+            return new GameMessage(null, "You are not close enough to store!");
+        }
         player.setCurrentStore(store);
         return new GameMessage(null,"You successfully entered "+StoreName);
     }
