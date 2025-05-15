@@ -423,22 +423,22 @@ public class GameController extends Controller {
                     return new GameMessage(null, "Your tool is at maximum level!");
                 }
                 if(player.getMoney() >= 2000 && ((Tool) item).getLevel() == 0){
-                    player.decreaseEnergy(2000);
+                    player.decreaseMoney(2000);
                     ((Tool) item).upgradeLevel();
                     return new GameMessage(null, "Your tool got upgraded " + toolName);
                 }
                 else if(player.getMoney() >= 5000 && ((Tool) item).getLevel() == 1){
-                    player.decreaseEnergy(5000);
+                    player.decreaseMoney(5000);
                     ((Tool) item).upgradeLevel();
                     return new GameMessage(null, "Your tool got upgraded " + toolName);
                 }
                 else if(player.getMoney() >= 10000 && ((Tool) item).getLevel() == 2){
-                    player.decreaseEnergy(10000);
+                    player.decreaseMoney(10000);
                     ((Tool) item).upgradeLevel();
                     return new GameMessage(null, "Your tool got upgraded " + toolName);
                 }
                 else if(player.getMoney() >= 25000 && ((Tool) item).getLevel() == 3){
-                    player.decreaseEnergy(25000);
+                    player.decreaseMoney(25000);
                     ((Tool) item).upgradeLevel();
                     return new GameMessage(null, "Your tool got upgraded " + toolName);
                 }
