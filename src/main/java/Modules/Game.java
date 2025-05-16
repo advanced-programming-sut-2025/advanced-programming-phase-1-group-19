@@ -158,7 +158,6 @@ public class Game implements Serializable {
         }
         time.nextDay();
         // check all plants
-
         ArrayList<Store> stores = new ArrayList<>();
         stores.add(new Store("Clint"));
         stores.add(new Store("Morris"));

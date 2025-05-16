@@ -5,6 +5,7 @@ import Modules.App;
 import Modules.Crafting.Material;
 import Modules.Crafting.MaterialType;
 import Modules.Enums.Season;
+import Modules.Enums.SkillType;
 import Modules.Enums.Weather;
 import Modules.Farming.Crop;
 import Modules.Farming.ForagingCrop;
@@ -182,6 +183,7 @@ public class Tool extends Item implements Serializable {
                             return new GameMessage(null, "You don't have enough capacity in backpack");
                         }
                         backPack.addItem(new Crop(plant.getType().getCrop()), 1);
+                        game.getCurrentPlayer().getSkill(SkillType.farming).addAmount(5);
                         return new GameMessage(null, "You got some fruit! (" + amount + "x)");
                     } else {
                         return new GameMessage(null, "Let your tree grow as it should");

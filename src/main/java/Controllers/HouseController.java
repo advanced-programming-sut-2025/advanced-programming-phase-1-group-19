@@ -5,8 +5,7 @@ import Modules.Animal.AnimalType;
 import Modules.Animal.Barn;
 import Modules.Animal.Coop;
 import Modules.App;
-import Modules.Crafting.CookingRecipe;
-import Modules.Crafting.Food;
+import Modules.Crafting.*;
 import Modules.Enums.InGameMenu;
 import Modules.Game;
 import Modules.Interactions.Messages.GameMessage;
@@ -108,7 +107,7 @@ public class HouseController extends Controller {
                 return new GameMessage(null,"You successfully cooked the "+cookingRecipe.getProductName()+" into your backpack");
             }
         }
-        return new GameMessage(null,"You do not have this recipe");
+        return new GameMessage(null,"You haven't learned this recipe");
     }
 
     public GameMessage eatFood(String foodName){
@@ -130,6 +129,9 @@ public class HouseController extends Controller {
     public GameMessage buildBarn(String type,int x,int y) {
         App app = App.getInstance();
         Player player = app.getCurrentGame().getCurrentPlayer();
+        if(player.getCurrentStore()==null || !player.getCurrentStore().getOwnerName().equals("Robin")){
+            return new GameMessage(null,"You have to enter Carpenter's Shop");
+        }
         Position position = new Position(x, y);
         Position position1 = new Position(x+1,y);
         Position position2 = new Position(x, y+1);
@@ -165,7 +167,9 @@ public class HouseController extends Controller {
         if(!tile3.isTotallyEmpty()){
             return new GameMessage(null, "This position is not empty");
         }
-//        TODO:check if the player has enough money
+        if(!player.getBackPack().checkItem(new Material(MaterialType.wood),350) || !player.getBackPack().checkItem(new Material(MaterialType.stone),150)){
+            return new GameMessage(null, "You don't have enough materials");
+        }
         if (type.equals("Barn")) {
             Barn barn = new Barn();
             player.getFarm().setBarn(barn);

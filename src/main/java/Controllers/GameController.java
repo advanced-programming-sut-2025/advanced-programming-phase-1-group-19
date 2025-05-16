@@ -4,6 +4,8 @@ import Modules.*;
 import Modules.Animal.*;
 import Modules.Communication.FriendShip;
 import Modules.Communication.Gift;
+import Modules.Crafting.CookingRecipe;
+import Modules.Crafting.CraftingRecipe;
 import Modules.Crafting.Material;
 import Modules.Crafting.MaterialType;
 import Modules.Enums.*;
@@ -1801,6 +1803,28 @@ public class GameController extends Controller {
             }
         }
         return new GameMessage(null, "You don't have this item!");
+    }
+
+    public GameMessage cheatAddRecipe(String recipe){
+        App app = App.getInstance();
+        Game game = app.getCurrentGame();
+        Player player = game.getCurrentPlayer();
+        CraftingRecipe newRecipe = CraftingRecipe.getCraftingRecipeByName(recipe);
+        CookingRecipe cookingRecipe = null;
+        if(newRecipe == null){
+            cookingRecipe = CookingRecipe.getCookingRecipeByName(recipe);
+        }
+        else {
+            player.addKnownCraftingRecipe(newRecipe);
+            return new GameMessage(null,"You successfully added  this recipe");
+        }
+        if(cookingRecipe == null){
+            return new GameMessage(null, "There is no recipe with that name");
+        }
+        else{
+            player.addKnownCookingRecipe(cookingRecipe);
+            return new GameMessage(null,"You successfully added  this recipe");
+        }
     }
 
     @Override

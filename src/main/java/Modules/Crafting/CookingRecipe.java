@@ -19,7 +19,7 @@ public enum CookingRecipe implements Recipe, Serializable {
     omelet("omelet", new HashMap<>() {{
         put(new AnimalProduct(AnimalProductType.egg), 1);
         put(new AnimalProduct(AnimalProductType.milk), 1);
-    }}, 125, null, 100),
+    }}, 125, null, 10),
     bakedFish("baked Fish", new HashMap<>(){{
         put(new Fish(FishType.sardine), 1);
         put(new Fish(FishType.salmon), 1);

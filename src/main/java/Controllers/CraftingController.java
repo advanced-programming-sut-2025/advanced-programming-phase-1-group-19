@@ -74,20 +74,7 @@ public class CraftingController extends Controller {
         return new GameMessage(null,"You successfully craft "+craftName+"!");
     }
 
-    public GameMessage cheatAddRecipe(String recipe){
-        App app = App.getInstance();
-        Game game = app.getCurrentGame();
-        Player player = game.getCurrentPlayer();
-        if(game.getInGameMenu() != InGameMenu.craftingMenu){
-            return new GameMessage(null,"You are not in crafting menu");
-        }
-        CraftingRecipe newRecipe = CraftingRecipe.getCraftingRecipeByName(recipe);
-        if(newRecipe == null){
-            return new GameMessage(null,"There is no item with this name");
-        }
-        player.addKnownCraftingRecipe(newRecipe);
-        return new GameMessage(null,"You successfully added  this recipe");
-    }
+
 
 
     @Override

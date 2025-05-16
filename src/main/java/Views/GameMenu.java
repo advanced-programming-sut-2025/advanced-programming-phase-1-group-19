@@ -722,7 +722,7 @@ public class GameMenu implements AppMenu {
                     System.out.println("invalid command!");
                 }
                 String recipeName = matcher.group("recipeName");
-                System.out.println(craftingController.cheatAddRecipe(recipeName).message());
+                System.out.println(gameController.cheatAddRecipe(recipeName).message());
                 break;
             }
             case showAnimalProducts:{
