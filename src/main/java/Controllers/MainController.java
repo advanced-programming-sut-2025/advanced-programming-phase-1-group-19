@@ -4,6 +4,7 @@ import Modules.App;
 import Modules.Enums.Menu;
 import Modules.Interactions.Messages.MainMessage;
 import Modules.Interactions.Messages.Message;
+import com.sun.tools.javac.Main;
 
 public class MainController extends Controller {
     private static MainController instance;
@@ -40,6 +41,15 @@ public class MainController extends Controller {
             }
         }
         return new MainMessage(null, "You can just go to profile or game menu");
+    }
+
+    public MainMessage exitApp() {
+        App app = App.getInstance();
+        if(!app.isStayLoggedIn()) {
+            logout();
+        }
+        app.saveApp();
+        return null;
     }
 
     @Override

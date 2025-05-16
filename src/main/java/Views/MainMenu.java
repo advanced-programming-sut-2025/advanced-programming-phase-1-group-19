@@ -46,8 +46,14 @@ public class MainMenu implements AppMenu {
                 System.out.println(controller.logout().message());
                 break;
             }
+            case exitApp: {
+                System.out.println(controller.exitApp().message());
+                break;
+            }
             case exit:{
-                System.out.println(controller.exit().message());
+                controller.exit();
+                System.out.println("you have exited the app!");
+                System.exit(0);
                 break;
             }
         }
@@ -67,6 +73,9 @@ public class MainMenu implements AppMenu {
         }
         else if(input.matches("^\\s*user logout\\s*$")){
             runCommand(MainCommand.logout, input);
+        }
+        else if(input.matches("^exit app$")) {
+            runCommand(MainCommand.exitApp, input);
         }
         else if(input.matches("^\\s*exit\\s*$")){
             runCommand(MainCommand.exit, input);
