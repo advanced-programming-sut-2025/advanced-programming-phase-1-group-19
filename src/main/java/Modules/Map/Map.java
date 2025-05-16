@@ -49,8 +49,8 @@ public class Map implements Serializable {
 
     public void setNewDayForaging() {
         Random rand = new Random();
-        for(int i = 0; i < 100; i++) {
-            for(int j = 0; j < 100; j++) {
+        for(int i = 0; i < 250; i++) {
+            for(int j = 0; j < 250; j++) {
                 if(i == 50 && j == 50) {
                     continue;
                 }

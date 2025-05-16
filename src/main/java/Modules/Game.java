@@ -91,17 +91,12 @@ public class Game implements Serializable {
             case rain -> {
 //                watering plants automatically
                 autoWaterPlant();
-//                TODO:1.5x while using tools
-                break;
             }
             case storm -> {
 //                TODO:has rain affects and also break trees
                 autoWaterPlant();
-                break;
             }
             case snow -> {
-//                TODO:1.5x while using tools
-                break;
             }
         }
 
@@ -246,8 +241,11 @@ public class Game implements Serializable {
                 Tile tile = map.getTile(new Position(i, j));
                 if (tile != null) {
                     if (tile.getBuilding() == null && tile.getObject() instanceof Plant) {
-                        if (rand.nextInt(64) == 0) {
-                            tile.setObject(null);
+                        Plant plant = (Plant) tile.getObject();
+                        if(plant.getGianPosition() == -1) {
+                            if (rand.nextInt(64) == 0) {
+                                tile.setObject(null);
+                            }
                         }
                     }
                 }
@@ -258,8 +256,8 @@ public class Game implements Serializable {
     public void thor() {
         for (Player player : players) {
             for (int i = 0; i < 3; i++) {
-                int x = player.getFarm().getTopLeft().x + 2 + (int) (Math.random() * 70);
-                int y = player.getFarm().getTopLeft().y + 2 + (int) (Math.random() * 70);
+                int x = player.getFarm().getTopLeft().x + 2 + (int) (Math.random() * 90);
+                int y = player.getFarm().getTopLeft().y + 2 + (int) (Math.random() * 90);
                 thor(new Position(x, y));
             }
         }
