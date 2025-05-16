@@ -14,6 +14,8 @@ public enum GameCommand implements Command {
     loadGame,
     startNewGame,
     walk,
+    cheatTP,
+    showMoney,
     printMap,
     helpPrintMap,
     weather,

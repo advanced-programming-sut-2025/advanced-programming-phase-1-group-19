@@ -125,6 +125,22 @@ public class GameMenu implements AppMenu {
                 System.out.println(gameController.walk(new Position(x, y)).message());
                 break;
             }
+            case cheatTP: {
+                Pattern pattern = Pattern.compile("^TP -l (?<x>\\d+) (?<y>\\d+)");
+                Matcher matcher = pattern.matcher(input);
+
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
+                int x = Integer.parseInt(matcher.group("x"));
+                int y = Integer.parseInt(matcher.group("y"));
+                System.out.println(gameController.cheatTP(new Position(x, y)).message());
+                break;
+            }
+            case showMoney: {
+                System.out.println(gameController.showMoney().message());
+                break;
+            }
             case printMap: {
                 Pattern pattern = Pattern.compile("^print map -l (?<x>\\d+) (?<y>\\d+) -s (?<size>\\d+)$");
                 Matcher matcher = pattern.matcher(input);
@@ -790,6 +806,12 @@ public class GameMenu implements AppMenu {
         }
         else if(input.matches("^walk -l (?<x>\\d+) (?<y>\\d+)$")) {
             runCommand(GameCommand.walk, input);
+        }
+        else if(input.matches("^TP -l (?<x>\\d+) (?<y>\\d+)$")) {
+            runCommand(GameCommand.cheatTP, input);
+        }
+        else if(input.matches("^show money$")) {
+            runCommand(GameCommand.showMoney, input);
         }
         else if(input.matches("^print map -l (?<x>\\d+) (?<y>\\d+) -s (?<size>\\d+)$")) {
             runCommand(GameCommand.printMap, input);

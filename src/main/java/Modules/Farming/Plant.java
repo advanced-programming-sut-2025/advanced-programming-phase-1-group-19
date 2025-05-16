@@ -42,6 +42,10 @@ public class Plant extends TileObject implements Serializable {
         return regrownTimes;
     }
 
+    public void addRegrownTimes() {
+        regrownTimes++;
+    }
+
     public int getGianPosition() {
         return gianPosition;
     }

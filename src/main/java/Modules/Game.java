@@ -81,19 +81,19 @@ public class Game implements Serializable {
     }
 
     public void nextDay() {
-//        TODO: handle crow attack and thor attack of the new day
 //        TODO: fix fainted players
 //        TODO: handle special effect for each Weather!
         // todayWeather for nextDay is tomrrowWeather for today!
         todayWeather = tomrrowWeather;
         setTomorrowWeather();
-        switch (tomrrowWeather) {
+        switch (todayWeather) {
             case rain -> {
 //                watering plants automatically
                 autoWaterPlant();
             }
             case storm -> {
 //                TODO:has rain affects and also break trees
+                thor();
                 autoWaterPlant();
             }
             case snow -> {
@@ -211,8 +211,11 @@ public class Game implements Serializable {
                 }
             }
         }
+
+        for(Player player : players) {
+            player.resetEnergy();
+        }
         resetMoney();
-        thor();
         crowAttack();
         map.setNewDayForaging();
     }

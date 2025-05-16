@@ -263,4 +263,14 @@ public class Player implements Serializable {
     public void resetMoney(){
         this.featureMoney = 0;
     }
+
+    public void resetEnergy(){
+        if(!energy.isFainted()) {
+            energy.amount = energy.maxAmount;
+        }
+        else {
+            energy.isFainted = false;
+            energy.amount = (int)(energy.maxAmount * 0.75);
+        }
+    }
 }

@@ -140,6 +140,7 @@ public class GameController extends Controller {
         }
         app.setCurrentGame(user.getCurrentGame());
         app.setCurrentGameStarter(user);
+        app.setCurrentUser(user.getCurrentGame().getCurrentPlayer().getUser());
         return new GameMessage(null, "Game loaded successfully!");
     }
 
@@ -176,7 +177,9 @@ public class GameController extends Controller {
         }
         if (quit) {
             for (Player player : App.getInstance().getCurrentGame().getPlayers()) {
-                player.getUser().setCurrentGame(null);
+                User user = player.getUser();
+                user.setCurrentGame(null);
+                user.addGamesMoney(player.getMoney());
             }
             App.getInstance().getGames().remove(App.getInstance().getCurrentGame());
             App.getInstance().setCurrentGame(null);
@@ -271,21 +274,65 @@ public class GameController extends Controller {
             return new GameMessage(null, "Ops, sorry you cant go there");
         }
         int moves = 0;
+        int turns = 0;
         String faintMessage = "";
-        for (Tile tile : path) {
+        for (int i = 0; i < path.size(); i++) {
+            Tile tile = path.get(i);
             player.setPosition(tile.getPosition());
             moves++;
+            if(i != path.size()-1 && i != 0){
+                Tile prev = path.get(i-1);
+                Tile next = path.get(i+1);
+                if(prev.getPosition().x != next.getPosition().x && prev.getPosition().y != next.getPosition().y){
+                    turns++;
+                }
+            }
             if (moves % 20 == 0) {
                 player.decreaseEnergy(1);
                 if(player.getEnergy().getAmount() == 0){
                     player.setFainted(true);
+                    faintMessage = "Oh you have fainted middle way :(\n";
+                    nextTurn();
                     break;
                 }
-//                TODO: go to next person and faint if energy == 0
-//                TODO: set faintMessage to "Oh you have fainted middle way :(\n"
+            }
+            if (turns % 5 == 0) {
+                player.decreaseEnergy(1);
+                if(player.getEnergy().getAmount() == 0){
+                    player.setFainted(true);
+                    faintMessage = "Oh you have fainted middle way :(\n";
+                    nextTurn();
+                    break;
+                }
             }
         }
         return new GameMessage(null, faintMessage + "Your current position is (" + player.getPosition().x + ", " + player.getPosition().y + ")");
+    }
+
+    public GameMessage cheatTP(Position end) {
+        Game game = app.getCurrentGame();
+        Map map = game.getMap();
+        Player player = game.getCurrentPlayer();
+        Position start = player.getPosition();
+        if (start.equals(end)) {
+            return new GameMessage(null, "Dude you are already there :/");
+        }
+        if(map.getTile(end) == null){
+            return new GameMessage(null, "No transpassing");
+        }
+        if(map.getTile(end).getBuilding() instanceof Lake || map.getTile(end).getBuilding() instanceof Quarry){
+            return new GameMessage(null, "What are you thinking? You can't go there!");
+        }
+        if(!map.getTile(end).isTotallyEmpty()) {
+            return new GameMessage(null, "Ops, sorry you cant go there");
+        }
+        player.setPosition(end);
+        return new GameMessage(null, "Teleported successfully!\nYour current position is (" + player.getPosition().x + ", " + player.getPosition().y + ")");
+    }
+
+    public GameMessage showMoney() {
+        int money = app.getCurrentGame().getCurrentPlayer().getMoney();
+        return new GameMessage(null, String.valueOf(money));
     }
 
     public GameMessage cheatForecast(String weather) {
@@ -1363,7 +1410,7 @@ public class GameController extends Controller {
             }
             if (t[i].containsPlant()) {
                 p[i] = (Plant) t[i].getObject();
-                if (p[i].getType().getSeed().equals(seedType) && p[i].getGianPosition() == -1) {
+                if (p[i].getType().getSeed().equals(seedType) && p[i].getGianPosition() == -1 && p[i].getRegrownTimes() == 0) {
                     flag[i] = true;
                 }
             }

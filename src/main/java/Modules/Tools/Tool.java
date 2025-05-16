@@ -109,8 +109,12 @@ public class Tool extends Item implements Serializable {
                     game.getCurrentPlayer().decreaseEnergy(energy);
                     return new GameMessage(null, "You couldn't use this tool.");
                 } else {
+                    Plant plant = (Plant) tile.getObject();
                     game.getCurrentPlayer().decreaseEnergy(energy);
                     tile.setObject(null);
+                    if(plant.getType().isTree()) {
+                        tile.setObject(new Seed(plant.getType().getSeed()));
+                    }
                     game.getCurrentPlayer().getBackPack().addItem(new Material(MaterialType.wood), 50);
                     return new GameMessage(null, "You chopped this tile");
                 }
