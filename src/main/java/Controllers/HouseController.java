@@ -199,6 +199,9 @@ public class HouseController extends Controller {
         App app = App.getInstance();
         Player player=app.getCurrentGame().getCurrentPlayer();
         AnimalType animalType1=AnimalType.getAnimalTypeByName(animalType);
+        if(!player.getCurrentStore().getOwnerName().equals("Marnie")){
+            return new GameMessage(null, "You must enter Marnie's Ranch");
+        }
         if(animalType1==null){
             return new GameMessage(null,"There is no such animal");
         }

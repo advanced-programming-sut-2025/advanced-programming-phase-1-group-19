@@ -1,5 +1,7 @@
 package Modules.Communication;
 
+import Modules.App;
+
 import java.io.Serializable;
 
 public class NPCFriendship implements Serializable {
@@ -18,9 +20,13 @@ public class NPCFriendship implements Serializable {
     public void increaseXp(int amount) {
         xp += amount;
         if(level == 0 && xp >= 200){
+            App.getInstance().getCurrentGame().getCurrentPlayer().getNPCQuests().get(2).addActiveQuest();
             level = 1;
         }
         else if(level == 1 && xp >= 400){
+            for(int i=0 ;i<5 ;i++){
+                App.getInstance().getCurrentGame().getCurrentPlayer().getNPCQuests().get(i).setTwice(true);
+            }
             level = 2;
         }
         else if(level == 2 && xp >= 600){
@@ -64,4 +70,5 @@ public class NPCFriendship implements Serializable {
             this.xp = 200 * level;
         }
     }
+
 }

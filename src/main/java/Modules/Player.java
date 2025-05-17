@@ -73,15 +73,28 @@ public class Player implements Serializable {
         buffedEnergy = 0;
         friendShips = new ArrayList<>();
         npcs = new ArrayList<>();
-//        npcs.add(new NPC("Sebastian"));
-//        npcs.add(new NPC("Abigail"));
-//        npcs.add(new NPC("Harvey"));
-//        npcs.add(new NPC("Lia"));
-//        npcs.add(new NPC("Robin"));
+        npcs.add(new NPC("Sebastian"));
+        npcs.add(new NPC("Abigail"));
+        npcs.add(new NPC("Harvey"));
+        npcs.add(new NPC("Lia"));
+        npcs.add(new NPC("Robin"));
         for (SkillType skillType : SkillType.values()) {
             skills.put(skillType, new Skill(skillType));
         }
         this.Hay = 100;
+        this.NPCFriendships = new ArrayList<>();
+        this.NPCFriendships.add(new NPCFriendship(npcs.get(0)));
+        this.NPCFriendships.add(new NPCFriendship(npcs.get(1)));
+        this.NPCFriendships.add(new NPCFriendship(npcs.get(2)));
+        this.NPCFriendships.add(new NPCFriendship(npcs.get(3)));
+        this.NPCFriendships.add(new NPCFriendship(npcs.get(4)));
+
+        this.NPCQuests = new ArrayList<>();
+        this.NPCQuests.add(new NPCQuest(npcs.get(0)));
+        this.NPCQuests.add(new NPCQuest(npcs.get(1)));
+        this.NPCQuests.add(new NPCQuest(npcs.get(2)));
+        this.NPCQuests.add(new NPCQuest(npcs.get(3)));
+        this.NPCQuests.add(new NPCQuest(npcs.get(4)));
     }
 
     public ArrayList<FriendShip> getFriendShips() {

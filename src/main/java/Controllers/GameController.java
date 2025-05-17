@@ -647,6 +647,9 @@ public class GameController extends Controller {
                 all[p.x - position.x][p.y - position.y] = Character.forDigit(i+1, 10);
             }
         }
+        for(Position position1 : NPC.allPositions){
+            all[position1.x][position1.y] = 'N';
+        }
         StringBuilder ret = new StringBuilder();
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
@@ -670,6 +673,7 @@ public class GameController extends Controller {
         ret += "C ~> coop\n";
         ret += "S ~> store\n";
         ret += "s ~> shipping bin\n";
+        ret += "N ~> NPC\n";
 
 //        TODO: fix this if needed to show other stuff
         return new GameMessage(null, ret);
@@ -1565,7 +1569,7 @@ public class GameController extends Controller {
         Player player = game.getCurrentPlayer();
         StringBuilder stringBuilder = new StringBuilder();
         for (FriendShip friendShip : player.getFriendShips()) {
-            stringBuilder.append("Your friendship with: "+friendShip.getPlayer().getUser().getUsername()+"   "+"xp: "+friendShip.getXp()+"\n");
+            stringBuilder.append("Your friendship with: "+friendShip.getPlayer().getUser().getUsername()+"   "+"xp: "+friendShip.getXp()+"   level: "+friendShip.getLevel()+"\n");
         }
         return new GameMessage(null, stringBuilder.toString());
     }
@@ -1581,9 +1585,9 @@ public class GameController extends Controller {
         if(player.getUser().getUsername().equals(username)) {
             return new GameMessage(null, "You can not talk to your self!");
         }
-//        if(!(Math.abs(player2.getPosition().x - player.getPosition().x) <= 1 && Math.abs(player2.getPosition().y - player.getPosition().y) <= 1)) {
-//            return new GameMessage(null, "You aren't close enough to talk!");
-//        }
+        if(!(Math.abs(player2.getPosition().x - player.getPosition().x) <= 1 && Math.abs(player2.getPosition().y - player.getPosition().y) <= 1)) {
+            return new GameMessage(null, "You aren't close enough to talk!");
+        }
         player.getFriendShipByPlayer(player2).addMessage(message);
         player2.getFriendShipByPlayer(player).addMessage(message);
         player.getFriendShipByPlayer(player2).increaseXp(20);
@@ -1618,9 +1622,9 @@ public class GameController extends Controller {
         if(player.getFriendShipByPlayer(player2).getLevel() < 1){
             return new GameMessage(null, "You can't gift in this level");
         }
-//        if(!(Math.abs(player2.getPosition().x - player.getPosition().x) <= 1 && Math.abs(player2.getPosition().y - player.getPosition().y) <= 1)) {
-//            return new GameMessage(null, "You aren't close enough");
-//        }
+        if(!(Math.abs(player2.getPosition().x - player.getPosition().x) <= 1 && Math.abs(player2.getPosition().y - player.getPosition().y) <= 1)) {
+            return new GameMessage(null, "You aren't close enough");
+        }
         Item item=player.getBackPack().getItemByName(itemName);
         if(item == null) {
             return new GameMessage(null, "There is no item with that name in your backpack!");
@@ -1630,7 +1634,7 @@ public class GameController extends Controller {
         }
         player.getBackPack().removeItem(item, amount);
         player2.getBackPack().addItem(item, amount);
-        player2.getFriendShipByPlayer(player).addGift(new Gift(item, amount));
+        player.getFriendShipByPlayer(player2).addGift(new Gift(item, amount));
         player2.getFriendShipByPlayer(player).addMessage("__You have received "+amount+" "+itemName+" from "+player.getUser().getUsername()+" as a gift__");
         return new GameMessage(null,"You successfully gifted "+username);
     }
@@ -1706,9 +1710,9 @@ public class GameController extends Controller {
         if(player.getFriendShipByPlayer(player2).getLevel() < 2) {
             return new GameMessage(null, "You can't hug in this level");
         }
-//        if(!(Math.abs(player2.getPosition().x - player.getPosition().x) <= 1 && Math.abs(player2.getPosition().y - player.getPosition().y) <= 1)) {
-//            return new GameMessage(null, "You aren't close enough");
-//        }
+        if(!(Math.abs(player2.getPosition().x - player.getPosition().x) <= 1 && Math.abs(player2.getPosition().y - player.getPosition().y) <= 1)) {
+            return new GameMessage(null, "You aren't close enough");
+        }
         player2.getFriendShipByPlayer(player).increaseXp(60);
         player.getFriendShipByPlayer(player2).increaseXp(60);
         return new GameMessage(null,"You successfully hugged "+username);
@@ -1722,8 +1726,11 @@ public class GameController extends Controller {
         if(player2 == null) {
             return new GameMessage(null, "There is no player with that username in this game!");
         }
-        if(player.getFriendShipByPlayer(player2).getLevel() < 2) {
-            return new GameMessage(null, "You can't gift flower in this level");
+        if(player.getFriendShipByPlayer(player2).getXp() != 300) {
+            return new GameMessage(null, "You can't gift flower with this xp");
+        }
+        if(!(Math.abs(player2.getPosition().x - player.getPosition().x) <= 1 && Math.abs(player2.getPosition().y - player.getPosition().y) <= 1)) {
+            return new GameMessage(null, "You aren't close enough");
         }
         Item item =new Material(MaterialType.bouquet);
         if(!player.getBackPack().checkItem(item,1)){
@@ -1751,6 +1758,12 @@ public class GameController extends Controller {
         }
         if(player.getUser().getGender().equals(player2.getUser().getGender())) {
            return new GameMessage(null, "You can't marriage with your gender");
+        }
+        if(!(Math.abs(player2.getPosition().x - player.getPosition().x) <= 1 && Math.abs(player2.getPosition().y - player.getPosition().y) <= 1)) {
+            return new GameMessage(null, "You aren't close enough");
+        }
+        if(player.getFriendShipByPlayer(player2).isAreMarried()) {
+            return new GameMessage(null, "You are already married ");
         }
         if(player.getFriendShipByPlayer(player2).getLevel() <3){
             return new GameMessage(null, "You can't marriage in this level");
@@ -1786,6 +1799,8 @@ public class GameController extends Controller {
         }
         ask.getFriendShipByPlayer(answer).setLevel(4);
         answer.getFriendShipByPlayer(ask).setLevel(4);
+        ask.getFriendShipByPlayer(answer).setAreMarried(true);
+        answer.getFriendShipByPlayer(ask).setAreMarried(true);
         ask.getBackPack().removeItem(new Material(MaterialType.weddingRing),1);
         answer.getBackPack().addItem(new Material(MaterialType.weddingRing),1);
         return new GameMessage(null,"You accepted "+ask.getUser().getUsername());
@@ -1914,11 +1929,14 @@ public class GameController extends Controller {
         if(item instanceof Tool){
             return new GameMessage(null, "You can not gift tool to NPC");
         }
+        if(!player.getBackPack().checkItem(item,1)){
+            return new GameMessage(null,"You don't have this item in your backpack!");
+        }
         if(npc.checkFavorite(item)){
-            player.getNpcFriendshipByName(NPCName).increaseXp(50);
+            player.getNpcFriendshipByName(NPCName).increaseXp(200);
         }
         else{
-            player.getNpcFriendshipByName(NPCName).increaseXp(200);
+            player.getNpcFriendshipByName(NPCName).increaseXp(50);
         }
         return new GameMessage(null,"You have successfully gifted " + NPCName);
     }
@@ -1945,7 +1963,7 @@ public class GameController extends Controller {
         stringBuilder.append("These are your quests:\n");
         for (NPCQuest npcQuest : player.getNPCQuests()) {
             stringBuilder.append(npcQuest.getNpc().getName() + ":\n");
-            stringBuilder.append(npcQuest.getRequests().get(npcQuest.getActiveQuest()).getKey().getName() + npcQuest.getRequests().get(npcQuest.getActiveQuest()).getValue());
+            stringBuilder.append(npcQuest.getRequests().get(npcQuest.getActiveQuest()).getKey().getName() +" "+ npcQuest.getRequests().get(npcQuest.getActiveQuest()).getValue()+"\n\n");
         }
         return new GameMessage(null,stringBuilder.toString());
     }
@@ -1964,69 +1982,148 @@ public class GameController extends Controller {
         player.getBackPack().removeItem(quest.getRequests().get(quest.getActiveQuest()).getKey(),quest.getRequests().get(quest.getActiveQuest()).getValue());
         quest.setIsDone(true);
         if(quest.getNpc().getName().equals("Sebastian")){
-            switch (quest.getActiveQuest()){
-                case 0:{
-                    player.getBackPack().addItem(new Material(MaterialType.diamond),2);
-                    break;
-                }
-                case 1:{
-                    player.addMoney(5000);
-                    break;
-                }
-                case 2:{
-                    player.getBackPack().addItem(new Material(MaterialType.quartz),2);
-                    break;
+            if(quest.isTwiceReward()){
+                switch (quest.getActiveQuest()){
+                    case 0:{
+                        player.getBackPack().addItem(new Material(MaterialType.diamond),4);
+                        break;
+                    }
+                    case 1:{
+                        player.addMoney(10000);
+                        break;
+                    }
+                    case 2:{
+                        player.getBackPack().addItem(new Material(MaterialType.quartz),4);
+                        break;
+                    }
                 }
             }
+            else{
+                switch (quest.getActiveQuest()){
+                    case 0:{
+                        player.getBackPack().addItem(new Material(MaterialType.diamond),2);
+                        break;
+                    }
+                    case 1:{
+                        player.addMoney(5000);
+                        break;
+                    }
+                    case 2:{
+                        player.getBackPack().addItem(new Material(MaterialType.quartz),2);
+                        break;
+                    }
+                }
+            }
+
         }
         else if(quest.getNpc().getName().equals("Abigail")){
-            switch (quest.getActiveQuest()){
-                case 0:{
-                    player.getNpcFriendshipByName("Abigail").addLevel();
-                    break;
-                }
-                case 1:{
-                    player.addMoney(500);
-                    break;
-                }
-                case 2:{
-                    WateringCan wateringCan = new WateringCan(ToolType.wateringCan);
-                    wateringCan.upgradeLevel();
-                    wateringCan.upgradeLevel();
-                    wateringCan.upgradeLevel();
-                    wateringCan.upgradeLevel();
-                    player.getBackPack().addItem(wateringCan,1);
-                    break;
+            if(quest.isTwiceReward()){
+                switch (quest.getActiveQuest()){
+                    case 0:{
+                        player.getNpcFriendshipByName("Abigail").addLevel();
+                        player.getNpcFriendshipByName("Abigail").addLevel();
+                        break;
+                    }
+                    case 1:{
+                        player.addMoney(1000);
+                        break;
+                    }
+                    case 2:{
+                        WateringCan wateringCan = new WateringCan(ToolType.wateringCan);
+                        wateringCan.upgradeLevel();
+                        wateringCan.upgradeLevel();
+                        wateringCan.upgradeLevel();
+                        wateringCan.upgradeLevel();
+                        player.getBackPack().addItem(wateringCan,2);
+                        break;
+                    }
                 }
             }
+            else{
+                switch (quest.getActiveQuest()){
+                    case 0:{
+                        player.getNpcFriendshipByName("Abigail").addLevel();
+                        break;
+                    }
+                    case 1:{
+                        player.addMoney(500);
+                        break;
+                    }
+                    case 2:{
+                        WateringCan wateringCan = new WateringCan(ToolType.wateringCan);
+                        wateringCan.upgradeLevel();
+                        wateringCan.upgradeLevel();
+                        wateringCan.upgradeLevel();
+                        wateringCan.upgradeLevel();
+                        player.getBackPack().addItem(wateringCan,1);
+                        break;
+                    }
+                }
+            }
+
         }
         else if(quest.getNpc().getName().equals("Harvey")){
-            switch (quest.getActiveQuest()){
-                case 0:{
-                    player.addMoney(750);
-                    break;
-                }
-                case 1:{
-                    player.getNpcFriendshipByName("Harvey").addLevel();
-                    break;
-                }
-                case 2:{
-                    player.getBackPack().addItem(new Food(CookingRecipe.salad),5);
-                    break;
+            if(quest.isTwiceReward()){
+                switch (quest.getActiveQuest()){
+                    case 0:{
+                        player.addMoney(1500);
+                        break;
+                    }
+                    case 1:{
+                        player.getNpcFriendshipByName("Harvey").addLevel();
+                        player.getNpcFriendshipByName("Harvey").addLevel();
+                        break;
+                    }
+                    case 2:{
+                        player.getBackPack().addItem(new Food(CookingRecipe.salad),10);
+                        break;
+                    }
                 }
             }
+            else{
+                switch (quest.getActiveQuest()){
+                    case 0:{
+                        player.addMoney(750);
+                        break;
+                    }
+                    case 1:{
+                        player.getNpcFriendshipByName("Harvey").addLevel();
+                        break;
+                    }
+                    case 2:{
+                        player.getBackPack().addItem(new Food(CookingRecipe.salad),5);
+                        break;
+                    }
+                }
+            }
+
         }
         else if(quest.getNpc().getName().equals("Lia")){
-            switch (quest.getActiveQuest()){
-                case 0:{
-                    player.addMoney(500);
-                    break;
-                }
-                case 1, 2:{
-                    player.addKnownCookingRecipe(CookingRecipe.salmonDinner);
-                    break;
+            if(quest.isTwiceReward()){
+                switch (quest.getActiveQuest()){
+                    case 0:{
+                        player.addMoney(1000);
+                        break;
+                    }
+                    case 1, 2:{
+                        player.addKnownCookingRecipe(CookingRecipe.salmonDinner);
+                        break;
+                    }
                 }
             }
+            else{
+                switch (quest.getActiveQuest()){
+                    case 0:{
+                        player.addMoney(500);
+                        break;
+                    }
+                    case 1, 2:{
+                        player.addKnownCookingRecipe(CookingRecipe.salmonDinner);
+                        break;
+                    }
+                }
+            }
+
         }
         else if(quest.getNpc().getName().equals("Robin")){
             switch (quest.getActiveQuest()){
@@ -2044,7 +2141,26 @@ public class GameController extends Controller {
                 }
             }
         }
+        quest.addActiveQuest();
         return new GameMessage(null,"You successfully done the quest");
+    }
+
+    public GameMessage openTradeMenu(){
+        App app = App.getInstance();
+        Game game = app.getCurrentGame();
+        Player player = game.getCurrentPlayer();
+        game.setInGameMenu(InGameMenu.tradeMenu);
+        return new GameMessage(null,"You opened the trade menu");
+    }
+
+    public GameMessage closeTradeMenu(){
+        App app = App.getInstance();
+        Game game = app.getCurrentGame();
+        if(game.getInGameMenu() != InGameMenu.tradeMenu){
+            return new GameMessage(null,"You are not in a trade menu");
+        }
+        game.setInGameMenu(null);
+        return new GameMessage(null,"You have been closed the trade menu");
     }
 
     @Override

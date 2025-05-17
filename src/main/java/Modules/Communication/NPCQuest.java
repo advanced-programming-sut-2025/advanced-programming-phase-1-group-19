@@ -25,6 +25,7 @@ public class NPCQuest implements Serializable {
     private NPC npc;
     private int activeQuest;
     private boolean isDone = false;
+    private boolean twiceReward = false;
     public NPCQuest(NPC npc) {
         this.npc = npc;
         requests = new ArrayList<>();
@@ -88,6 +89,14 @@ public class NPCQuest implements Serializable {
 
     public void setIsDone(boolean isDone) {
         this.isDone = isDone;
+    }
+
+    public void setTwice(boolean twice) {
+        this.twiceReward = twice;
+    }
+
+    public boolean isTwiceReward() {
+        return twiceReward;
     }
 
     public boolean isDone() {

@@ -37,7 +37,6 @@ public class Game implements Serializable {
         todayWeather = Weather.getRandomWeather(Season.spring);
         tomrrowWeather = Weather.getRandomWeather(Season.spring);
         this.stores = stores;
-        //this.npcs.a
     }
 
     public ArrayList<Player> getPlayers() {

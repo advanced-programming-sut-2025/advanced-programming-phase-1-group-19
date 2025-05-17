@@ -11,10 +11,12 @@ import Modules.Farming.Crop;
 import Modules.Farming.CropType;
 import Modules.Game;
 import Modules.Item;
+import Modules.Map.Position;
 import Modules.Map.TileObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Objects;
 
 public class NPC extends TileObject implements Serializable {
@@ -24,6 +26,10 @@ public class NPC extends TileObject implements Serializable {
     private NPCDialogue dialogue;
     private NPCFriendship friendship;
     private NPCQuest quest;
+    private Position position;
+
+    public static HashSet<Position> allPositions = new HashSet<>();
+
     public NPC(String name) {
         switch (name){
             case "Sebastian":{
@@ -32,6 +38,7 @@ public class NPC extends TileObject implements Serializable {
                 favoriteItems.add(new AnimalProduct(AnimalProductType.wool));
                 favoriteItems.add(new Food(CookingRecipe.pumpkinPie));
                 favoriteItems.add(new Food(CookingRecipe.pizza));
+                position = new Position(140, 110);
                 break;
             }
             case "Abigail":{
@@ -40,6 +47,7 @@ public class NPC extends TileObject implements Serializable {
                 favoriteItems.add(new Material(MaterialType.stone));
                 favoriteItems.add(new Material(MaterialType.ironOre));
                 favoriteItems.add(new Material(MaterialType.coffee));
+                position = new Position(140, 115);
                 break;
             }
             case "Harvey":{
@@ -48,6 +56,7 @@ public class NPC extends TileObject implements Serializable {
                 favoriteItems.add(new Material(MaterialType.coffee));
                 favoriteItems.add(new Material(MaterialType.pickle));
                 favoriteItems.add(new Material(MaterialType.wine));
+                position = new Position(140, 120);
                 break;
             }
             case "Lia":{
@@ -55,6 +64,7 @@ public class NPC extends TileObject implements Serializable {
                 this.job = "Chef";
                 favoriteItems.add(new Crop(CropType.grape));
                 favoriteItems.add(new Material(MaterialType.wine));
+                position = new Position(140, 125);
                 break;
             }
             case "Robin":{
@@ -63,11 +73,13 @@ public class NPC extends TileObject implements Serializable {
                 favoriteItems.add(new Food(CookingRecipe.pizza));
                 favoriteItems.add(new Material(MaterialType.wood));
                 favoriteItems.add(new Material(MaterialType.ironBar));
+                position = new Position(140, 130);
                 break;
             }
         }
         this.dialogue = new NPCDialogue(this);
         this.quest = new NPCQuest(this);
+        allPositions.add(position);
     }
 
     public static NPC getNPCByName(String name){

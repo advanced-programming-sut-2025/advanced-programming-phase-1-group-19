@@ -757,6 +757,7 @@ public class GameMenu implements AppMenu {
                 }
                 String userName = matcher.group("userName");
                 System.out.println(gameController.givingFlower(userName).message());
+                break;
             }
             case Hay: {
                 System.out.println(gameController.showHay().message());
@@ -790,6 +791,29 @@ public class GameMenu implements AppMenu {
                 int index = Integer.parseInt(matcher.group("index"));
                 System.out.println(gameController.quests(index).message());
                 break;
+            }
+            case openTradeMenu: {
+                System.out.println(gameController.openTradeMenu().message());
+                break;
+            }
+            case closeTradeMenu: {
+                System.out.println(gameController.closeTradeMenu().message());
+                break;
+            }
+            case tradeResponse:{
+                Pattern pattern = Pattern.compile("^\\s*trade response (?<answer>.+?) -u (?<username>.+?) -i (?<id>.+?)\\s*$");
+                Matcher matcher = pattern.matcher(input);
+                if (!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
+                String username = matcher.group("username");
+                String answer = matcher.group("answer");
+                int id = Integer.parseInt(matcher.group("id"));
+                System.out.println(tradeController.tradeResponse(username,answer,id).message());
+                break;
+            }
+            case tradeHistory:{
+                System.out.println(tradeController.tradeHistory().message());
             }
         }
     }
@@ -1046,7 +1070,16 @@ public class GameMenu implements AppMenu {
             runCommand(GameCommand.questList, "");
         } else if (input.matches("^\\s*quests finish -i (?<index>.+?)\\s*$")) {
             runCommand(GameCommand.finishQuest, input);
-        } else {
+        }else if(input.matches("^\\s*open trade menu\\s*$")){
+            runCommand(GameCommand.openTradeMenu, "");
+        }else if(input.matches("^\\s*close trade menu\\s*$")){
+            runCommand(GameCommand.closeTradeMenu, "");
+        }else if(input.matches("^\\s*trade history\\s*$")){
+            runCommand(GameCommand.tradeHistory, "");
+        }else if(input.matches("^\\s*trade response (?<answer>.+?) -u (?<username>.+?) -i (?<id>.+?)\\s*$")){
+            runCommand(GameCommand.tradeResponse, input);
+        }
+        else {
             System.out.println("invalid command");
         }
     }

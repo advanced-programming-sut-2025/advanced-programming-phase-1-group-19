@@ -3,6 +3,7 @@ package Controllers;
 import Modules.App;
 import Modules.Communication.FriendShip;
 import Modules.Communication.Trade;
+import Modules.Enums.InGameMenu;
 import Modules.Game;
 import Modules.Interactions.Messages.GameMessage;
 import Modules.Interactions.Messages.Message;
@@ -24,6 +25,9 @@ public class TradeController extends Controller {
         Game game = app.getCurrentGame();
         Player player = game.getCurrentPlayer();
         StringBuilder stringBuilder = new StringBuilder();
+        if(game.getInGameMenu() != InGameMenu.tradeMenu){
+            return new GameMessage(null,"You are not in trade menu");
+        }
         stringBuilder.append("These are all players in this game:\n");
         for (Player gamePlayer : game.getPlayers()) {
             stringBuilder.append(gamePlayer.getUser().getUsername()+"\n");
@@ -36,6 +40,9 @@ public class TradeController extends Controller {
         Game game = app.getCurrentGame();
         Player player = game.getCurrentPlayer();
         Player player2 = game.getPlayerByUsername(username);
+        if(game.getInGameMenu() != InGameMenu.tradeMenu){
+            return new GameMessage(null,"You are not in trade menu");
+        }
         if(player2 == null) {
             return new GameMessage(null, "There is no player with that username in this game!");
         }
@@ -45,7 +52,7 @@ public class TradeController extends Controller {
         }
         int backpackAmount = player.getBackPack().getItemCount(item);
         if(item == null) {
-            return new GameMessage(null, "You do not have this item in your backpack os this item doesn't exist!");
+            return new GameMessage(null, "You do not have this item in your backpack or this item doesn't exist!");
         }
         if(amount > backpackAmount){
             return new GameMessage(null, "You do not have enough backpack amount!");
@@ -76,24 +83,31 @@ public class TradeController extends Controller {
         return new GameMessage(null,"Your offer was sent to "+player2.getUser().getUsername());
     }
 
-    public GameMessage tradeResponse(Player player2,String answer,int id){
+    public GameMessage tradeResponse(String username,String answer,int id){
         App app = App.getInstance();
         Game game = app.getCurrentGame();
         Player player = game.getCurrentPlayer();
         Trade trade = null;
+        if(game.getInGameMenu() != InGameMenu.tradeMenu){
+            return new GameMessage(null,"You are not in trade menu");
+        }
+        Player player2 = game.getPlayerByUsername(username);
+        if(player2 == null) {
+            return new GameMessage(null, "There is no player with that username in this game!");
+        }
         if(answer.equals("accept")){
             trade = player.getFriendShipByPlayer(player2).getById(id);
-            trade.doTrade(player,player2);
-            player2.getFriendShipByPlayer(player).removeTradeOffer(trade);
+            trade.doTrade(player2,player);
+            player.getFriendShipByPlayer(player2).removeTradeOffer(trade);
             player2.getFriendShipByPlayer(player).addTrade(trade);
             player.getFriendShipByPlayer(player2).addTrade(trade);
             player.getFriendShipByPlayer(player2).increaseXp(20);
             player2.getFriendShipByPlayer(player).increaseXp(20);
-            return new GameMessage(null , "Your offer was accepted by "+player2.getUser().getUsername());
+            return new GameMessage(null , "You accepted "+player2.getUser().getUsername());
         }
         else if(answer.equals("reject")){
             trade = player.getFriendShipByPlayer(player2).getById(id);
-            player2.getFriendShipByPlayer(player).removeTradeOffer(trade);
+            player.getFriendShipByPlayer(player2).removeTradeOffer(trade);
             player.getFriendShipByPlayer(player2).decreaseXp(20);
             player2.getFriendShipByPlayer(player).decreaseXp(20);
             return new GameMessage(null,"Your offer was rejected by "+player2.getUser().getUsername());
@@ -103,28 +117,36 @@ public class TradeController extends Controller {
         }
     }
 
-    public GameMessage tradeHistory(String username){
+    public GameMessage tradeHistory(){
         App app = App.getInstance();
         Game game = app.getCurrentGame();
         Player player = game.getCurrentPlayer();
-        Player player2 = game.getPlayerByUsername(username);
         StringBuilder stringBuilder = new StringBuilder();
-        for (Trade trade : player.getFriendShipByPlayer(player2).getTradeLog()) {
-            stringBuilder.append("The Item: "+trade.getItem().getName()+"\n");
-            if(trade.getType()){
-                stringBuilder.append("Type: Offer"+"\n");
+        if(game.getInGameMenu() != InGameMenu.tradeMenu){
+            return new GameMessage(null,"You are not in trade menu");
+        }
+        for (Player player2 : game.getPlayers()) {
+            if(player2.getUser().getUsername().equals(player.getUser().getUsername())){
+                continue;
             }
-            else {
-                stringBuilder.append("Type: Request"+"\n");
-            }
-            if(trade.getPrice() == 0){
-                stringBuilder.append("Target item: "+trade.getTargetItem().getName()+"\n");
-                stringBuilder.append("Target amount: "+trade.getTargetAmount()+"\n");
-            }
-            else {
-                stringBuilder.append("Price: "+trade.getPrice()+"\n");
+            for (Trade trade : player.getFriendShipByPlayer(player2).getTradeLog()) {
+                stringBuilder.append("The Item: "+trade.getItem().getName()+"\n");
+                if(trade.getType()){
+                    stringBuilder.append("Type: Offer"+"\n");
+                }
+                else {
+                    stringBuilder.append("Type: Request"+"\n");
+                }
+                if(trade.getPrice() == 0){
+                    stringBuilder.append("Target item: "+trade.getTargetItem().getName()+"\n");
+                    stringBuilder.append("Target amount: "+trade.getTargetAmount()+"\n");
+                }
+                else {
+                    stringBuilder.append("Price: "+trade.getPrice()+"\n");
+                }
             }
         }
+
         return new GameMessage(null,stringBuilder.toString());
     }
 
@@ -133,10 +155,13 @@ public class TradeController extends Controller {
         Game game = app.getCurrentGame();
         Player player = game.getCurrentPlayer();
         StringBuilder stringBuilder = new StringBuilder();
+        if(game.getInGameMenu() != InGameMenu.tradeMenu){
+            return new GameMessage(null,"You are not in trade menu");
+        }
         for (FriendShip friendShip : player.getFriendShips()) {
             for (Trade tradeOffer : friendShip.getTradeOffers()) {
                 stringBuilder.append("The Item: "+tradeOffer.getItem().getName()+"\n");
-                if(tradeOffer.getType()){
+                if(!tradeOffer.getType()){
                     stringBuilder.append("Type: Offer"+"\n");
                 }
                 else {

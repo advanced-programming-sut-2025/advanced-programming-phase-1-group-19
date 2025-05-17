@@ -97,5 +97,7 @@ public enum GameCommand implements Command {
     friendshipNpcList,
     questList,
     finishQuest,
+    openTradeMenu,
+    closeTradeMenu,
     exit;
 }

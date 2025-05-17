@@ -14,6 +14,7 @@ public class FriendShip implements Serializable {
     private ArrayList<Trade> tradeLog;
     private ArrayList<Trade> tradeOffers;
     private String MarriageRequest;
+    private boolean areMarried = false;
     public FriendShip(Player player) {
         this.player = player;
         this.xp = 0;
@@ -68,32 +69,32 @@ public class FriendShip implements Serializable {
 
     public void increaseXp(int amount) {
         xp += amount;
-        if( this.level==0&& xp >= 100 && xp <= 200 ) {
+        if( this.level==0&& xp > 100 && xp <= 200 ) {
             this.level=1;
         }
-        else if( this.level==1&&xp >= 200 && xp <= 300 ) {
+        else if( this.level==1&&xp > 200 && xp <= 300 ) {
             this.level=2;
         }
-        else if(this.level==2 && xp >= 300 && xp <= 400) {
+        else if(this.level==2 && xp > 300 && xp <= 400) {
             this.level=3;
         }
-        else if(this.level==3 && xp >= 400 ) {
+        else if(this.level==3 && xp > 400 ) {
             this.level=4;
         }
     }
 
     public void decreaseXp(int amount) {
         xp -= amount;
-        if(this.level==1 && xp < 100 ) {
+        if(this.level==1 && xp <= 100 ) {
             this.level=0;
         }
-        else if( this.level==2 && xp >= 100 && xp < 200 ) {
+        else if( this.level==2 && xp > 100 && xp <= 200 ) {
             this.level=1;
         }
-        else if( this.level==3 && xp >= 200 && xp < 300 ) {
+        else if( this.level==3 && xp > 200 && xp <= 300 ) {
             this.level=2;
         }
-        else if( this.level==4 && xp >= 300 && xp < 400 ) {
+        else if( this.level==4 && xp > 300 && xp <= 400 ) {
             this.level=3;
         }
     }
@@ -144,5 +145,13 @@ public class FriendShip implements Serializable {
 
     public String getMarriageRequest() {
         return MarriageRequest;
+    }
+
+    public void setAreMarried(boolean areMarried) {
+        this.areMarried = areMarried;
+    }
+
+    public boolean isAreMarried() {
+        return areMarried;
     }
 }
