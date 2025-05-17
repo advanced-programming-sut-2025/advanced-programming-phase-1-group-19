@@ -209,6 +209,15 @@ public class Player implements Serializable {
         }
     }
 
+    public boolean checkBuff(Buff buff){
+        App app = App.getInstance();
+        Game game = app.getCurrentGame();
+        Time time = game.getTime();
+        if(Time.getDayDifference(lastBuffTime[0],time) == 0  &&  Math.abs(lastBuffTime[0].getHour() - time.getHour())< buff.getHours()){
+            return true;
+        }
+    }
+
     public boolean isBuffed(SkillType skillType) {
 //        TODO: fix this
         return true;

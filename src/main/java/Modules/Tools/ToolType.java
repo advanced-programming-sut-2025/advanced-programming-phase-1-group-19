@@ -1,6 +1,7 @@
 package Modules.Tools;
 
 import Modules.App;
+import Modules.Crafting.Buff;
 import Modules.Enums.SkillType;
 import Modules.Player;
 
@@ -98,6 +99,9 @@ public enum ToolType implements Serializable {
                 if(player.getSkill(SkillType.farming).getLevel() == 4){
                     decrease = 1;
                 }
+                if(player.checkBuff(new Buff(SkillType.farming,5,0))){
+                    decrease = 1;
+                }
                 break;
             }
             case pickaxe:{
@@ -108,6 +112,9 @@ public enum ToolType implements Serializable {
             }
             case fishingPole:{
                 if(player.getSkill(SkillType.fishing).getLevel() == 4){
+                    decrease = 1;
+                }
+                if(player.checkBuff(new Buff(SkillType.fishing,4,0))){
                     decrease = 1;
                 }
                 break;

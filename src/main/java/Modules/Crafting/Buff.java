@@ -10,7 +10,7 @@ public class Buff implements Serializable {
     private final int hours;
     private final int energyAddition;
 
-    Buff(SkillType skillType, int hours, int energyAddition) {
+    public Buff(SkillType skillType, int hours, int energyAddition) {
         this.skillType = skillType;
         this.hours = hours;
         this.energyAddition = energyAddition;

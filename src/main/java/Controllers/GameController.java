@@ -1821,7 +1821,7 @@ public class GameController extends Controller {
         if(player.getCurrentStore()!=null){
             return new GameMessage(null, "You are already in a store!");
         }
-        if(store.isNear(player.getPosition())){
+        if(!store.isNear(player.getPosition())){
             return new GameMessage(null, "You are not close enough to store!");
         }
         player.setCurrentStore(store);
