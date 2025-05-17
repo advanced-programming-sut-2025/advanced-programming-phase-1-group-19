@@ -140,6 +140,13 @@ public class GameMenu implements AppMenu {
                 out = out.replace("G", "\u001B[32mG\u001B[0m");
                 out = out.replace("L", "\u001B[34mL\u001B[0m");
                 out = out.replace("Q", "\u001B[33mQ\u001B[0m");
+                out = out.replace("G", "\u001B[48;2;0;100;0mG\u001B[0m");
+                out = out.replace(".", "\u001B[42m.\u001B[0m");
+                out = out.replace("H", "\u001B[45mH\u001B[0m"); // Purple background
+                out = out.replace("L", "\u001B[44mL\u001B[0m"); // Blue background
+                out = out.replace("Q", "\u001B[43mQ\u001B[0m"); // Yellow background
+                out = out.replace("S","\u001B[101mS\u001B[0m");
+                out = out.replace("I","\u001B[47mI\u001B[0m");
                 System.out.println(out);
                 break;
             }
