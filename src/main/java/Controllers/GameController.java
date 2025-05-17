@@ -2,12 +2,8 @@ package Controllers;
 
 import Modules.*;
 import Modules.Animal.*;
-import Modules.Communication.FriendShip;
-import Modules.Communication.Gift;
-import Modules.Crafting.CookingRecipe;
-import Modules.Crafting.CraftingRecipe;
-import Modules.Crafting.Material;
-import Modules.Crafting.MaterialType;
+import Modules.Communication.*;
+import Modules.Crafting.*;
 import Modules.Enums.*;
 import Modules.Enums.Menu;
 import Modules.Enums.Season;
@@ -1825,6 +1821,154 @@ public class GameController extends Controller {
             player.addKnownCookingRecipe(cookingRecipe);
             return new GameMessage(null,"You successfully added  this recipe");
         }
+    }
+
+    public GameMessage giftNPC(String NPCName,String itemName){
+        NPC npc = NPC.getNPCByName(NPCName);
+        if(npc == null){
+            return new GameMessage(null, "There is no npc with that name");
+        }
+        App app = App.getInstance();
+        Game game = app.getCurrentGame();
+        Player player = game.getCurrentPlayer();
+        Item item = Item.getItemByName(itemName);
+        if(item == null){
+            return new GameMessage(null, "There is no item with that name");
+        }
+        if(item instanceof Tool){
+            return new GameMessage(null, "You can not gift tool to NPC");
+        }
+        if(npc.checkFavorite(item)){
+            player.getNpcFriendshipByName(NPCName).increaseXp(50);
+        }
+        else{
+            player.getNpcFriendshipByName(NPCName).increaseXp(200);
+        }
+        return new GameMessage(null,"You have successfully gifted " + NPCName);
+    }
+
+    public GameMessage showNpcFriendship(){
+        App app = App.getInstance();
+        Game game = app.getCurrentGame();
+        Player player = game.getCurrentPlayer();
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("These are your friendships with NPC: \n");
+        for (NPCFriendship npcFriendship : player.getNPCFriendships()) {
+            stringBuilder.append(npcFriendship.getNpc().getName() + ":\n");
+            stringBuilder.append("xp: " + npcFriendship.getXp()+"\n");
+            stringBuilder.append("level: " + npcFriendship.getLevel() + "\n\n");
+        }
+        return new GameMessage(null,stringBuilder.toString());
+    }
+
+    public GameMessage questsList(){
+        App app = App.getInstance();
+        Game game = app.getCurrentGame();
+        Player player = game.getCurrentPlayer();
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("These are your quests:\n");
+        for (NPCQuest npcQuest : player.getNPCQuests()) {
+            stringBuilder.append(npcQuest.getNpc().getName() + ":\n");
+            stringBuilder.append(npcQuest.getRequests().get(npcQuest.getActiveQuest()).getKey().getName() + npcQuest.getRequests().get(npcQuest.getActiveQuest()).getValue());
+        }
+        return new GameMessage(null,stringBuilder.toString());
+    }
+
+    public GameMessage quests(int i){
+        App app = App.getInstance();
+        Game game = app.getCurrentGame();
+        Player player = game.getCurrentPlayer();
+        NPCQuest quest = player.getNPCQuests().get(i-1);//index is 1 based
+        if(quest.isDone()){
+            return new GameMessage(null,"This quest have already been done");
+        }
+        if(!player.getBackPack().checkItem(quest.getRequests().get(quest.getActiveQuest()).getKey(),quest.getRequests().get(quest.getActiveQuest()).getValue())){
+            return new GameMessage(null,"You don't have enough materials");
+        }
+        player.getBackPack().removeItem(quest.getRequests().get(quest.getActiveQuest()).getKey(),quest.getRequests().get(quest.getActiveQuest()).getValue());
+        quest.setIsDone(true);
+        if(quest.getNpc().getName().equals("Sebastian")){
+            switch (quest.getActiveQuest()){
+                case 0:{
+                    player.getBackPack().addItem(new Material(MaterialType.diamond),2);
+                    break;
+                }
+                case 1:{
+                    player.addMoney(5000);
+                    break;
+                }
+                case 2:{
+                    player.getBackPack().addItem(new Material(MaterialType.quartz),2);
+                    break;
+                }
+            }
+        }
+        else if(quest.getNpc().getName().equals("Abigail")){
+            switch (quest.getActiveQuest()){
+                case 0:{
+                    player.getNpcFriendshipByName("Abigail").addLevel();
+                    break;
+                }
+                case 1:{
+                    player.addMoney(500);
+                    break;
+                }
+                case 2:{
+                    WateringCan wateringCan = new WateringCan(ToolType.wateringCan);
+                    wateringCan.upgradeLevel();
+                    wateringCan.upgradeLevel();
+                    wateringCan.upgradeLevel();
+                    wateringCan.upgradeLevel();
+                    player.getBackPack().addItem(wateringCan,1);
+                    break;
+                }
+            }
+        }
+        else if(quest.getNpc().getName().equals("Harvey")){
+            switch (quest.getActiveQuest()){
+                case 0:{
+                    player.addMoney(750);
+                    break;
+                }
+                case 1:{
+                    player.getNpcFriendshipByName("Harvey").addLevel();
+                    break;
+                }
+                case 2:{
+                    player.getBackPack().addItem(new Food(CookingRecipe.salad),5);
+                    break;
+                }
+            }
+        }
+        else if(quest.getNpc().getName().equals("Lia")){
+            switch (quest.getActiveQuest()){
+                case 0:{
+                    player.addMoney(500);
+                    break;
+                }
+                case 1, 2:{
+                    player.addKnownCookingRecipe(CookingRecipe.salmonDinner);
+                    break;
+                }
+            }
+        }
+        else if(quest.getNpc().getName().equals("Robin")){
+            switch (quest.getActiveQuest()){
+                case 0:{
+                    player.addMoney(1000);
+                    break;
+                }
+                case 1:{
+                    player.addMoney(2000);
+                    break;
+                }
+                case 2:{
+                    player.addMoney(3000);
+                    break;
+                }
+            }
+        }
+        return new GameMessage(null,"You successfully done the quest");
     }
 
     @Override

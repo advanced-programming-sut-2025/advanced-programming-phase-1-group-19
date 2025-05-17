@@ -219,6 +219,10 @@ public class HouseController extends Controller {
             animal.setPosition(player.getFarm().getBarn().getPlacedTile().getPosition());
             player.getFarm().getBarn().addAnimal(animal);
         }
+        if(player.getMoney() < animal.getType().getCost()){
+            return new GameMessage(null,"You don't have enough money");
+        }
+        player.decreaseMoney(animal.getType().getCost());
         return new GameMessage(null,"You successfully bought animal");
     }
 

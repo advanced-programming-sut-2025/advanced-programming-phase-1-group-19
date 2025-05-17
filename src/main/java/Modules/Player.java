@@ -2,6 +2,8 @@ package Modules;
 
 import Modules.Communication.FriendShip;
 import Modules.Communication.NPC;
+import Modules.Communication.NPCFriendship;
+import Modules.Communication.NPCQuest;
 import Modules.Crafting.Buff;
 import Modules.Crafting.CookingRecipe;
 import Modules.Crafting.CraftingRecipe;
@@ -37,6 +39,8 @@ public class Player implements Serializable {
     private ArrayList<NPC> npcs;
     private Store currentStore;
     private int Hay;
+    private ArrayList<NPCFriendship> NPCFriendships;
+    private ArrayList<NPCQuest> NPCQuests;
     public Player(User user, Farm farm) {
         this.money = 100;
         this.user = user;
@@ -69,15 +73,28 @@ public class Player implements Serializable {
         buffedEnergy = 0;
         friendShips = new ArrayList<>();
         npcs = new ArrayList<>();
-//        npcs.add(new NPC("Sebastian"));
-//        npcs.add(new NPC("Abigail"));
-//        npcs.add(new NPC("Harvey"));
-//        npcs.add(new NPC("Lia"));
-//        npcs.add(new NPC("Robin"));
+        npcs.add(new NPC("Sebastian"));
+        npcs.add(new NPC("Abigail"));
+        npcs.add(new NPC("Harvey"));
+        npcs.add(new NPC("Lia"));
+        npcs.add(new NPC("Robin"));
         for (SkillType skillType : SkillType.values()) {
             skills.put(skillType, new Skill(skillType));
         }
         this.Hay = 100;
+        this.NPCFriendships = new ArrayList<>();
+        this.NPCFriendships.add(new NPCFriendship(npcs.get(0)));
+        this.NPCFriendships.add(new NPCFriendship(npcs.get(1)));
+        this.NPCFriendships.add(new NPCFriendship(npcs.get(2)));
+        this.NPCFriendships.add(new NPCFriendship(npcs.get(3)));
+        this.NPCFriendships.add(new NPCFriendship(npcs.get(4)));
+
+        this.NPCQuests = new ArrayList<>();
+        this.NPCQuests.add(new NPCQuest(npcs.get(0)));
+        this.NPCQuests.add(new NPCQuest(npcs.get(1)));
+        this.NPCQuests.add(new NPCQuest(npcs.get(2)));
+        this.NPCQuests.add(new NPCQuest(npcs.get(3)));
+        this.NPCQuests.add(new NPCQuest(npcs.get(4)));
     }
 
     public ArrayList<FriendShip> getFriendShips() {
@@ -262,5 +279,22 @@ public class Player implements Serializable {
     }
     public void resetMoney(){
         this.featureMoney = 0;
+    }
+
+    public NPCFriendship getNpcFriendshipByName(String name) {
+        for (NPCFriendship npcFriendship : this.NPCFriendships) {
+            if(npcFriendship.getNpc().getName().equals(name)) {
+                return npcFriendship;
+            }
+        }
+        return null;
+    }
+
+    public ArrayList<NPCFriendship> getNPCFriendships() {
+        return NPCFriendships;
+    }
+
+    public ArrayList<NPCQuest> getNPCQuests() {
+        return NPCQuests;
     }
 }

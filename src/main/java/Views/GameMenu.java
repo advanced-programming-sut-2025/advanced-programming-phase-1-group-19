@@ -742,6 +742,35 @@ public class GameMenu implements AppMenu {
                 System.out.println(gameController.showHay().message());
                 break;
             }
+            case giftNPC:{
+                Pattern pattern = Pattern.compile("^\\s*gift NPC (?<npcName>.+?) -i (?<item>.+?)\\s*$");
+                Matcher matcher = pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
+                String npcName = matcher.group("npcName");
+                String itemName = matcher.group("item");
+                System.out.println(gameController.giftNPC(npcName,itemName).message());
+                break;
+            }
+            case friendshipNpcList:{
+                System.out.println(gameController.showNpcFriendship().message());
+                break;
+            }
+            case questList:{
+                System.out.println(gameController.questsList().message());
+                break;
+            }
+            case finishQuest:{
+                Pattern pattern = Pattern.compile("^\\s*quests finish -i (?<index>.+?)\\s*$");
+                Matcher matcher = pattern.matcher(input);
+                if(!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
+                int index = Integer.parseInt(matcher.group("index"));
+                System.out.println(gameController.quests(index).message());
+                break;
+            }
         }
     }
 
@@ -1047,6 +1076,18 @@ public class GameMenu implements AppMenu {
         }
         else if(input.matches("^\\s*show hay\\s*$")){
             runCommand(GameCommand.Hay,"");
+        }
+        else if(input.matches("^\\s*gift NPC (?<npcName>.+?) -i (?<item>.+?)\\s*$")){
+            runCommand(GameCommand.giftNPC,input);
+        }
+        else if(input.matches("^\\s*friendship NPC list\\s*$")){
+            runCommand(GameCommand.friendshipNpcList,"");
+        }
+        else if(input.matches("^\\s*quests list\\S*$")){
+            runCommand(GameCommand.questList,"");
+        }
+        else if(input.matches("^\\s*quests finish -i (?<index>.+?)\\s*$")){
+            runCommand(GameCommand.finishQuest,input);
         }
         else{
             System.out.println("invalid command");
