@@ -150,4 +150,9 @@ public class RegistrationMenu implements AppMenu {
             System.out.println("invalid command!");
         }
     }
+
+    public void restartScanner() {
+        scanner = AppView.getInstance().getScanner();
+    }
+
 }

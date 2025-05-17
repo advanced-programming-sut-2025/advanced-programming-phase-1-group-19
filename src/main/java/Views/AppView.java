@@ -15,7 +15,7 @@ public class AppView {
         return instance;
     }
 
-    private final Scanner scanner = new Scanner(System.in);
+    private Scanner scanner = new Scanner(System.in);
 
     private final App app = App.getInstance();
 
@@ -51,5 +51,9 @@ public class AppView {
                 }
             }
         }
+    }
+
+    public void restartScanner(){
+        scanner = new Scanner(System.in);
     }
 }

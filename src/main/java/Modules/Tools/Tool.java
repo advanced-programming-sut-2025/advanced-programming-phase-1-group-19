@@ -4,7 +4,6 @@ import Modules.Animal.*;
 import Modules.App;
 import Modules.Crafting.Material;
 import Modules.Crafting.MaterialType;
-import Modules.Enums.Season;
 import Modules.Enums.Weather;
 import Modules.Farming.Crop;
 import Modules.Farming.ForagingCrop;
@@ -13,13 +12,10 @@ import Modules.Farming.Seed;
 import Modules.Game;
 import Modules.Interactions.Messages.GameMessage;
 import Modules.Item;
-import Modules.Map.Tile;
 import Modules.Map.*;
 import Modules.Time;
 
 import java.io.Serializable;
-import java.lang.reflect.Member;
-import java.util.ArrayList;
 
 import static Modules.Enums.SkillType.foraging;
 import static Modules.Enums.SkillType.mining;
@@ -44,7 +40,7 @@ public class Tool extends Item implements Serializable {
     }
 
     public void upgradeLevel() {
-        if(toolType.getLevels().size() > level + 1){
+        if (toolType.getLevels().size() > level + 1) {
             level++;
         }
     }
@@ -52,6 +48,7 @@ public class Tool extends Item implements Serializable {
     public void setLevel(int level) {
         this.level = level;
     }
+
     @Override
     public int getPrice() {
         return 0;
@@ -62,6 +59,7 @@ public class Tool extends Item implements Serializable {
     public void use() {
 
     }
+
     public GameMessage use(Position position) {
         Game game = App.getInstance().getCurrentGame();
         Map map = game.getMap();
@@ -69,10 +67,10 @@ public class Tool extends Item implements Serializable {
         BackPack backPack = game.getCurrentPlayer().getBackPack();
 
         double mp = 1;
-        if(game.getTodayWeather().equals(Weather.rain) || game.getTodayWeather().equals(Weather.storm)) {
+        if (game.getTodayWeather().equals(Weather.rain) || game.getTodayWeather().equals(Weather.storm)) {
             mp *= 1.5;
         }
-        if(game.getTodayWeather().equals(Weather.snow)) {
+        if (game.getTodayWeather().equals(Weather.snow)) {
             mp *= 2;
         }
         switch (toolType) {
@@ -83,7 +81,7 @@ public class Tool extends Item implements Serializable {
                 } else {
                     isSuccess = false;
                 }
-                int energy = (int)(toolType.getEnergy(level, isSuccess) * mp);
+                int energy = (int) (toolType.getEnergy(level, isSuccess) * mp);
                 if (energy > game.getCurrentPlayer().getEnergy().getAmount()) {
                     return new GameMessage(null, "You don't have enough energy to use this tool.");
                 } else if (!isSuccess) {
@@ -112,7 +110,7 @@ public class Tool extends Item implements Serializable {
                     Plant plant = (Plant) tile.getObject();
                     game.getCurrentPlayer().decreaseEnergy(energy);
                     tile.setObject(null);
-                    if(plant.getType().isTree()) {
+                    if (plant.getType().isTree()) {
                         tile.setObject(new Seed(plant.getType().getSeed()));
                     }
                     game.getCurrentPlayer().getBackPack().addItem(new Material(MaterialType.wood), 50);
@@ -140,12 +138,11 @@ public class Tool extends Item implements Serializable {
                         if (wateringCan.getCurrentCapacity() == 0) {
                             return new GameMessage(null, "There is no water in your watering can!");
                         } else {
-                            if(plant.getGianPosition() != -1) {
-                                for(Plant p : plant.getGianPlants()) {
+                            if (plant.getGianPosition() != -1) {
+                                for (Plant p : plant.getGianPlants()) {
                                     p.setLastWateringTime(new Time(game.getTime()));
                                 }
-                            }
-                            else {
+                            } else {
                                 plant.setLastWateringTime(new Time(game.getTime()));
                             }
                             wateringCan.decreaseCapacity(1);
@@ -168,7 +165,7 @@ public class Tool extends Item implements Serializable {
                 } else {
                     isSuccess = false;
                 }
-                int energy = (int)(toolType.getEnergy(level, isSuccess) * mp);
+                int energy = (int) (toolType.getEnergy(level, isSuccess) * mp);
                 if (energy > game.getCurrentPlayer().getEnergy().getAmount()) {
                     return new GameMessage(null, "You don't have enough energy to use this tool.");
                 } else if (!isSuccess) {
@@ -177,19 +174,29 @@ public class Tool extends Item implements Serializable {
                 } else {
                     game.getCurrentPlayer().decreaseEnergy(energy);
                     Plant plant = (Plant) tile.getObject();
-                    int amount = 1;
-                    if(plant.getGianPosition() != -1) {
-                        amount = Math.min(10, backPack.getMaxCapacity() - backPack.getCapacity());
-                    }
-                    if (plant.getCurrentStage() == plant.getType().getStages().size() + 1) {
-                        if (!backPack.canAddItem(new Crop(plant.getType().getCrop()), 1)) {
-                            return new GameMessage(null, "You don't have enough capacity in backpack");
-                        }
-                        backPack.addItem(new Crop(plant.getType().getCrop()), 1);
-                        return new GameMessage(null, "You got some fruit! (" + amount + "x)");
-                    } else {
+                    int daysDiff = Time.getDayDifference(game.getTime(), plant.getPlantingTime());
+                    if (plant.getType().getTotalTime() > daysDiff) {
                         return new GameMessage(null, "Let your tree grow as it should");
                     }
+                    int amount;
+                    if (plant.getGianPosition() == -1) {
+                        amount = 1;
+                        plant.addRegrownTimes();
+                    } else {
+                        amount = Math.min(10, backPack.getMaxCapacity() - backPack.getCapacity());
+                        amount = Math.max(amount, 0);
+                        for (Plant giantPlants : plant.getGianPlants()) {
+                            giantPlants.addRegrownTimes();
+                        }
+                    }
+                    if(plant.getRegrownTimes() >= plant.getType().getReGrowth()) {
+                        plant.destroy();
+                    }
+                    if (!backPack.canAddItem(new Crop(plant.getType().getCrop()), amount)) {
+                        return new GameMessage(null, "You don't have enough capacity in backpack");
+                    }
+                    backPack.addItem(new Crop(plant.getType().getCrop()), amount);
+                    return new GameMessage(null, "You got some fruit! (" + amount + "x)");
                 }
             }
             case shear -> {
@@ -202,7 +209,7 @@ public class Tool extends Item implements Serializable {
                         }
                     }
                 }
-                int energy = (int)(toolType.getEnergy(level, isSuccess) * mp);
+                int energy = (int) (toolType.getEnergy(level, isSuccess) * mp);
                 if (energy > game.getCurrentPlayer().getEnergy().getAmount()) {
                     return new GameMessage(null, "You don't have enough energy to use this tool.");
                 } else if (!isSuccess) {
@@ -229,7 +236,7 @@ public class Tool extends Item implements Serializable {
                         }
                     }
                 }
-                int energy = (int)(toolType.getEnergy(level, isSuccess) * mp);
+                int energy = (int) (toolType.getEnergy(level, isSuccess) * mp);
                 if (energy > game.getCurrentPlayer().getEnergy().getAmount()) {
                     return new GameMessage(null, "You don't have enough energy to use this tool.");
                 } else if (!isSuccess) {
@@ -254,7 +261,7 @@ public class Tool extends Item implements Serializable {
                 } else {
                     isSuccess = false;
                 }
-                int energy = (int)(toolType.getEnergy(level, isSuccess) * mp);
+                int energy = (int) (toolType.getEnergy(level, isSuccess) * mp);
                 if (energy > game.getCurrentPlayer().getEnergy().getAmount()) {
                     return new GameMessage(null, "You don't have enough energy to use this tool.");
                 } else if (!isSuccess) {
@@ -264,24 +271,25 @@ public class Tool extends Item implements Serializable {
                     game.getCurrentPlayer().decreaseEnergy(energy);
                     Item item = (Item) tile.getObject();
                     backPack.addItem(item, 1);
-                    if(item instanceof Material){
-                        if(((Material) item).getType() == MaterialType.stone){
+                    if (item instanceof Material) {
+                        if (((Material) item).getType() == MaterialType.stone) {
                             App.getInstance().getCurrentGame().getCurrentPlayer().getSkill(mining).addAmount(10);
-                            if(App.getInstance().getCurrentGame().getCurrentPlayer().getSkill(mining).getLevel() == 2){
+                            if (App.getInstance().getCurrentGame().getCurrentPlayer().getSkill(mining).getLevel() == 2) {
                                 backPack.addItem(item, 10);
                             }
                         }
                         return new GameMessage(null, "You collected some stone!");
                     }
-                    if(item instanceof ForagingCrop || item instanceof Seed){
+                    if (item instanceof ForagingCrop || item instanceof Seed) {
                         App.getInstance().getCurrentGame().getCurrentPlayer().getSkill(foraging).addAmount(10);
                     }
-                    return new GameMessage(null, "You collected some " + item.getName() +" !");
+                    return new GameMessage(null, "You collected some " + item.getName() + " !");
                 }
             }
         }
         return new GameMessage(null, "nothing happened!?");
     }
+
     @Override
     public void drop(Tile tile) {
         tile.setObject(Tool.this);

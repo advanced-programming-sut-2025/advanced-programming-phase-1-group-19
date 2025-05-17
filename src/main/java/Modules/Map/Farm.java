@@ -113,6 +113,28 @@ public class Farm implements Serializable {
                 }
             }
         }
+        switch (turn) {
+            case 0: {
+                tiles.add(new Tile(new Position(99, 100)));
+                tiles.add(new Tile(new Position(100, 99)));
+                break;
+            }
+            case 1: {
+                tiles.add(new Tile(new Position(99, 149)));
+                tiles.add(new Tile(new Position(100, 150)));
+                break;
+            }
+            case 2: {
+                tiles.add(new Tile(new Position(149, 99)));
+                tiles.add(new Tile(new Position(150, 100)));
+                break;
+            }
+            case 3: {
+                tiles.add(new Tile(new Position(149, 150)));
+                tiles.add(new Tile(new Position(150, 149)));
+                break;
+            }
+        }
 
         lake = new Lake(lakeTiles, farmMap.getLakeSize());
         for(Tile tile : lakeTiles) {

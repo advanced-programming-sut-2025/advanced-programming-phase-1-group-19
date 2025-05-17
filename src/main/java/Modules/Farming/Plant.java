@@ -1,6 +1,7 @@
 package Modules.Farming;
 
 import Modules.App;
+import Modules.Map.Tile;
 import Modules.Map.TileObject;
 import Modules.Time;
 
@@ -89,23 +90,23 @@ public class Plant extends TileObject implements Serializable {
     }
 
     public void grow(){
-        // TODO: check if it was watered or day was rainy
-        int diff = Time.getDayDifference(plantingTime, App.getInstance().getCurrentGame().getTime());
-        if(type.getReGrowth() > regrownTimes){
-            diff %= type.getTotalTime() + 2;
-        }
-        int sum = 0;
-        this.currentStage = type.getStages().size()+1;
-        for(int i = 0; i < type.getStages().size(); i++){
-            if(type.getStages().get(i) + sum >= diff){
-                currentStage = i+1;
-                break;
-            }
-            sum += type.getStages().get(i);
-        }
-        if(diff > type.getTotalTime()){
-            regrownTimes++;
-        }
+//        TODO: implement this if needed current stage
+//        int diff = Time.getDayDifference(plantingTime, App.getInstance().getCurrentGame().getTime());
+//        if(type.getReGrowth() > regrownTimes){
+//            diff %= type.getTotalTime() + 2;
+//        }
+//        int sum = 0;
+//        this.currentStage = type.getStages().size()+1;
+//        for(int i = 0; i < type.getStages().size(); i++){
+//            if(type.getStages().get(i) + sum >= diff){
+//                currentStage = i+1;
+//                break;
+//            }
+//            sum += type.getStages().get(i);
+//        }
+//        if(diff > type.getTotalTime()){
+//            regrownTimes++;
+//        }
     }
     public boolean isDestroyed(){
         if(regrownTimes == 1 && type.getReGrowth() == -1)
@@ -117,5 +118,21 @@ public class Plant extends TileObject implements Serializable {
             return true;
         }
         return false;
+    }
+
+    public void destroy() {
+        if(gianPosition == -1) {
+            Tile tile = getPlacedTile();
+            tile.setObject(null);
+        }
+        else {
+            ArrayList<Tile> tiles = new ArrayList<>();
+            for(Plant plant : gianPlants) {
+                tiles.add(plant.getPlacedTile());
+            }
+            for(Tile tile : tiles) {
+                tile.setObject(null);
+            }
+        }
     }
 }

@@ -8,7 +8,10 @@ import java.util.ArrayList;
 public class App implements Serializable {
 
     private static App instance;
-    private App() {}
+
+    private App() {
+    }
+
     public static App getInstance() {
         if (instance == null) {
             instance = App.loadApp();
@@ -89,11 +92,11 @@ public class App implements Serializable {
         return null;
     }
 
-    public void removeLastUser(){
+    public void removeLastUser() {
         users.removeLast();
     }
 
-    public User getLastUser(){
+    public User getLastUser() {
         return users.getLast();
     }
 
@@ -122,12 +125,16 @@ public class App implements Serializable {
 
     public void saveApp() {
         try (ObjectOutputStream oos = new ObjectOutputStream(
-            new FileOutputStream("app.ser")
-    )) {
-        oos.writeObject(instance);
-    } catch (IOException e) {
-        e.printStackTrace();
+                new FileOutputStream("app.ser")
+        )) {
+            oos.writeObject(instance);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
+    public void restart() {
+        instance = null;
     }
 
 }

@@ -81,14 +81,17 @@ public class Game implements Serializable {
     }
 
     public void nextDay() {
-//        TODO: fix fainted players
+
+        if (time.getDay() == 28) {
+            time.nextSeason();
+        }
+        time.nextDay();
 //        TODO: handle special effect for each Weather!
         // todayWeather for nextDay is tomrrowWeather for today!
         todayWeather = tomrrowWeather;
         setTomorrowWeather();
         switch (todayWeather) {
             case rain -> {
-//                watering plants automatically
                 autoWaterPlant();
             }
             case storm -> {
@@ -147,11 +150,6 @@ public class Game implements Serializable {
                 }
             }
         }
-
-        if (time.getDay() == 28) {
-            time.nextSeason();
-        }
-        time.nextDay();
         // check all plants
 
         ArrayList<Store> stores = new ArrayList<>();
@@ -170,10 +168,11 @@ public class Game implements Serializable {
                 if (tile != null) {
                     TileObject tileObject = tile.getObject();
                     if (tileObject instanceof Plant) {
-                        if (((Plant) tileObject).isDestroyed()) {
+                        Plant plant = (Plant) tileObject;
+                        if (Time.getDayDifference(plant.getLastWateringTime(), App.getInstance().getCurrentGame().getTime()) > 2) {
                             tile.setObject(null);
                         } else {
-                            ((Plant) tileObject).grow();
+                            plant.grow();
                         }
                     }
                     if (tile.getBuilding() instanceof Store) {
@@ -321,7 +320,7 @@ public class Game implements Serializable {
                 Tile tile = map.getTile(new Position(i, j));
                 if (tile != null) {
                     TileObject tileObject = tile.getObject();
-                    if (tileObject instanceof Plant) {
+                    if (tileObject instanceof Plant && !(tile.getBuilding() instanceof GreenHouse)) {
                         ((Plant) tileObject).setLastWateringTime(new Time(time));
                     }
                 }

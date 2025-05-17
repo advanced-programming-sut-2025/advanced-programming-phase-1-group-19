@@ -85,6 +85,7 @@ public class ProfileMenu implements AppMenu {
 
     @Override
     public void checkCommand() {
+
         String input = scanner.nextLine();
         if(input.matches("^\\s*change username -u (?<username>.+?)\\s*$")){
             runCommand(ProfileCommand.changeUsername, input);
@@ -110,5 +111,9 @@ public class ProfileMenu implements AppMenu {
         else {
             System.out.println("invalid command!");
         }
+    }
+
+    public void restartScanner() {
+        scanner = AppView.getInstance().getScanner();
     }
 }

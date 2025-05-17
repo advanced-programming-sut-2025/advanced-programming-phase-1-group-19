@@ -763,7 +763,7 @@ public class GameMenu implements AppMenu {
 
 
     private final AppView appView = AppView.getInstance();
-    private final Scanner scanner = appView.getScanner();
+    private Scanner scanner = appView.getScanner();
     private final GameController gameController = GameController.getInstance();
     private final StoreController storeController = StoreController.getInstance();
     private final TradeController tradeController = TradeController.getInstance();
@@ -1073,5 +1073,9 @@ public class GameMenu implements AppMenu {
         else{
             System.out.println("invalid command");
         }
+    }
+
+    public void restartScanner() {
+        scanner = AppView.getInstance().getScanner();
     }
 }

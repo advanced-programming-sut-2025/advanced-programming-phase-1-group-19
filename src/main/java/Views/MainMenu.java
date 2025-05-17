@@ -85,4 +85,8 @@ public class MainMenu implements AppMenu {
         }
     }
 
+    public void restartScanner() {
+        scanner = AppView.getInstance().getScanner();
+    }
+
 }
