@@ -15,12 +15,14 @@ public abstract class Item extends TileObject implements Serializable {
     protected final String name;
     protected final int takenSpace;
     protected final boolean isEdible;
+    protected int price;
     abstract public int getPrice();
 
     public Item(String name, int takenSpace, boolean isEdible){
         this.name = name;
         this.takenSpace = takenSpace;
         this.isEdible = isEdible;
+        this.price = 0;
     }
 
     public static Item getItemByName(String name){
@@ -91,5 +93,9 @@ public abstract class Item extends TileObject implements Serializable {
     @Override
     public int hashCode() {
         return getName().toLowerCase().hashCode();
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 }

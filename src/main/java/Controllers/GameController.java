@@ -1806,7 +1806,7 @@ public class GameController extends Controller {
         if(player.getCurrentStore()!=null){
             return new GameMessage(null, "You are already in a store!");
         }
-        if(store.isNear(player.getPosition())){
+        if(!store.isNear(player.getPosition())){
             return new GameMessage(null, "You are not close enough to store!");
         }
         player.setCurrentStore(store);
@@ -1840,7 +1840,7 @@ public class GameController extends Controller {
                 if(i == 0 & j == 0){
                     continue;
                 }
-                Tile tile = game.getMap().getTile(new Position(i, j));
+                Tile tile = game.getMap().getTile(new Position(player.getPosition().x+i, player.getPosition().y+j));
                 if(tile != null){
                     TileObject tileObject = tile.getObject();
                     if(tileObject instanceof ShippingBin){
@@ -1857,6 +1857,9 @@ public class GameController extends Controller {
             Item item = entry.getKey();
             Integer value = entry.getValue();
             if(item.toString().equals(itemName)){
+                if(count == -1){
+                    count = value;
+                }
                 if(value < count){
                     return new GameMessage(null, "You don't have this amount of this item!");
                 }
@@ -2047,6 +2050,14 @@ public class GameController extends Controller {
         return new GameMessage(null,"You successfully done the quest");
     }
 
+    public GameMessage meetNpc(String npcName) {
+        // TODO: check if it's near!
+        NPC npc = NPC.getNPCByName(npcName);
+        if(npc == null) {
+            return new GameMessage(null, "There is no such npc");
+        }
+        return new GameMessage(null, npc.getDialogue());
+    }
     @Override
     public Message exit() {
         return null;

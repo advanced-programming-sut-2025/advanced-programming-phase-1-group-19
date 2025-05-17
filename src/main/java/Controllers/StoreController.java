@@ -76,24 +76,24 @@ public class StoreController extends Controller {
         return new GameMessage(null, "this " + amount + " money has been added bro!");
     }
 
-    public GameMessage sellItem(String itemName, int amount){
-        // TODO shipping bin!
-        Player player = App.getInstance().getCurrentGame().getCurrentPlayer();
-        for (java.util.Map.Entry<Item, Integer> entry : player.getBackPack().getItems().entrySet()) {
-            Item item = entry.getKey();
-            Integer number = entry.getValue();
-            if(item.getName().equals(itemName)){
-                if(amount > number){
-                    return new GameMessage(null, "not enough product to sell");
-                }
-                // TODO add shipping bin value
-                player.setFeatureMoney(amount * item.getPrice());
-                player.getBackPack().getItems().put(item, number - amount);
-                return new GameMessage(null, "sold out of " + amount + " " + item.getName());
-            }
-        }
-        return new GameMessage(null, "this product does not exist!");
-    }
+//    public GameMessage sellItem(String itemName, int amount){
+//        // TODO shipping bin!
+//        Player player = App.getInstance().getCurrentGame().getCurrentPlayer();
+//        for (java.util.Map.Entry<Item, Integer> entry : player.getBackPack().getItems().entrySet()) {
+//            Item item = entry.getKey();
+//            Integer number = entry.getValue();
+//            if(item.getName().equals(itemName)){
+//                if(amount > number){
+//                    return new GameMessage(null, "not enough product to sell");
+//                }
+//                // TODO add shipping bin value
+//                player.setFeatureMoney(amount * item.getPrice());
+//                player.getBackPack().getItems().put(item, number - amount);
+//                return new GameMessage(null, "sold out of " + amount + " " + item.getName());
+//            }
+//        }
+//        return new GameMessage(null, "this product does not exist!");
+//    }
 
     public GameMessage purchaseItem(String itemName, int count){
         App app = App.getInstance();
@@ -125,12 +125,14 @@ public class StoreController extends Controller {
                 return new GameMessage(null, "you don't have enough money to buy");
             }
             player.decreaseMoney(item.getSeasonPrice());
+            item.getItem().setPrice(item.getSeasonPrice());
         }
         else{
             if(player.getMoney() < item.getPrice()){
                 return new GameMessage(null, "you don't have enough money to buy");
             }
             player.decreaseMoney(item.getPrice());
+            item.getItem().setPrice(item.getPrice());
         }
         return new GameMessage(null, itemName+" has been purchased");
     }

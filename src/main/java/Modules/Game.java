@@ -36,8 +36,7 @@ public class Game implements Serializable {
         this.inGameMenu = null;
         todayWeather = Weather.getRandomWeather(Season.spring);
         tomrrowWeather = Weather.getRandomWeather(Season.spring);
-        this.stores = stores;
-        //this.npcs.a
+        this.stores = map.getNpcVillage().getStores();
     }
 
     public ArrayList<Player> getPlayers() {
@@ -162,7 +161,7 @@ public class Game implements Serializable {
                     TileObject tileObject = tile.getObject();
                     if (tileObject instanceof Plant) {
                         Plant plant = (Plant) tileObject;
-                        if (Time.getDayDifference(plant.getLastWateringTime(), App.getInstance().getCurrentGame().getTime()) > 2) {
+                        if (Math.abs(Time.getDayDifference(plant.getLastWateringTime(), App.getInstance().getCurrentGame().getTime())) > 2) {
                             tile.setObject(null);
                         } else {
                             plant.grow();

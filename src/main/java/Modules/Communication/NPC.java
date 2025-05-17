@@ -12,6 +12,7 @@ import Modules.Farming.CropType;
 import Modules.Game;
 import Modules.Item;
 import Modules.Map.TileObject;
+import Modules.Player;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class NPC extends TileObject implements Serializable {
     private String job;
     private ArrayList<Item> favoriteItems = new ArrayList<>();
     private NPCDialogue dialogue;
-    private NPCFriendship friendship;
+    //private NPCFriendship friendship;
     private NPCQuest quest;
     public NPC(String name) {
         switch (name){
@@ -104,12 +105,16 @@ public class NPC extends TileObject implements Serializable {
 
     public String getDialogue() {
         Game game = App.getInstance().getCurrentGame();
-        return dialogue.GetDialogue(game.getTodayWeather(), game.getTime(), friendship.getLevel());
+        Player player = game.getCurrentPlayer();
+        int level = 0;
+        for (NPCFriendship npcFriendship : player.getNPCFriendships()) {
+            if (npcFriendship.getNpc().equals(this)) {
+                level = npcFriendship.getLevel();
+            }
+        }
+        return dialogue.GetDialogue(game.getTodayWeather(), game.getTime(), level);
     }
 
-    public NPCFriendship getFriendship() {
-        return friendship;
-    }
 
     public NPCQuest getQuest() {
         return quest;

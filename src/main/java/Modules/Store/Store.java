@@ -584,18 +584,18 @@ public class Store extends Building implements Serializable {
         Map map = App.getInstance().getCurrentGame().getMap();
         int x = position.x;
         int y = position.y;
-        for(int i = 0; i < 10; i++) {
-            int dx = (i / 3) - 1;
-            int dy = (i % 3) - 1;
-            if(dx == 0 && dy == 0){
-                continue;
-            }
-            Tile tile = map.getTile(new Position(x + dx, y + dy));
-            if(tile == null){
-                continue;
-            }
-            if(tile.getBuilding() instanceof Store && tile.getBuilding().equals(this)) {
-                return true;
+        for(int dx = -1; dx <= 1; dx++){
+            for(int dy = -1; dy <= 1; dy++){
+                if(dx == 0 && dy == 0){
+                    continue;
+                }
+                Tile tile = map.getTile(new Position(x + dx, y + dy));
+                if(tile == null){
+                    continue;
+                }
+                if(tile.getBuilding() instanceof Store && tile.getBuilding().equals(this)) {
+                    return true;
+                }
             }
         }
         return false;

@@ -36,7 +36,7 @@ public class Seed extends Item implements Serializable {
 
     @Override
     public int getPrice() {
-        return 0;
+        return price;
     }
 
     public SeedType getType() {

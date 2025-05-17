@@ -114,7 +114,7 @@ public class Plant extends TileObject implements Serializable {
         else if(regrownTimes >= type.getReGrowth()){
             return true;
         }
-        if(Time.getDayDifference(lastWateringTime, App.getInstance().getCurrentGame().getTime()) > 2){
+        if(Math.abs(Time.getDayDifference(lastWateringTime, App.getInstance().getCurrentGame().getTime())) > 2){
             return true;
         }
         return false;

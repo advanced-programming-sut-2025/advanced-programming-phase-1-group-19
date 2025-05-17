@@ -175,8 +175,9 @@ public class Tool extends Item implements Serializable {
                 } else {
                     game.getCurrentPlayer().decreaseEnergy(energy);
                     Plant plant = (Plant) tile.getObject();
-                    int daysDiff = Time.getDayDifference(game.getTime(), plant.getPlantingTime());
+                    int daysDiff = Math.abs(Time.getDayDifference(plant.getPlantingTime(), game.getTime()));
                     if (plant.getType().getTotalTime() > daysDiff) {
+                        //System.out.println(plant.getType().getTotalTime() + " " + daysDiff);
                         return new GameMessage(null, "Let your tree grow as it should");
                     }
                     int amount;

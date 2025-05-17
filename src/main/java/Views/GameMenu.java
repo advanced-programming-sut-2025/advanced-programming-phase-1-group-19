@@ -240,6 +240,15 @@ public class GameMenu implements AppMenu {
                 System.out.println(gameController.shippingBinSell(matcher.group("productName"), Integer.parseInt(matcher.group("count"))).message());
                 break;
             }
+            case sellProductAll:{
+                Pattern pattern = Pattern.compile("\\s*sell (?<productName>.*)\\s*");
+                Matcher matcher = pattern.matcher(input);
+                if (!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
+                System.out.println(gameController.shippingBinSell(matcher.group("productName"), -1).message());
+                break;
+            }
             case toolEquip: {
                 Pattern pattern = Pattern.compile("^\\s*tools equip (?<toolName>.+)\\s*$");
                 Matcher matcher = pattern.matcher(input);
@@ -618,15 +627,6 @@ public class GameMenu implements AppMenu {
                 }
                 break;
             }
-            case sellItem: {
-                Pattern pattern = Pattern.compile("^\\s*sell (?<productName>.*) -n (?<count>.*)\\s*$");
-                Matcher matcher = pattern.matcher(input);
-                if (!matcher.matches()) {
-                    System.out.println("invalid command!");
-                }
-                System.out.println(storeController.sellItem(matcher.group("productName").trim(), Integer.parseInt(matcher.group("count").trim())).message());
-                break;
-            }
             case showCraftingRecipes: {
                 CraftingController craftingController = CraftingController.getInstance();
                 System.out.println(craftingController.showCraftingRecipe().message());
@@ -791,6 +791,15 @@ public class GameMenu implements AppMenu {
                 System.out.println(gameController.quests(index).message());
                 break;
             }
+            case meetNpc:{
+                Pattern pattern = Pattern.compile("^\\s*meet NPC (?<npcName>.*)\\s*$");
+                Matcher matcher = pattern.matcher(input);
+                if (!matcher.matches()) {
+                    System.out.println("invalid command!");
+                }
+                System.out.println(gameController.meetNpc(matcher.group("npcName")).message());
+                break;
+            }
         }
     }
 
@@ -941,7 +950,10 @@ public class GameMenu implements AppMenu {
             runCommand(GameCommand.toolUse, input);
         } else if (input.matches("\\s*sell (?<productName>.*) -n (?<count>\\d+)\\s*")) {
             runCommand(GameCommand.sellProduct, input);
-        } else if (input.matches("\\s*how much water\\s*")) {
+        }
+        else if (input.matches("\\s*sell (?<productName>.*)\\s*")){
+            runCommand(GameCommand.sellProductAll, input);
+        }else if (input.matches("\\s*how much water\\s*")) {
             runCommand(GameCommand.howMuchWater, input);
         } else if (input.matches("start trade")) {
             runCommand(GameCommand.startTrade, "");
@@ -959,8 +971,6 @@ public class GameMenu implements AppMenu {
             runCommand(GameCommand.purchaseItemAll, input);
         } else if (input.matches("^\\s*cheat add (?<count>\\d+) dollars\\s*$")) {
             runCommand(GameCommand.cheatAddMoney, input);
-        } else if (input.matches("^\\s*sell (?<productName>.*) -n (?<count>.*)\\s*$")) {
-            runCommand(GameCommand.sellItem, input);
         } else if (input.matches("^\\s*talk -u (?<username>.+?) -m (?<message>.+?)\\s*$")) {
             runCommand(GameCommand.talk, input);
         } else if (input.matches("^\\s*talk history -u (?<username>.+?)\\s*$")) {
@@ -1046,7 +1056,9 @@ public class GameMenu implements AppMenu {
             runCommand(GameCommand.questList, "");
         } else if (input.matches("^\\s*quests finish -i (?<index>.+?)\\s*$")) {
             runCommand(GameCommand.finishQuest, input);
-        } else {
+        } else if (input.matches("^\\s*meet NPC (?<npcName>.*)\\s*")){
+            runCommand(GameCommand.meetNpc, input);
+        }else {
             System.out.println("invalid command");
         }
     }
