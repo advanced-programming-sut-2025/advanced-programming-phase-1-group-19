@@ -422,7 +422,7 @@ public class GameController extends Controller {
         player.decreaseMoney(40);
         Farm farm = App.getInstance().getCurrentGame().getCurrentPlayer().getFarm();
         farm.getGreenHouse().build();
-        return null;
+        return new GameMessage(null, "Successfully made green house");
     }
 
     public GameMessage equipTool(String toolName) {
