@@ -155,8 +155,8 @@ public class GameMenu implements AppMenu {
                 out = out.replace("H", "\u001B[45mH\u001B[0m"); // Purple background
                 out = out.replace("L", "\u001B[44mL\u001B[0m"); // Blue background
                 out = out.replace("Q", "\u001B[43mQ\u001B[0m"); // Yellow background
-                out = out.replace("S","\u001B[101mS\u001B[0m");
-                out = out.replace("I","\u001B[47mI\u001B[0m");
+                out = out.replace("S", "\u001B[101mS\u001B[0m");
+                out = out.replace("I", "\u001B[47mI\u001B[0m");
                 System.out.println(out);
                 break;
             }
@@ -289,7 +289,7 @@ public class GameMenu implements AppMenu {
             case artisanUse: {
                 Pattern pattern = Pattern.compile("^artisan use (?<artisanName>.+) (?<itemName>.+)");
                 Matcher matcher = pattern.matcher(input);
-                if(!matcher.matches()) {
+                if (!matcher.matches()) {
                     System.out.println("invalid command!");
                 }
                 System.out.println(gameController.artisanUse(matcher.group("artisanName"), matcher.group("itemName")).message());
@@ -762,29 +762,29 @@ public class GameMenu implements AppMenu {
                 System.out.println(gameController.showHay().message());
                 break;
             }
-            case giftNPC:{
+            case giftNPC: {
                 Pattern pattern = Pattern.compile("^\\s*gift NPC (?<npcName>.+?) -i (?<item>.+?)\\s*$");
                 Matcher matcher = pattern.matcher(input);
-                if(!matcher.matches()) {
+                if (!matcher.matches()) {
                     System.out.println("invalid command!");
                 }
                 String npcName = matcher.group("npcName");
                 String itemName = matcher.group("item");
-                System.out.println(gameController.giftNPC(npcName,itemName).message());
+                System.out.println(gameController.giftNPC(npcName, itemName).message());
                 break;
             }
-            case friendshipNpcList:{
+            case friendshipNpcList: {
                 System.out.println(gameController.showNpcFriendship().message());
                 break;
             }
-            case questList:{
+            case questList: {
                 System.out.println(gameController.questsList().message());
                 break;
             }
-            case finishQuest:{
+            case finishQuest: {
                 Pattern pattern = Pattern.compile("^\\s*quests finish -i (?<index>.+?)\\s*$");
                 Matcher matcher = pattern.matcher(input);
-                if(!matcher.matches()) {
+                if (!matcher.matches()) {
                     System.out.println("invalid command!");
                 }
                 int index = Integer.parseInt(matcher.group("index"));
@@ -1016,54 +1016,37 @@ public class GameMenu implements AppMenu {
             runCommand(GameCommand.givingFlower, input);
         } else if (input.matches("^\\s*show hay\\s*$")) {
             runCommand(GameCommand.Hay, "");
+        } else if (input.matches("^\\s*ask marriage -u (?<username>.+?) -r (?<ring>.+?)\\s*$")) {
+            runCommand(GameCommand.askMarriage, input);
+        } else if (input.matches("^\\s*respond (?<acceptOrRejec>.+?) -u (?<username>.+?)\\s*$")) {
+            runCommand(GameCommand.answerMarriage, input);
+        } else if (input.matches("^\\s*show marriage requests\\s*$")) {
+            runCommand(GameCommand.showMarriageRequests, input);
+        } else if (input.matches("^\\s*hug -u (?<username>.+?)\\s*$")) {
+            runCommand(GameCommand.hug, input);
+        } else if (input.matches("^\\s*enter store -n (?<storeName>.+?)\\s*$")) {
+            runCommand(GameCommand.enterStore, input);
+        } else if (input.matches("^\\s*exit store -n (?<storeName>.+?)\\s*$")) {
+            runCommand(GameCommand.exitStore, input);
+        } else if (input.matches("^\\s*buy recipe (?<recipeName>.+?) -n (?<count>.+?)\\s*$")) {
+            runCommand(GameCommand.buyRecipe, input);
+        } else if (input.matches("^\\s*cheat add recipe -n (?<recipeName>.+?)\\s*$")) {
+            runCommand(GameCommand.cheatAddRecipe, input);
+        } else if (input.matches("^\\s*produces\\s*$")) {
+            runCommand(GameCommand.showAnimalProducts, "");
+        } else if (input.matches("^\\s*flower -u (?<userName>.+?)\\s*$")) {
+            runCommand(GameCommand.givingFlower, input);
+        } else if (input.matches("^\\s*show hay\\s*$")) {
+            runCommand(GameCommand.Hay, "");
+        } else if (input.matches("^\\s*gift NPC (?<npcName>.+?) -i (?<item>.+?)\\s*$")) {
+            runCommand(GameCommand.giftNPC, input);
+        } else if (input.matches("^\\s*friendship NPC list\\s*$")) {
+            runCommand(GameCommand.friendshipNpcList, "");
+        } else if (input.matches("^\\s*quests list\\S*$")) {
+            runCommand(GameCommand.questList, "");
+        } else if (input.matches("^\\s*quests finish -i (?<index>.+?)\\s*$")) {
+            runCommand(GameCommand.finishQuest, input);
         } else {
-        }
-        else if(input.matches("^\\s*ask marriage -u (?<username>.+?) -r (?<ring>.+?)\\s*$")){
-            runCommand(GameCommand.askMarriage,input);
-        }
-        else if(input.matches("^\\s*respond (?<acceptOrRejec>.+?) -u (?<username>.+?)\\s*$")){
-            runCommand(GameCommand.answerMarriage,input);
-        }
-        else if(input.matches("^\\s*show marriage requests\\s*$")){
-            runCommand(GameCommand.showMarriageRequests,input);
-        }
-        else if(input.matches("^\\s*hug -u (?<username>.+?)\\s*$")){
-            runCommand(GameCommand.hug,input);
-        }
-        else if(input.matches("^\\s*enter store -n (?<storeName>.+?)\\s*$")){
-            runCommand(GameCommand.enterStore,input);
-        }
-        else if(input.matches("^\\s*exit store -n (?<storeName>.+?)\\s*$")){
-            runCommand(GameCommand.exitStore,input);
-        }
-        else if(input.matches("^\\s*buy recipe (?<recipeName>.+?) -n (?<count>.+?)\\s*$")){
-            runCommand(GameCommand.buyRecipe,input);
-        }
-        else if(input.matches("^\\s*cheat add recipe -n (?<recipeName>.+?)\\s*$")){
-            runCommand(GameCommand.cheatAddRecipe,input);
-        }
-        else if(input.matches("^\\s*produces\\s*$")){
-            runCommand(GameCommand.showAnimalProducts,"");
-        }
-        else if(input.matches("^\\s*flower -u (?<userName>.+?)\\s*$")){
-            runCommand(GameCommand.givingFlower,input);
-        }
-        else if(input.matches("^\\s*show hay\\s*$")){
-            runCommand(GameCommand.Hay,"");
-        }
-        else if(input.matches("^\\s*gift NPC (?<npcName>.+?) -i (?<item>.+?)\\s*$")){
-            runCommand(GameCommand.giftNPC,input);
-        }
-        else if(input.matches("^\\s*friendship NPC list\\s*$")){
-            runCommand(GameCommand.friendshipNpcList,"");
-        }
-        else if(input.matches("^\\s*quests list\\S*$")){
-            runCommand(GameCommand.questList,"");
-        }
-        else if(input.matches("^\\s*quests finish -i (?<index>.+?)\\s*$")){
-            runCommand(GameCommand.finishQuest,input);
-        }
-        else{
             System.out.println("invalid command");
         }
     }

@@ -115,7 +115,7 @@ public class GameController extends Controller {
             }
         }
         Map map = new Map(farms);
-        Game game = new Game(players, map, stores);
+        Game game = new Game(players, map);
 
         app.addGame(game);
         app.setCurrentGame(game);
@@ -409,6 +409,17 @@ public class GameController extends Controller {
 
     public GameMessage buildGreenHouse() {
 //        TODO: check if we have enough coin and wood! and cost it
+        App app = App.getInstance();
+        Game game = app.getCurrentGame();
+        Player player = app.getCurrentGame().getCurrentPlayer();
+        if(!player.getBackPack().checkItem(new Material(MaterialType.wood),15)){
+            return new GameMessage(null,"You don't have enough wood");
+        }
+        player.getBackPack().removeItem(new Material(MaterialType.wood),15);
+        if(player.getMoney() < 40){
+            return new GameMessage(null,"You don't have enough money");
+        }
+        player.decreaseMoney(40);
         Farm farm = App.getInstance().getCurrentGame().getCurrentPlayer().getFarm();
         farm.getGreenHouse().build();
         return null;

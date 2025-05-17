@@ -27,7 +27,7 @@ public class Game implements Serializable {
     public final static Time startingTime = new Time();
     private ArrayList<Store> stores = new ArrayList<>();
 
-    public Game(ArrayList<Player> players, Map map, ArrayList<Store> stores) {
+    public Game(ArrayList<Player> players, Map map) {
         this.players = players;
         this.currentPlayer = players.getFirst();
         this.map = map;
@@ -80,10 +80,7 @@ public class Game implements Serializable {
 
     public void nextDay() {
 
-        if (time.getDay() == 28) {
-            time.nextSeason();
-        }
-        time.nextDay();
+
         // todayWeather for nextDay is tomrrowWeather for today!
         todayWeather = tomrrowWeather;
         setTomorrowWeather();
@@ -147,6 +144,11 @@ public class Game implements Serializable {
             }
         }
         // check all plants
+        if (time.getDay() == 28) {
+            time.nextSeason();
+        }
+        time.nextDay();
+
 
         map.getNpcVillage().refreshShop();
         this.stores = map.getNpcVillage().getStores();
@@ -168,7 +170,7 @@ public class Game implements Serializable {
             }
         }
 
-        for(Player player : players) {
+        for (Player player : players) {
             player.resetEnergy();
         }
         resetMoney();
@@ -176,12 +178,13 @@ public class Game implements Serializable {
         map.setNewDayForaging();
     }
 
-    public void resetMoney(){
-        for(Player player : players){
+    public void resetMoney() {
+        for (Player player : players) {
             player.addMoney(player.getFeatureMoney());
             player.resetMoney();
         }
     }
+
     public void nextHour() {
         if (time.getHour() == 22) {
             nextDay();
@@ -201,7 +204,7 @@ public class Game implements Serializable {
                 if (tile != null) {
                     if (tile.getBuilding() == null && tile.getObject() instanceof Plant) {
                         Plant plant = (Plant) tile.getObject();
-                        if(plant.getGianPosition() == -1) {
+                        if (plant.getGianPosition() == -1) {
                             if (rand.nextInt(64) == 0) {
                                 tile.setObject(null);
                             }
