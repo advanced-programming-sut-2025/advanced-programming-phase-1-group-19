@@ -93,6 +93,15 @@ public class NPC extends TileObject implements Serializable {
         return favoriteItems;
     }
 
+    public boolean checkFavorite(Item item){
+        for (Item favoriteItem : favoriteItems) {
+            if(favoriteItem.getName().equals(item.getName())){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public String getDialogue() {
         Game game = App.getInstance().getCurrentGame();
         return dialogue.GetDialogue(game.getTodayWeather(), game.getTime(), friendship.getLevel());

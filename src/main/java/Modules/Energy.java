@@ -12,6 +12,9 @@ public class Energy implements Serializable {
         if(this.amount + amount <= maxAmount) {
             this.amount += amount;
         }
+        else {
+            this.amount = maxAmount;
+        }
     }
 
     public void decreaseEnergy(int amount) {

@@ -22,8 +22,11 @@ import java.util.HashMap;
 public class NPCQuest implements Serializable {
     private ArrayList<Pair<Item, Integer> > requests;
     private ArrayList<Pair<Item, Integer> > rewards;
+    private NPC npc;
     private int activeQuest;
+    private boolean isDone = false;
     public NPCQuest(NPC npc) {
+        this.npc = npc;
         requests = new ArrayList<>();
         rewards = new ArrayList<>();
         activeQuest = 0;
@@ -71,11 +74,23 @@ public class NPCQuest implements Serializable {
         this.activeQuest = Math.max(this.activeQuest, 2);
     }
 
+    public NPC getNpc() {
+        return npc;
+    }
+
     public ArrayList<Pair<Item, Integer>> getRequests() {
         return requests;
     }
 
     public ArrayList<Pair<Item, Integer>> getRewards() {
         return rewards;
+    }
+
+    public void setIsDone(boolean isDone) {
+        this.isDone = isDone;
+    }
+
+    public boolean isDone() {
+        return isDone;
     }
 }

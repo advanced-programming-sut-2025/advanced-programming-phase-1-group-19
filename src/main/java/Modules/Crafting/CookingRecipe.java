@@ -7,6 +7,8 @@ import Modules.Animal.FishType;
 import Modules.Enums.SkillType;
 import Modules.Farming.Crop;
 import Modules.Farming.CropType;
+import Modules.Farming.ForagingCrop;
+import Modules.Farming.ForagingCropType;
 import Modules.Item;
 
 import java.io.Serializable;
@@ -19,7 +21,7 @@ public enum CookingRecipe implements Recipe, Serializable {
     omelet("omelet", new HashMap<>() {{
         put(new AnimalProduct(AnimalProductType.egg), 1);
         put(new AnimalProduct(AnimalProductType.milk), 1);
-    }}, 125, null, 100),
+    }}, 125, null, 10),
     bakedFish("baked Fish", new HashMap<>(){{
         put(new Fish(FishType.sardine), 1);
         put(new Fish(FishType.salmon), 1);
@@ -79,6 +81,13 @@ public enum CookingRecipe implements Recipe, Serializable {
         put(new Crop(CropType.carrot), 1);
         put(new Crop(CropType.eggplant), 1);
     }},180, new Buff(SkillType.foraging,5,0), 125),
+    salad("salad", new HashMap<>(){{
+        put(new ForagingCrop(ForagingCropType.leek), 1);
+        put(new ForagingCrop(ForagingCropType.dandelion), 1);
+    }}, 110, null, 113),
+    salmonDinner("salmon dinner",new HashMap<>(){{
+        put(new Fish(FishType.salmon),1);
+    }},300,null,125),
 
     ;
 

@@ -93,5 +93,9 @@ public enum GameCommand implements Command {
     showAnimalProducts,
     givingFlower,
     Hay,
+    giftNPC,
+    friendshipNpcList,
+    questList,
+    finishQuest,
     exit;
 }

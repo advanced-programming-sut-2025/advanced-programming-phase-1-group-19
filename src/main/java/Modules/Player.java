@@ -2,6 +2,8 @@ package Modules;
 
 import Modules.Communication.FriendShip;
 import Modules.Communication.NPC;
+import Modules.Communication.NPCFriendship;
+import Modules.Communication.NPCQuest;
 import Modules.Crafting.Buff;
 import Modules.Crafting.CookingRecipe;
 import Modules.Crafting.CraftingRecipe;
@@ -37,6 +39,8 @@ public class Player implements Serializable {
     private ArrayList<NPC> npcs;
     private Store currentStore;
     private int Hay;
+    private ArrayList<NPCFriendship> NPCFriendships;
+    private ArrayList<NPCQuest> NPCQuests;
     public Player(User user, Farm farm) {
         this.money = 100;
         this.user = user;
@@ -272,5 +276,22 @@ public class Player implements Serializable {
             energy.isFainted = false;
             energy.amount = (int)(energy.maxAmount * 0.75);
         }
+    }
+
+    public NPCFriendship getNpcFriendshipByName(String name) {
+        for (NPCFriendship npcFriendship : this.NPCFriendships) {
+            if(npcFriendship.getNpc().getName().equals(name)) {
+                return npcFriendship;
+            }
+        }
+        return null;
+    }
+
+    public ArrayList<NPCFriendship> getNPCFriendships() {
+        return NPCFriendships;
+    }
+
+    public ArrayList<NPCQuest> getNPCQuests() {
+        return NPCQuests;
     }
 }

@@ -4,6 +4,8 @@ import Modules.Animal.*;
 import Modules.App;
 import Modules.Crafting.Material;
 import Modules.Crafting.MaterialType;
+import Modules.Enums.Season;
+import Modules.Enums.SkillType;
 import Modules.Enums.Weather;
 import Modules.Farming.Crop;
 import Modules.Farming.ForagingCrop;
