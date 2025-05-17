@@ -26,6 +26,16 @@ public class Tile implements Serializable {
         return object == null && building == null;
     }
 
+    public boolean isBuildingPlantable() {
+        if(building == null) {
+            return true;
+        }
+        if(building instanceof GreenHouse && ((GreenHouse) building).isBuilt()) {
+            return true;
+        }
+        return false;
+    }
+
     public Position getPosition() {
         return position;
     }

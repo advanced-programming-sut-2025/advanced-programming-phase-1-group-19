@@ -63,8 +63,6 @@ public class Game implements Serializable {
     }
 
     public void setNextPlayer() {
-//        TODO: get position from arraylist and set to next player
-//        TODO: check if it was the last player nextHour()
 //        TODO: check if the player is fainted
         int index = players.indexOf(currentPlayer);
         if (index == players.size() - 1) {
@@ -86,7 +84,6 @@ public class Game implements Serializable {
             time.nextSeason();
         }
         time.nextDay();
-//        TODO: handle special effect for each Weather!
         // todayWeather for nextDay is tomrrowWeather for today!
         todayWeather = tomrrowWeather;
         setTomorrowWeather();
@@ -95,7 +92,6 @@ public class Game implements Serializable {
                 autoWaterPlant();
             }
             case storm -> {
-//                TODO:has rain affects and also break trees
                 thor();
                 autoWaterPlant();
             }
@@ -152,15 +148,8 @@ public class Game implements Serializable {
         }
         // check all plants
 
-        ArrayList<Store> stores = new ArrayList<>();
-        stores.add(new Store("Clint"));
-        stores.add(new Store("Morris"));
-        stores.add(new Store("Pierre"));
-        stores.add(new Store("Robin"));
-        stores.add(new Store("Willy"));
-        stores.add(new Store("Marnie"));
-        stores.add(new Store("Gus"));
-        this.stores = stores;
+        map.getNpcVillage().refreshShop();
+        this.stores = map.getNpcVillage().getStores();
 
         for (int i = 0; i < 250; i++) {
             for (int j = 0; j < 250; j++) {
@@ -173,38 +162,6 @@ public class Game implements Serializable {
                             tile.setObject(null);
                         } else {
                             plant.grow();
-                        }
-                    }
-                    if (tile.getBuilding() instanceof Store) {
-                        Store store = (Store) tile.getBuilding();
-                        switch (store.getOwnerName()) {
-                            case "Clint":
-                                tile.setBuilding(stores.get(0));
-                                break;
-                            case "Morris": {
-                                tile.setBuilding(stores.get(1));
-                                break;
-                            }
-                            case "Pierre": {
-                                tile.setBuilding(stores.get(2));
-                                break;
-                            }
-                            case "Robin": {
-                                tile.setBuilding(stores.get(3));
-                                break;
-                            }
-                            case "Willy": {
-                                tile.setBuilding(stores.get(4));
-                                break;
-                            }
-                            case "Marnie": {
-                                tile.setBuilding(stores.get(5));
-                                break;
-                            }
-                            case "Gus": {
-                                tile.setBuilding(stores.get(6));
-                                break;
-                            }
                         }
                     }
                 }

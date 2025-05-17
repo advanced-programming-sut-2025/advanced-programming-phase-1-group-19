@@ -53,6 +53,7 @@ public enum GameCommand implements Command {
     toolUpgrade,
     backPackUpgrade,
     trashCanUpgrade,
+    artisanUse,
     toolUse,
     talk,
     talkHistory,

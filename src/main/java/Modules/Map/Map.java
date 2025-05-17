@@ -162,4 +162,12 @@ public class Map implements Serializable {
         }
         return null;
     }
+
+    public ArrayList<Farm> getFarms() {
+        return farms;
+    }
+
+    public NPCVillage getNpcVillage() {
+        return npcVillage;
+    }
 }

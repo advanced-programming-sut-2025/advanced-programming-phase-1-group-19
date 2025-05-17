@@ -100,13 +100,6 @@ public enum FarmMap implements Serializable {
                 break;
             }
         }
-        storePositions.add(new Position(2, 10));
-        storePositions.add(new Position(2, 20));
-        storePositions.add(new Position(2, 30));
-        storePositions.add(new Position(2, 40));
-        storePositions.add(new Position(2, 50));
-        storePositions.add(new Position(2, 60));
-        storePositions.add(new Position(2, 70));
     }
 
     public static FarmMap getFarmMap(int id) {
@@ -154,10 +147,6 @@ public enum FarmMap implements Serializable {
         return quarrySize;
     }
 
-    public ArrayList<Position> getStorePositions() {
-        return storePositions;
-    }
-
     public String printMap() {
         StringBuilder ret = new StringBuilder();
         for(int i = 0; i < size.height; i++) {
@@ -181,12 +170,6 @@ public enum FarmMap implements Serializable {
                 }
                 else {
                     c = '.';
-                }
-                for(Position position : storePositions) {
-                    if (position.x == i && position.y == j) {
-                        c = 'S';
-                        break;
-                    }
                 }
                 ret.append(c);
             }

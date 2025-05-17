@@ -2,6 +2,7 @@ package Controllers;
 
 import Modules.*;
 import Modules.Animal.*;
+import Modules.Artisan.ArtisanType;
 import Modules.Communication.FriendShip;
 import Modules.Communication.Gift;
 import Modules.Crafting.Material;
@@ -19,7 +20,6 @@ import Modules.Tools.*;
 import Views.*;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class GameController extends Controller {
@@ -96,19 +96,11 @@ public class GameController extends Controller {
                 mapIDs[i] = Integer.parseInt(idString);
             }
         }
-        ArrayList<Store> stores = new ArrayList<>();
-        stores.add(new Store("Clint"));
-        stores.add(new Store("Morris"));
-        stores.add(new Store("Pierre"));
-        stores.add(new Store("Robin"));
-        stores.add(new Store("Willy"));
-        stores.add(new Store("Marnie"));
-        stores.add(new Store("Gus"));
 
         ArrayList<Player> players = new ArrayList<>();
         ArrayList<Farm> farms = new ArrayList<>();
         for (int i = 0; i < users.length; i++) {
-            Farm farm = new Farm(FarmMap.getFarmMap(mapIDs[i]), i, stores);
+            Farm farm = new Farm(FarmMap.getFarmMap(mapIDs[i]), i);
             Player player = new Player(users[i], farm);
             farms.add(farm);
             players.add(player);
@@ -414,7 +406,9 @@ public class GameController extends Controller {
     }
 
     public GameMessage buildGreenHouse() {
-//        TODO: check if we have enough coin and wood!
+//        TODO: check if we have enough coin and wood! and cost it
+        Farm farm = App.getInstance().getCurrentGame().getCurrentPlayer().getFarm();
+        farm.getGreenHouse().build();
         return null;
     }
 
@@ -567,6 +561,14 @@ public class GameController extends Controller {
         Position targetPosition = new Position(playerPosition.x, playerPosition.y);
         targetPosition.move(direction);
         return tool.use(targetPosition);
+    }
+
+    public GameMessage artisanUse(String artisanName, String itemName) {
+        ArtisanType type = ArtisanType.getArtisanTypeByName(artisanName);
+        if(type == null){
+            return new GameMessage(null, "there is no artisan with that name");
+        }
+        return new GameMessage(null, "you have selected " + itemName + " from " + type.getName());
     }
 
     public GameMessage howMuchWater() {
@@ -1372,18 +1374,17 @@ public class GameController extends Controller {
         if (plantType == null) {
             return new GameMessage(null, "oops, check the plantType and seedType files :(");
         }
-        if(!plantType.getSeasonsAvailable().contains(game.getTime().getSeason())) {
-            return new GameMessage(null, "you can't plant that in this season!");
-        }
 
         Position playerPosition = player.getPosition();
         Position targetPosition = new Position(playerPosition.x, playerPosition.y);
         targetPosition.move(direction);
         Plant plant = new Plant(plantType, new Time(game.getTime()));
         Tile tile = map.getTile(targetPosition);
-//        TODO: check for greenHouse
-        if (tile == null || tile.getObject() != null || tile.getBuilding() != null) {
+        if (tile == null || tile.getObject() != null || !tile.isBuildingPlantable()) {
             return new GameMessage(null, "you must choose a valid and empty tile!");
+        }
+        if(!plantType.getSeasonsAvailable().contains(game.getTime().getSeason()) || tile.getBuilding() instanceof GreenHouse) {
+            return new GameMessage(null, "you can't plant that in this season!");
         }
 
         tile.setObject(plant);
@@ -1404,8 +1405,8 @@ public class GameController extends Controller {
         boolean[] flag = new boolean[8];
         Plant[] p = new Plant[8];
         for (int i = 0; i < 8; i++) {
-            if (t[i] == null) {
-                flag[i] = false;
+            flag[i] = false;
+            if (t[i] == null || t[i].getBuilding() instanceof GreenHouse) {
                 continue;
             }
             if (t[i].containsPlant()) {
@@ -1414,7 +1415,6 @@ public class GameController extends Controller {
                     flag[i] = true;
                 }
             }
-            flag[i] = false;
         }
         if (flag[1] && flag[2] && flag[3]) {
             plant.setGianPosition(2);

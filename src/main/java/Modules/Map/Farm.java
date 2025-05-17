@@ -27,7 +27,7 @@ public class Farm implements Serializable {
     private Barn barn;
     private Coop coop;
 
-    public Farm(FarmMap farmMap, int turn, ArrayList<Store> stores) {
+    public Farm(FarmMap farmMap, int turn) {
         switch (turn) {
             case 0: {
                 topLeft = new Position(0, 0);
@@ -101,13 +101,6 @@ public class Farm implements Serializable {
                     quarryTiles.add(tile);
                 }
                 tiles.add(tile);
-                for(int k = 0; k < stores.size(); k++) {
-                    Position storePosition = farmMap.getStorePositions().get(k);
-                    if(position.equals(new Position(storePosition.x + topLeft.x, storePosition.y + topLeft.y))) {
-                        Store store = stores.get(k);
-                        tile.setBuilding(store);
-                    }
-                }
                 if(i == topLeft.x + 2 && j == topLeft.y + 80) {
                     tile.setObject(new ShippingBin());
                 }

@@ -76,7 +76,7 @@ public class Tool extends Item implements Serializable {
         switch (toolType) {
             case hoe -> {
                 boolean isSuccess;
-                if (tile.getBuilding() == null && tile.getObject() == null) {
+                if (tile.isBuildingPlantable() && tile.getObject() == null) {
                     isSuccess = true;
                 } else {
                     isSuccess = false;
@@ -95,7 +95,7 @@ public class Tool extends Item implements Serializable {
             }
             case axe -> {
                 boolean isSuccess;
-                if (tile.getBuilding() == null && tile.getObject() != null && tile.getObject() instanceof Plant) {
+                if (tile.isBuildingPlantable() && tile.getObject() != null && tile.getObject() instanceof Plant) {
                     isSuccess = true;
                 } else {
                     isSuccess = false;
@@ -121,7 +121,7 @@ public class Tool extends Item implements Serializable {
                 int options = 0;
                 if (tile.getBuilding() != null && tile.getBuilding() instanceof Lake) {
                     options = 1;
-                } else if (tile.getObject() != null && tile.getObject() instanceof Plant) {
+                } else if (tile.isBuildingPlantable() && tile.getObject() != null && tile.getObject() instanceof Plant) {
                     options = 2;
                 }
                 int energy = (int) (toolType.getEnergy(level, options != 0) * mp);
@@ -157,14 +157,13 @@ public class Tool extends Item implements Serializable {
                 }
             }
             case scythe -> {
-                boolean isSuccess;
-                if (tile.getBuilding() != null && tile.getBuilding() instanceof GreenHouse) {
-                    isSuccess = true;
-                } else if (tile.getObject() != null && tile.getObject() instanceof Plant) {
-                    isSuccess = true;
-                } else {
-                    isSuccess = false;
+                boolean isSuccess = false;
+                if (tile.isBuildingPlantable()) {
+                    if (tile.getObject() != null && tile.getObject() instanceof Plant) {
+                        isSuccess = true;
+                    }
                 }
+
                 int energy = (int) (toolType.getEnergy(level, isSuccess) * mp);
                 if (energy > game.getCurrentPlayer().getEnergy().getAmount()) {
                     return new GameMessage(null, "You don't have enough energy to use this tool.");
