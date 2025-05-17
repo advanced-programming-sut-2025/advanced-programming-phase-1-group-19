@@ -43,6 +43,7 @@ public class NPCVillage implements Serializable {
                         tile.setBuilding(stores.get(k));
                     }
                 }
+                tiles.add(tile);
             }
         }
     }

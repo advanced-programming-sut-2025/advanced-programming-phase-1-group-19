@@ -49,7 +49,7 @@ public class MainController extends Controller {
             logout();
         }
         app.saveApp();
-        return null;
+        return new MainMessage(null, "You Exited!");
     }
 
     @Override
