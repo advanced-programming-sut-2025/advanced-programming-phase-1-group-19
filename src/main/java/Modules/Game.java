@@ -1,5 +1,6 @@
 package Modules;
 
+import Modules.Communication.NPC;
 import Modules.Crafting.Material;
 import Modules.Crafting.MaterialType;
 import Modules.Animal.Animal;
@@ -26,7 +27,7 @@ public class Game implements Serializable {
     private InGameMenu inGameMenu;
     public final static Time startingTime = new Time();
     private ArrayList<Store> stores = new ArrayList<>();
-
+    private ArrayList<NPC> npcs = new ArrayList<>();
     public Game(ArrayList<Player> players, Map map) {
         this.players = players;
         this.currentPlayer = players.getFirst();
@@ -36,6 +37,7 @@ public class Game implements Serializable {
         todayWeather = Weather.getRandomWeather(Season.spring);
         tomrrowWeather = Weather.getRandomWeather(Season.spring);
         this.stores = stores;
+        //this.npcs.a
     }
 
     public ArrayList<Player> getPlayers() {

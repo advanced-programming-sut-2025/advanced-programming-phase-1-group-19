@@ -47,7 +47,7 @@ public class MainMenu implements AppMenu {
                 break;
             }
             case exitApp: {
-                controller.exit();
+                controller.exitApp();
                 System.out.println("you have exited the app!");
                 System.exit(0);
                 break;
