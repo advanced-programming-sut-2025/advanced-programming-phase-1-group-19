@@ -85,6 +85,10 @@ public class RegistrationController extends Controller implements UserInfoContro
             return new RegistrationMessage(RegistrationCommand.askForPassword, "This is a random password: " + randomPassword + "\ndo you want to set this as your password?");
         }
 
+        if(password.length() < 5) {
+            return new RegistrationMessage(null, "Password must be at least 5 characters");
+        }
+
         if (!isPasswordValid(password)) {
             return new RegistrationMessage(null, "Password format is invalid");
         }
