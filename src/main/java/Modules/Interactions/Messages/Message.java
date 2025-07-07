@@ -1,4 +1,4 @@
-package Modules.Interactions.Messages;
+package Models.Interactions.Messages;
 
 public interface Message {
     public boolean isNull();

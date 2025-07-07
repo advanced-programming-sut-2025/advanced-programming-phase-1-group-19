@@ -1,6 +1,6 @@
-package Modules.Farming;
+package Models.Farming;
 
-import Modules.Enums.Season;
+import Models.Enums.Season;
 
 import java.io.Serializable;
 import java.util.concurrent.ThreadLocalRandom;

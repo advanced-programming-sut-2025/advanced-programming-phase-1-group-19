@@ -1,9 +1,9 @@
 package Controllers;
 
-import Modules.App;
-import Modules.Enums.Menu;
-import Modules.Interactions.Messages.MainMessage;
-import Modules.Interactions.Messages.Message;
+import Models.App;
+import Models.Enums.Menu;
+import Models.Interactions.Messages.MainMessage;
+import Models.Interactions.Messages.Message;
 import com.sun.tools.javac.Main;
 
 public class MainController extends Controller {

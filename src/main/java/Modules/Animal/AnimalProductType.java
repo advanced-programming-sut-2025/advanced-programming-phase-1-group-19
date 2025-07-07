@@ -1,4 +1,4 @@
-package Modules.Animal;
+package Models.Animal;
 
 import java.io.Serializable;
 

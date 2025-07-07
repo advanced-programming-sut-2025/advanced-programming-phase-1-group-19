@@ -1,15 +1,15 @@
 package Views;
 
 import Controllers.*;
-import Modules.App;
-import Modules.Enums.InGameMenu;
-import Modules.Farming.SeedType;
-import Modules.Game;
-import Modules.Interactions.Commands.GameCommand;
-import Modules.Interactions.Messages.GameMessage;
-import Modules.Map.Direction;
-import Modules.Map.Position;
-import Modules.Player;
+import Models.App;
+import Models.Enums.InGameMenu;
+import Models.Farming.SeedType;
+import Models.Game;
+import Models.Interactions.Commands.GameCommand;
+import Models.Interactions.Messages.GameMessage;
+import Models.Map.Direction;
+import Models.Map.Position;
+import Models.Player;
 
 import java.util.Scanner;
 import java.util.regex.Matcher;

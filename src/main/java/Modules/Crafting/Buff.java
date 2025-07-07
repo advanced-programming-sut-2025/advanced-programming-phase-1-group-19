@@ -1,6 +1,6 @@
-package Modules.Crafting;
+package Models.Crafting;
 
-import Modules.Enums.SkillType;
+import Models.Enums.SkillType;
 
 import java.io.Serializable;
 

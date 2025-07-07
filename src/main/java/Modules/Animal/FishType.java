@@ -1,6 +1,6 @@
-package Modules.Animal;
+package Models.Animal;
 
-import Modules.Enums.Season;
+import Models.Enums.Season;
 
 import java.io.Serializable;
 

@@ -1,7 +1,7 @@
-package Modules.Store;
+package Models.Store;
 
-import Modules.Enums.Season;
-import Modules.Item;
+import Models.Enums.Season;
+import Models.Item;
 
 import java.io.Serializable;
 

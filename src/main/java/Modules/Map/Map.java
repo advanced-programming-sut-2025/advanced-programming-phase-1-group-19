@@ -1,10 +1,10 @@
-package Modules.Map;
+package Models.Map;
 
-import Modules.App;
-import Modules.Crafting.Material;
-import Modules.Crafting.MaterialType;
-import Modules.Farming.*;
-import Modules.Game;
+import Models.App;
+import Models.Crafting.Material;
+import Models.Crafting.MaterialType;
+import Models.Farming.*;
+import Models.Game;
 
 import java.io.Serializable;
 import java.util.*;

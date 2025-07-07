@@ -1,6 +1,6 @@
-package Modules.Interactions.Messages;
+package Models.Interactions.Messages;
 
-import Modules.Interactions.Commands.ProfileCommand;
+import Models.Interactions.Commands.ProfileCommand;
 
 public record ProfileMessage(ProfileCommand command, String message) implements Message {
 

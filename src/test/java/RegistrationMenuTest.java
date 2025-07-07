@@ -1,5 +1,5 @@
 import Controllers.RegistrationController;
-import Modules.App;
+import Models.App;
 import Views.AppView;
 import Views.RegistrationMenu;
 import org.junit.jupiter.api.AfterEach;

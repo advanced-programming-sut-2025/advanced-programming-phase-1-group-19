@@ -1,15 +1,15 @@
-package Modules;
+package Models;
 
-import Modules.Communication.NPC;
-import Modules.Crafting.Material;
-import Modules.Crafting.MaterialType;
-import Modules.Animal.Animal;
-import Modules.Enums.InGameMenu;
-import Modules.Enums.Season;
-import Modules.Enums.Weather;
-import Modules.Farming.Plant;
-import Modules.Map.*;
-import Modules.Store.Store;
+import Models.Communication.NPC;
+import Models.Crafting.Material;
+import Models.Crafting.MaterialType;
+import Models.Animal.Animal;
+import Models.Enums.InGameMenu;
+import Models.Enums.Season;
+import Models.Enums.Weather;
+import Models.Farming.Plant;
+import Models.Map.*;
+import Models.Store.Store;
 
 import java.io.Serializable;
 import java.sql.SQLTransactionRollbackException;

@@ -1,6 +1,6 @@
-package Modules.Artisan;
+package Models.Artisan;
 
-import Modules.Item;
+import Models.Item;
 
 import java.util.ArrayList;
 

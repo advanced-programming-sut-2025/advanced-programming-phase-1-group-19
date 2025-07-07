@@ -1,8 +1,8 @@
-package Modules.Tools;
+package Models.Tools;
 
-import Modules.App;
-import Modules.Enums.SkillType;
-import Modules.Player;
+import Models.App;
+import Models.Enums.SkillType;
+import Models.Player;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -1,26 +1,26 @@
-package Modules.Tools;
+package Models.Tools;
 
-import Modules.Animal.*;
-import Modules.App;
-import Modules.Crafting.Material;
-import Modules.Crafting.MaterialType;
-import Modules.Enums.Season;
-import Modules.Enums.SkillType;
-import Modules.Enums.Weather;
-import Modules.Farming.Crop;
-import Modules.Farming.ForagingCrop;
-import Modules.Farming.Plant;
-import Modules.Farming.Seed;
-import Modules.Game;
-import Modules.Interactions.Messages.GameMessage;
-import Modules.Item;
-import Modules.Map.*;
-import Modules.Time;
+import Models.Animal.*;
+import Models.App;
+import Models.Crafting.Material;
+import Models.Crafting.MaterialType;
+import Models.Enums.Season;
+import Models.Enums.SkillType;
+import Models.Enums.Weather;
+import Models.Farming.Crop;
+import Models.Farming.ForagingCrop;
+import Models.Farming.Plant;
+import Models.Farming.Seed;
+import Models.Game;
+import Models.Interactions.Messages.GameMessage;
+import Models.Item;
+import Models.Map.*;
+import Models.Time;
 
 import java.io.Serializable;
 
-import static Modules.Enums.SkillType.foraging;
-import static Modules.Enums.SkillType.mining;
+import static Models.Enums.SkillType.foraging;
+import static Models.Enums.SkillType.mining;
 
 public class Tool extends Item implements Serializable {
     private final ToolType toolType;

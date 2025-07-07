@@ -1,6 +1,6 @@
 package Controllers;
 
-import Modules.Interactions.Messages.Message;
+import Models.Interactions.Messages.Message;
 
 public abstract class Controller {
     public abstract Message showCurrentMenu();

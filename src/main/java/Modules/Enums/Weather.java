@@ -1,4 +1,4 @@
-package Modules.Enums;
+package Models.Enums;
 
 import java.io.Serializable;
 import java.util.ArrayList;

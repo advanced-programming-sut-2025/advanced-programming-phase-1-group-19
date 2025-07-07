@@ -1,7 +1,7 @@
-package Modules;
+package Models;
 
-import Modules.Enums.Season;
-import Modules.Interactions.Messages.GameMessage;
+import Models.Enums.Season;
+import Models.Interactions.Messages.GameMessage;
 
 import java.io.Serializable;
 

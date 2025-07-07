@@ -1,6 +1,6 @@
-package Modules.Communication;
+package Models.Communication;
 
-import Modules.Item;
+import Models.Item;
 
 import java.io.Serializable;
 

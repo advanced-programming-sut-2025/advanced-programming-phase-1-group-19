@@ -1,7 +1,7 @@
-package Modules.Animal;
+package Models.Animal;
 
-import Modules.Item;
-import Modules.Map.Tile;
+import Models.Item;
+import Models.Map.Tile;
 
 import java.io.Serializable;
 

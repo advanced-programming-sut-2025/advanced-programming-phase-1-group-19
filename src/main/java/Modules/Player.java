@@ -1,19 +1,19 @@
-package Modules;
+package Models;
 
-import Modules.Communication.FriendShip;
-import Modules.Communication.NPC;
-import Modules.Communication.NPCFriendship;
-import Modules.Communication.NPCQuest;
-import Modules.Crafting.Buff;
-import Modules.Crafting.CookingRecipe;
-import Modules.Crafting.CraftingRecipe;
-import Modules.Enums.SkillType;
-import Modules.Farming.Seed;
-import Modules.Farming.SeedType;
-import Modules.Map.Farm;
-import Modules.Map.Position;
-import Modules.Store.Store;
-import Modules.Tools.*;
+import Models.Communication.FriendShip;
+import Models.Communication.NPC;
+import Models.Communication.NPCFriendship;
+import Models.Communication.NPCQuest;
+import Models.Crafting.Buff;
+import Models.Crafting.CookingRecipe;
+import Models.Crafting.CraftingRecipe;
+import Models.Enums.SkillType;
+import Models.Farming.Seed;
+import Models.Farming.SeedType;
+import Models.Map.Farm;
+import Models.Map.Position;
+import Models.Store.Store;
+import Models.Tools.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;

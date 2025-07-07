@@ -1,18 +1,18 @@
 package Controllers;
 
-import Modules.App;
-import Modules.Crafting.CraftingItem;
-import Modules.Crafting.CraftingRecipe;
-import Modules.Crafting.Recipe;
-import Modules.Game;
-import Modules.Interactions.Messages.GameMessage;
-import Modules.Enums.InGameMenu;
-import Modules.Interactions.Messages.GameMessage;
-import Modules.Interactions.Messages.Message;
-import Modules.Item;
-import Modules.Map.Position;
-import Modules.Map.Tile;
-import Modules.Player;
+import Models.App;
+import Models.Crafting.CraftingItem;
+import Models.Crafting.CraftingRecipe;
+import Models.Crafting.Recipe;
+import Models.Game;
+import Models.Interactions.Messages.GameMessage;
+import Models.Enums.InGameMenu;
+import Models.Interactions.Messages.GameMessage;
+import Models.Interactions.Messages.Message;
+import Models.Item;
+import Models.Map.Position;
+import Models.Map.Tile;
+import Models.Player;
 
 import java.io.Serializable;
 

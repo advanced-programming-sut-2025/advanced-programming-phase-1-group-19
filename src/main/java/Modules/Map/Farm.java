@@ -1,12 +1,12 @@
-package Modules.Map;
+package Models.Map;
 
-import Modules.Animal.Barn;
-import Modules.Animal.Coop;
-import Modules.App;
-import Modules.Crafting.Material;
-import Modules.Crafting.MaterialType;
-import Modules.Game;
-import Modules.Store.Store;
+import Models.Animal.Barn;
+import Models.Animal.Coop;
+import Models.App;
+import Models.Crafting.Material;
+import Models.Crafting.MaterialType;
+import Models.Game;
+import Models.Store.Store;
 
 import java.io.Serializable;
 import java.util.ArrayList;

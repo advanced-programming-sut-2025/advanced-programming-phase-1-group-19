@@ -1,7 +1,7 @@
-package Modules.Store;
+package Models.Store;
 
-import Modules.Crafting.Recipe;
-import Modules.Enums.Season;
+import Models.Crafting.Recipe;
+import Models.Enums.Season;
 
 import java.io.Serializable;
 

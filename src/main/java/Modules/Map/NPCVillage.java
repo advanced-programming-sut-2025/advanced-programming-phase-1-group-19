@@ -1,7 +1,7 @@
-package Modules.Map;
+package Models.Map;
 
-import Modules.App;
-import Modules.Store.Store;
+import Models.App;
+import Models.Store.Store;
 
 import java.io.Serializable;
 import java.util.ArrayList;

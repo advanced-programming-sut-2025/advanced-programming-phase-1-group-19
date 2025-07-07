@@ -1,15 +1,15 @@
-package Modules.Animal;
+package Models.Animal;
 
-import Modules.App;
-import Modules.Enums.Season;
-import Modules.Enums.SkillType;
-import Modules.Enums.Weather;
-import Modules.Game;
-import Modules.Item;
-import Modules.Map.Tile;
-import Modules.Player;
-import Modules.Tools.LevelInfo;
-import Modules.Tools.Tool;
+import Models.App;
+import Models.Enums.Season;
+import Models.Enums.SkillType;
+import Models.Enums.Weather;
+import Models.Game;
+import Models.Item;
+import Models.Map.Tile;
+import Models.Player;
+import Models.Tools.LevelInfo;
+import Models.Tools.Tool;
 
 import java.io.Serializable;
 import java.util.Random;

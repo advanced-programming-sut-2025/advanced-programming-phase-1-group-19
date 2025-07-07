@@ -1,8 +1,8 @@
-package Modules.Communication;
+package Models.Communication;
 
-import Modules.Enums.Season;
-import Modules.Enums.Weather;
-import Modules.Time;
+import Models.Enums.Season;
+import Models.Enums.Weather;
+import Models.Time;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -1,6 +1,6 @@
-package Modules.Communication;
+package Models.Communication;
 
-import Modules.Player;
+import Models.Player;
 
 import java.io.Serializable;
 import java.util.ArrayList;

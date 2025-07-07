@@ -1,15 +1,15 @@
-package Modules.Crafting;
+package Models.Crafting;
 
-import Modules.Animal.AnimalProduct;
-import Modules.Animal.AnimalProductType;
-import Modules.Animal.Fish;
-import Modules.Animal.FishType;
-import Modules.Enums.SkillType;
-import Modules.Farming.Crop;
-import Modules.Farming.CropType;
-import Modules.Farming.ForagingCrop;
-import Modules.Farming.ForagingCropType;
-import Modules.Item;
+import Models.Animal.AnimalProduct;
+import Models.Animal.AnimalProductType;
+import Models.Animal.Fish;
+import Models.Animal.FishType;
+import Models.Enums.SkillType;
+import Models.Farming.Crop;
+import Models.Farming.CropType;
+import Models.Farming.ForagingCrop;
+import Models.Farming.ForagingCropType;
+import Models.Item;
 
 import java.io.Serializable;
 import java.util.HashMap;

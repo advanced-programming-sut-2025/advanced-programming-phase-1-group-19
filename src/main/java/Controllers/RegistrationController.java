@@ -1,12 +1,12 @@
 package Controllers;
 
-import Modules.App;
-import Modules.Enums.Menu;
-import Modules.Enums.Question;
-import Modules.Interactions.Commands.RegistrationCommand;
-import Modules.Interactions.Messages.Message;
-import Modules.Interactions.Messages.RegistrationMessage;
-import Modules.User;
+import Models.App;
+import Models.Enums.Menu;
+import Models.Enums.Question;
+import Models.Interactions.Commands.RegistrationCommand;
+import Models.Interactions.Messages.Message;
+import Models.Interactions.Messages.RegistrationMessage;
+import Models.User;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;

@@ -1,12 +1,12 @@
-package Modules;
+package Models;
 
-import Modules.Animal.*;
-import Modules.Crafting.*;
-import Modules.Farming.*;
-import Modules.Map.Tile;
-import Modules.Map.TileObject;
-import Modules.Tools.Tool;
-import Modules.Tools.ToolType;
+import Models.Animal.*;
+import Models.Crafting.*;
+import Models.Farming.*;
+import Models.Map.Tile;
+import Models.Map.TileObject;
+import Models.Tools.Tool;
+import Models.Tools.ToolType;
 
 import java.io.Serializable;
 

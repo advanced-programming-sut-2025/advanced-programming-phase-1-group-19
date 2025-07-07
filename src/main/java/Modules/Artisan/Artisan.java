@@ -1,8 +1,8 @@
-package Modules.Artisan;
+package Models.Artisan;
 
-import Modules.App;
-import Modules.Item;
-import Modules.Time;
+import Models.App;
+import Models.Item;
+import Models.Time;
 
 public class Artisan {
 

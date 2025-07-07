@@ -1,8 +1,8 @@
-package Modules.Crafting;
+package Models.Crafting;
 
-import Modules.App;
-import Modules.Item;
-import Modules.Player;
+import Models.App;
+import Models.Item;
+import Models.Player;
 
 import java.io.Serializable;
 import java.util.HashMap;

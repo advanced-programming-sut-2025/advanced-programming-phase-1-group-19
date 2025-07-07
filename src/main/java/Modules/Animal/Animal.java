@@ -1,11 +1,11 @@
-package Modules.Animal;
+package Models.Animal;
 
-import Modules.App;
-import Modules.Game;
-import Modules.Map.Position;
-import Modules.Map.Tile;
-import Modules.Player;
-import Modules.Time;
+import Models.App;
+import Models.Game;
+import Models.Map.Position;
+import Models.Map.Tile;
+import Models.Player;
+import Models.Time;
 
 import java.io.Serializable;
 import java.util.Random;

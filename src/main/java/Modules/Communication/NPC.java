@@ -1,18 +1,18 @@
-package Modules.Communication;
+package Models.Communication;
 
-import Modules.Animal.AnimalProduct;
-import Modules.Animal.AnimalProductType;
-import Modules.App;
-import Modules.Crafting.CookingRecipe;
-import Modules.Crafting.Food;
-import Modules.Crafting.Material;
-import Modules.Crafting.MaterialType;
-import Modules.Farming.Crop;
-import Modules.Farming.CropType;
-import Modules.Game;
-import Modules.Item;
-import Modules.Map.TileObject;
-import Modules.Player;
+import Models.Animal.AnimalProduct;
+import Models.Animal.AnimalProductType;
+import Models.App;
+import Models.Crafting.CookingRecipe;
+import Models.Crafting.Food;
+import Models.Crafting.Material;
+import Models.Crafting.MaterialType;
+import Models.Farming.Crop;
+import Models.Farming.CropType;
+import Models.Game;
+import Models.Item;
+import Models.Map.TileObject;
+import Models.Player;
 
 import java.io.Serializable;
 import java.util.ArrayList;

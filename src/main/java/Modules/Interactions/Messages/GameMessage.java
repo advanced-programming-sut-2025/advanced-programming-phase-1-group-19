@@ -1,6 +1,6 @@
-package Modules.Interactions.Messages;
+package Models.Interactions.Messages;
 
-import Modules.Interactions.Commands.GameCommand;
+import Models.Interactions.Commands.GameCommand;
 
 public record GameMessage(GameCommand command, String message) implements Message {
 

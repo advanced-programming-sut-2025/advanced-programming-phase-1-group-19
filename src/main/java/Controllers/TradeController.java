@@ -1,13 +1,13 @@
 package Controllers;
 
-import Modules.App;
-import Modules.Communication.FriendShip;
-import Modules.Communication.Trade;
-import Modules.Game;
-import Modules.Interactions.Messages.GameMessage;
-import Modules.Interactions.Messages.Message;
-import Modules.Item;
-import Modules.Player;
+import Models.App;
+import Models.Communication.FriendShip;
+import Models.Communication.Trade;
+import Models.Game;
+import Models.Interactions.Messages.GameMessage;
+import Models.Interactions.Messages.Message;
+import Models.Item;
+import Models.Player;
 
 public class TradeController extends Controller {
     private static TradeController instance;

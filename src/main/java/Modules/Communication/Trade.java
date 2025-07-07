@@ -1,7 +1,7 @@
-package Modules.Communication;
+package Models.Communication;
 
-import Modules.Item;
-import Modules.Player;
+import Models.Item;
+import Models.Player;
 
 import java.io.Serializable;
 

@@ -1,6 +1,6 @@
 package Controllers;
 
-import Modules.App;
+import Models.App;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

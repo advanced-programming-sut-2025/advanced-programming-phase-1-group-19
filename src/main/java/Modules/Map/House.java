@@ -1,6 +1,6 @@
-package Modules.Map;
+package Models.Map;
 
-import Modules.Crafting.Refrigerator;
+import Models.Crafting.Refrigerator;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -1,8 +1,8 @@
-package Modules.Animal;
+package Models.Animal;
 
-import Modules.Map.Position;
-import Modules.Map.Tile;
-import Modules.Map.TileObject;
+import Models.Map.Position;
+import Models.Map.Tile;
+import Models.Map.TileObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;

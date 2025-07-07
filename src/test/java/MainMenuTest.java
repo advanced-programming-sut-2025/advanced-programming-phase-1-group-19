@@ -1,6 +1,6 @@
 import Controllers.MainController;
 import Controllers.RegistrationController;
-import Modules.App;
+import Models.App;
 import Views.AppView;
 import Views.MainMenu;
 import org.junit.jupiter.api.AfterEach;

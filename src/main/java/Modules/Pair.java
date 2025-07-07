@@ -1,4 +1,4 @@
-package Modules;
+package Models;
 
 public class Pair<K, V> {
     public final K key;

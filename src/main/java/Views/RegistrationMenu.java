@@ -1,9 +1,9 @@
 package Views;
 
 import Controllers.RegistrationController;
-import Modules.Enums.Question;
-import Modules.Interactions.Commands.RegistrationCommand;
-import Modules.Interactions.Messages.RegistrationMessage;
+import Models.Enums.Question;
+import Models.Interactions.Commands.RegistrationCommand;
+import Models.Interactions.Messages.RegistrationMessage;
 
 import java.util.Scanner;
 import java.util.regex.Matcher;

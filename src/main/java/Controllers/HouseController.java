@@ -1,20 +1,20 @@
 package Controllers;
 
-import Modules.Animal.Animal;
-import Modules.Animal.AnimalType;
-import Modules.Animal.Barn;
-import Modules.Animal.Coop;
-import Modules.App;
-import Modules.Crafting.*;
-import Modules.Enums.InGameMenu;
-import Modules.Game;
-import Modules.Interactions.Messages.GameMessage;
-import Modules.Interactions.Messages.MainMessage;
-import Modules.Interactions.Messages.Message;
-import Modules.Item;
-import Modules.Map.Position;
-import Modules.Map.Tile;
-import Modules.Player;
+import Models.Animal.Animal;
+import Models.Animal.AnimalType;
+import Models.Animal.Barn;
+import Models.Animal.Coop;
+import Models.App;
+import Models.Crafting.*;
+import Models.Enums.InGameMenu;
+import Models.Game;
+import Models.Interactions.Messages.GameMessage;
+import Models.Interactions.Messages.MainMessage;
+import Models.Interactions.Messages.Message;
+import Models.Item;
+import Models.Map.Position;
+import Models.Map.Tile;
+import Models.Player;
 
 import java.util.Map;
 

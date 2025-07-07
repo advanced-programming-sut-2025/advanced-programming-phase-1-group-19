@@ -1,4 +1,4 @@
-package Modules.Map;
+package Models.Map;
 
 import java.io.Serializable;
 import java.util.ArrayList;

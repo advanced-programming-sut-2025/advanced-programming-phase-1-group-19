@@ -1,8 +1,8 @@
 package Views;
 
 import Controllers.MainController;
-import Modules.Interactions.Commands.MainCommand;
-import Modules.Interactions.Messages.MainMessage;
+import Models.Interactions.Commands.MainCommand;
+import Models.Interactions.Messages.MainMessage;
 
 import java.util.Scanner;
 import java.util.regex.Matcher;

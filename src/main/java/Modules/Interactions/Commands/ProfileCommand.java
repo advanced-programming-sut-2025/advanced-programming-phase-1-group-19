@@ -1,4 +1,4 @@
-package Modules.Interactions.Commands;
+package Models.Interactions.Commands;
 
 public enum ProfileCommand implements Command {
     changeUsername ,

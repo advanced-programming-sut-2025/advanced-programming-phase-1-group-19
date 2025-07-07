@@ -1,6 +1,6 @@
-package Modules.Interactions.Messages;
+package Models.Interactions.Messages;
 
-import Modules.Interactions.Commands.RegistrationCommand;
+import Models.Interactions.Commands.RegistrationCommand;
 
 public record RegistrationMessage(RegistrationCommand command, String message) implements Message {
 

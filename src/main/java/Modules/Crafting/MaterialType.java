@@ -1,4 +1,4 @@
-package Modules.Crafting;
+package Models.Crafting;
 
 import java.io.Serializable;
 

@@ -1,8 +1,8 @@
 package Views;
 
 import Controllers.ProfileController;
-import Modules.Interactions.Commands.ProfileCommand;
-import Modules.Interactions.Messages.ProfileMessage;
+import Models.Interactions.Commands.ProfileCommand;
+import Models.Interactions.Messages.ProfileMessage;
 
 import java.util.Scanner;
 import java.util.regex.Matcher;

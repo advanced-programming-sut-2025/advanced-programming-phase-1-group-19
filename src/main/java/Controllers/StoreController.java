@@ -1,17 +1,17 @@
 package Controllers;
 
-import Modules.App;
-import Modules.Crafting.CookingRecipe;
-import Modules.Crafting.CraftingRecipe;
-import Modules.Game;
-import Modules.Interactions.Messages.GameMessage;
-import Modules.Interactions.Messages.Message;
-import Modules.Item;
-import Modules.Player;
-import Modules.Store.Store;
-import Modules.Store.StoreItem;
-import Modules.Store.StoreRecipes;
-import Modules.Tools.Tool;
+import Models.App;
+import Models.Crafting.CookingRecipe;
+import Models.Crafting.CraftingRecipe;
+import Models.Game;
+import Models.Interactions.Messages.GameMessage;
+import Models.Interactions.Messages.Message;
+import Models.Item;
+import Models.Player;
+import Models.Store.Store;
+import Models.Store.StoreItem;
+import Models.Store.StoreRecipes;
+import Models.Tools.Tool;
 
 import java.util.ArrayList;
 

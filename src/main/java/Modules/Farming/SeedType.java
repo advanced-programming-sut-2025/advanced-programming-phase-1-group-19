@@ -1,4 +1,4 @@
-package Modules.Farming;
+package Models.Farming;
 
 import java.io.Serializable;
 import java.util.HashMap;

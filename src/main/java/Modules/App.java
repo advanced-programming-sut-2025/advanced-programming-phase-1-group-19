@@ -1,6 +1,6 @@
-package Modules;
+package Models;
 
-import Modules.Enums.Menu;
+import Models.Enums.Menu;
 
 import java.io.*;
 import java.util.ArrayList;

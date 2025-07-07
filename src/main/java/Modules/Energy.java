@@ -1,4 +1,4 @@
-package Modules;
+package Models;
 
 import java.io.Serializable;
 

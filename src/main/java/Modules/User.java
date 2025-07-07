@@ -1,6 +1,6 @@
-package Modules;
+package Models;
 
-import Modules.Enums.Question;
+import Models.Enums.Question;
 
 import java.io.Serializable;
 import java.util.ArrayList;

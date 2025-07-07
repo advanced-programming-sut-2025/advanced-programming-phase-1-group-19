@@ -1,4 +1,4 @@
-package Modules.Interactions.Commands;
+package Models.Interactions.Commands;
 
 public enum MainCommand implements Command {
     enter,

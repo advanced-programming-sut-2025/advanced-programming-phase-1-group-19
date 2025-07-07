@@ -1,9 +1,9 @@
-package Modules.Map;
+package Models.Map;
 
-import Modules.Farming.Fertilizer;
-import Modules.Farming.Plant;
-import Modules.Game;
-import Modules.Time;
+import Models.Farming.Fertilizer;
+import Models.Farming.Plant;
+import Models.Game;
+import Models.Time;
 
 import java.awt.image.BufferedImage;
 import java.io.Serializable;

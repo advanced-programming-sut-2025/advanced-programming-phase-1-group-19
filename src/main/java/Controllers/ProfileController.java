@@ -1,12 +1,12 @@
 package Controllers;
 
-import Modules.App;
-import Modules.Enums.Menu;
-import Modules.Interactions.Messages.MainMessage;
-import Modules.Interactions.Messages.Message;
-import Modules.Interactions.Messages.ProfileMessage;
-import Modules.Interactions.Messages.RegistrationMessage;
-import Modules.User;
+import Models.App;
+import Models.Enums.Menu;
+import Models.Interactions.Messages.MainMessage;
+import Models.Interactions.Messages.Message;
+import Models.Interactions.Messages.ProfileMessage;
+import Models.Interactions.Messages.RegistrationMessage;
+import Models.User;
 
 public class ProfileController extends Controller implements UserInfoController{
     private static ProfileController instance;

@@ -1,4 +1,4 @@
-package Modules.Map;
+package Models.Map;
 
 import java.util.ArrayList;
 
